@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "run_id": "test-docker-down",
+  "started_at": "2026-08-08T16:20:21+00:00",
+  "finished_at": "2026-08-08T16:20:21+00:00",
+  "duration_s": 0.335,
+  "host": {
+    "platform": "Windows-11-10.0.22631-SP0",
+    "python": "3.12.3"
+  },
+  "target": {
+    "url": "https://github.com/CompVis/stable-diffusion",
+    "owner": "CompVis",
+    "repo": "stable-diffusion",
+    "resolved_commit": null,
+    "default_branch": null
+  },
+  "sandbox": {},
+  "install_detection": {},
+  "import_detection": {},
+  "steps": [],
+  "outcome": {
+    "status": "harness_error",
+    "failing_step": null,
+    "exit_code": null,
+    "summary_line": "Docker is installed but the daemon is not responding. Start Docker Desktop and try again.\ndocker info said: error during connect: this error may indicate that the docker daemon is not running: Get \"http://%2F%2F.%2Fpipe%2Fdocker_engine/v1.24/info\": open //./pipe/docker_engine: The system cannot find the file specified."
+  }
+}

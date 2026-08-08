@@ -1,0 +1,7 @@
+{"ts": "2026-08-08T16:40:42+00:00", "run_id": "20260808T164042Z", "kind": "run_started", "url": "https://github.com/ageitgey/face_recognition", "owner": "ageitgey", "repo": "face_recognition"}
+{"ts": "2026-08-08T16:40:45+00:00", "run_id": "20260808T164042Z", "kind": "sandbox_started", "container": "c60b1d5ffa6a"}
+{"ts": "2026-08-08T16:40:48+00:00", "run_id": "20260808T164042Z", "kind": "step", "name": "clone", "exit_code": 0, "duration_s": 2.828, "timed_out": false}
+{"ts": "2026-08-08T16:40:49+00:00", "run_id": "20260808T164042Z", "kind": "install_detected", "strategy": "requirements.txt", "chosen": "requirements.txt"}
+{"ts": "2026-08-08T16:41:39+00:00", "run_id": "20260808T164042Z", "kind": "step", "name": "install", "exit_code": 1, "duration_s": 50.156, "timed_out": false}
+{"ts": "2026-08-08T16:41:39+00:00", "run_id": "20260808T164042Z", "kind": "step_skipped", "name": "import_check", "reason": "install failed"}
+{"ts": "2026-08-08T16:41:41+00:00", "run_id": "20260808T164042Z", "kind": "run_finished", "status": "install_failed", "duration_s": 58.948}

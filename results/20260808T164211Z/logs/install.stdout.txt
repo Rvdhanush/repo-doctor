@@ -1,0 +1,47 @@
+Processing /work/repo
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Collecting keras<=2.3.1 (from bert4keras==0.11.5)
+  Downloading Keras-2.3.1-py2.py3-none-any.whl.metadata (2.2 kB)
+Collecting numpy>=1.9.1 (from keras<=2.3.1->bert4keras==0.11.5)
+  Downloading numpy-2.4.6-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (6.6 kB)
+Collecting scipy>=0.14 (from keras<=2.3.1->bert4keras==0.11.5)
+  Downloading scipy-1.17.1-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (62 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 62.1/62.1 kB 1.4 MB/s eta 0:00:00
+Collecting six>=1.9.0 (from keras<=2.3.1->bert4keras==0.11.5)
+  Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+Collecting pyyaml (from keras<=2.3.1->bert4keras==0.11.5)
+  Downloading pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+Collecting h5py (from keras<=2.3.1->bert4keras==0.11.5)
+  Downloading h5py-3.16.0-cp311-cp311-manylinux_2_28_x86_64.whl.metadata (3.0 kB)
+Collecting keras-applications>=1.0.6 (from keras<=2.3.1->bert4keras==0.11.5)
+  Downloading Keras_Applications-1.0.8-py3-none-any.whl.metadata (1.7 kB)
+Collecting keras-preprocessing>=1.0.5 (from keras<=2.3.1->bert4keras==0.11.5)
+  Downloading Keras_Preprocessing-1.1.2-py2.py3-none-any.whl.metadata (1.9 kB)
+Downloading Keras-2.3.1-py2.py3-none-any.whl (377 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 377.8/377.8 kB 5.7 MB/s eta 0:00:00
+Downloading Keras_Applications-1.0.8-py3-none-any.whl (50 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 50.7/50.7 kB 7.1 MB/s eta 0:00:00
+Downloading Keras_Preprocessing-1.1.2-py2.py3-none-any.whl (42 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 42.6/42.6 kB 5.1 MB/s eta 0:00:00
+Downloading numpy-2.4.6-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.9 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.9/16.9 MB 11.4 MB/s eta 0:00:00
+Downloading scipy-1.17.1-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (35.3 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.3/35.3 MB 7.4 MB/s eta 0:00:00
+Downloading six-1.17.0-py2.py3-none-any.whl (11 kB)
+Downloading h5py-3.16.0-cp311-cp311-manylinux_2_28_x86_64.whl (5.0 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.0/5.0 MB 8.3 MB/s eta 0:00:00
+Downloading pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (806 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 806.6/806.6 kB 7.9 MB/s eta 0:00:00
+Building wheels for collected packages: bert4keras
+  Building wheel for bert4keras (pyproject.toml): started
+  Building wheel for bert4keras (pyproject.toml): finished with status 'done'
+  Created wheel for bert4keras: filename=bert4keras-0.11.5-py3-none-any.whl size=56303 sha256=43ecc2f48b487b4ab00d5700d17d77c2515a0f2c4b77b18b794fe6fbdb3da6aa
+  Stored in directory: /tmp/pip-ephem-wheel-cache-zvgtc92d/wheels/6f/83/2d/7a4ee773ac88f0c63eac4d82b4791eaa305929b0cabc8c015d
+Successfully built bert4keras
+Installing collected packages: six, pyyaml, numpy, scipy, keras-preprocessing, h5py, keras-applications, keras, bert4keras
+Successfully installed bert4keras-0.11.5 h5py-3.16.0 keras-2.3.1 keras-applications-1.0.8 keras-preprocessing-1.1.2 numpy-2.4.6 pyyaml-6.0.3 scipy-1.17.1 six-1.17.0

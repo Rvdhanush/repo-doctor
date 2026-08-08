@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "run_id": "20260808T164042Z",
+  "started_at": "2026-08-08T16:40:42+00:00",
+  "finished_at": "2026-08-08T16:41:41+00:00",
+  "duration_s": 58.948,
+  "host": {
+    "platform": "Windows-11-10.0.22631-SP0",
+    "python": "3.12.3"
+  },
+  "target": {
+    "url": "https://github.com/ageitgey/face_recognition",
+    "owner": "ageitgey",
+    "repo": "face_recognition",
+    "resolved_commit": "9f3061aaeed9a8756d2c970f5dfe066617a8281d",
+    "default_branch": "master"
+  },
+  "sandbox": {
+    "image": "repo-doctor-sandbox:0.1",
+    "image_id": "sha256:7dd6efdef9b1111ead05a3cc1ee01d1bcbbd9ebf3a406db175c59d7045dec289",
+    "image_digest": "",
+    "container_id": "c60b1d5ffa6a",
+    "container_name": "repo-doctor-20260808T164042Z",
+    "python_version": "Python 3.11.15",
+    "pip_version": "pip 24.0 from /opt/venv/lib/python3.11/site-packages/pip (python 3.11)",
+    "limits": {
+      "memory": "4g",
+      "cpus": "2",
+      "pids_limit": 512,
+      "network": "enabled (required for clone + pip)",
+      "mounts": "none"
+    }
+  },
+  "install_detection": {
+    "supported": true,
+    "strategy": "requirements.txt",
+    "chosen": "requirements.txt",
+    "argv": [
+      "pip",
+      "install",
+      "--no-input",
+      "--no-color",
+      "--disable-pip-version-check",
+      "-r",
+      "requirements.txt"
+    ],
+    "reason": "Found requirements.txt at the repo root.",
+    "candidates_found": [
+      "requirements.txt",
+      "pyproject.toml",
+      "setup.py",
+      "setup.cfg",
+      "requirements_dev.txt",
+      "requirements_docs.txt"
+    ]
+  },
+  "import_detection": {},
+  "steps": [
+    {
+      "name": "clone",
+      "argv": [
+        "git",
+        "clone",
+        "--depth",
+        "1",
+        "https://github.com/ageitgey/face_recognition",
+        "/work/repo"
+      ],
+      "cwd": "/work",
+      "exit_code": 0,
+      "duration_s": 2.828,
+      "timed_out": false,
+      "stdout": "",
+      "stderr": "Cloning into '/work/repo'...\n",
+      "truncated": false,
+      "raw_logs": {
+        "stdout": "logs/clone.stdout.txt",
+        "stderr": "logs/clone.stderr.txt"
+      },
+      "note": ""
+    },
+    {
+      "name": "install",
+      "argv": [
+        "pip",
+        "install",
+        "--no-input",
+        "--no-color",
+        "--disable-pip-version-check",
+        "-r",
+        "requirements.txt"
+      ],
+      "cwd": "/work/repo",
+      "exit_code": 1,
+      "duration_s": 50.156,
+      "timed_out": false,
+      "stdout": "Collecting face_recognition_models (from -r requirements.txt (line 1))\n  Downloading face_recognition_models-0.3.0.tar.gz (100.1 MB)\n     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100.1/100.1 MB 3.3 MB/s eta 0:00:00\n  Installing build dependencies: started\n  Installing build dependencies: finished with status 'done'\n  Getting requirements to build wheel: started\n  Getting requirements to build wheel: finished with status 'done'\n  Preparing metadata (pyproject.toml): started\n  Preparing metadata (pyproject.toml): finished with status 'done'\nCollecting Click>=6.0 (from -r requirements.txt (line 2))\n  Downloading click-8.4.2-py3-none-any.whl.metadata (2.6 kB)\nCollecting dlib>=19.3.0 (from -r requirements.txt (line 3))\n  Downloading dlib-20.0.1.tar.gz (3.3 MB)\n     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.3/3.3 MB 6.4 MB/s eta 0:00:00\n  Installing build dependencies: started\n  Installing build dependencies: finished with status 'done'\n  Getting requirements to build wheel: started\n  Getting requirements to build wheel: finished with status 'done'\n  Preparing metadata (pyproject.toml): started\n  Preparing metadata (pyproject.toml): finished with status 'done'\nCollecting numpy (from -r requirements.txt (line 4))\n  Downloading numpy-2.4.6-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (6.6 kB)\nCollecting Pillow (from -r requirements.txt (line 5))\n  Downloading pillow-12.3.0-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (9.1 kB)\nCollecting scipy>=0.17.0 (from -r requirements.txt (line 6))\n  Downloading scipy-1.17.1-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (62 kB)\n     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 62.1/62.1 kB 1.6 MB/s eta 0:00:00\nDownloading click-8.4.2-py3-none-any.whl (119 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 119.2/119.2 kB 4.6 MB/s eta 0:00:00\nDownloading numpy-2.4.6-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.9 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.9/16.9 MB 6.7 MB/s eta 0:00:00\nDownloading pillow-12.3.0-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (6.9 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 6.9/6.9 MB 6.1 MB/s eta 0:00:00\nDownloading scipy-1.17.1-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (35.3 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.3/35.3 MB 3.7 MB/s eta 0:00:00\nBuilding wheels for collected packages: face_recognition_models, dlib\n  Building wheel for face_recognition_models (pyproject.toml): started\n  Building wheel for face_recognition_models (pyproject.toml): finished with status 'done'\n  Created wheel for face_recognition_models: filename=face_recognition_models-0.3.0-py2.py3-none-any.whl size=100566241 sha256=9a6fb2a87bb0a1ff92dada8e6741ff115dcd17af34f01edf2405cdecda698108\n  Stored in directory: /root/.cache/pip/wheels/04/52/ec/9355da79c29f160b038a20c784db2803c2f9fa2c8a462c176a\n  Building wheel for dlib (pyproject.toml): started\n  Building wheel for dlib (pyproject.toml): finished with status 'error'\nSuccessfully built face_recognition_models\nFailed to build dlib\n",
+      "stderr": "  error: subprocess-exited-with-error\n  \n  × Building wheel for dlib (pyproject.toml) did not run successfully.\n  │ exit code: 1\n  ╰─> [64 lines of output]\n      INFO:root:running bdist_wheel\n      INFO:root:running build\n      INFO:root:running build_ext\n      Building extension for Python 3.11.15 (main, Aug  5 2026, 01:11:44) [GCC 12.2.0]\n      Invoking CMake setup: 'cmake /tmp/pip-install-hdjooihu/dlib_5868ebe1afee4ebca62ab997c6b1da40/tools/python -DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/tmp/pip-install-hdjooihu/dlib_5868ebe1afee4ebca62ab997c6b1da40/build/lib.linux-x86_64-cpython-311 -DDLIB_USE_FFMPEG=OFF -DPYTHON_EXECUTABLE=/opt/venv/bin/python -DCMAKE_BUILD_TYPE=Release'\n      CMake Error: CMake was unable to find a build program corresponding to \"Unix Makefiles\".  CMAKE_MAKE_PROGRAM is not set.  You probably need to select a different build tool.\n      CMake Error: CMAKE_C_COMPILER not set, after EnableLanguage\n      CMake Error: CMAKE_CXX_COMPILER not set, after EnableLanguage\n      -- Configuring incomplete, errors occurred!\n      Traceback (most recent call last):\n        File \"/opt/venv/lib/python3.11/site-packages/pip/_vendor/pyproject_hooks/_in_process/_in_process.py\", line 353, in <module>\n          main()\n        File \"/opt/venv/lib/python3.11/site-packages/pip/_vendor/pyproject_hooks/_in_process/_in_process.py\", line 335, in main\n          json_out['return_val'] = hook(**hook_input['kwargs'])\n                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        File \"/opt/venv/lib/python3.11/site-packages/pip/_vendor/pyproject_hooks/_in_process/_in_process.py\", line 251, in build_wheel\n          return _build_backend().build_wheel(wheel_directory, config_settings,\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        File \"/tmp/pip-build-env-c7pd00eg/overlay/lib/python3.11/site-packages/setuptools/build_meta.py\", line 441, in build_wheel\n          return _build(['bdist_wheel', '--dist-info-dir', str(metadata_directory)])\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        File \"/tmp/pip-build-env-c7pd00eg/overlay/lib/python3.11/site-packages/setuptools/build_meta.py\", line 429, in _build\n          return self._build_with_temp_dir(\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^\n        File \"/tmp/pip-build-env-c7pd00eg/overlay/lib/python3.11/site-packages/setuptools/build_meta.py\", line 410, in _build_with_temp_dir\n          self.run_setup()\n        File \"/tmp/pip-build-env-c7pd00eg/overlay/lib/python3.11/site-packages/setuptools/build_meta.py\", line 317, in run_setup\n          exec(code, locals())\n        File \"<string>\", line 247, in <module>\n        File \"/tmp/pip-build-env-c7pd00eg/overlay/lib/python3.11/site-packages/setuptools/__init__.py\", line 117, in setup\n          return distutils.core.setup(**attrs)  # type: ignore[return-value]\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        File \"/tmp/pip-build-env-c7pd00eg/overlay/lib/python3.11/site-packages/setuptools/_distutils/core.py\", line 186, in setup\n          return run_commands(dist)\n                 ^^^^^^^^^^^^^^^^^^\n        File \"/tmp/pip-build-env-c7pd00eg/overlay/lib/python3.11/site-packages/setuptools/_distutils/core.py\", line 202, in run_commands\n          dist.run_commands()\n        File \"/tmp/pip-build-env-c7pd00eg/overlay/lib/python3.11/site-packages/setuptools/_distutils/dist.py\", line 1001, in run_commands\n          self.run_command(cmd)\n        File \"/tmp/pip-build-env-c7pd00eg/overlay/lib/python3.11/site-packages/setuptools/dist.py\", line 1107, in run_command\n          super().run_command(command)\n        File \"/tmp/pip-build-env-c7pd00eg/overlay/lib/python3.11/site-packages/setuptools/_distutils/dist.py\", line 1020, in run_command\n          cmd_obj.run()\n        File \"/tmp/pip-build-env-c7pd00eg/overlay/lib/python3.11/site-packages/setuptools/command/bdist_wheel.py\", line 370, in run\n          self.run_command(\"build\")\n        File \"/tmp/pip-build-env-c7pd00eg/overlay/lib/python3.11/site-packages/setuptools/_distutils/cmd.py\", line 341, in run_command\n          self.distribution.run_command(command)\n        File \"/tmp/pip-build-env-c7pd00eg/overlay/lib/python3.11/site-packages/setuptools/dist.py\", line 1107, in run_command\n          super().run_command(command)\n        File \"/tmp/pip-build-env-c7pd00eg/overlay/lib/python3.11/site-packages/setuptools/_distutils/dist.py\", line 1020, in run_command\n          cmd_obj.run()\n        File \"/tmp/pip-build-env-c7pd00eg/overlay/lib/python3.11/site-packages/setuptools/_distutils/command/build.py\", line 135, in run\n          self.run_command(cmd_name)\n        File \"/tmp/pip-build-env-c7pd00eg/overlay/lib/python3.11/site-packages/setuptools/_distutils/cmd.py\", line 341, in run_command\n          self.distribution.run_command(command)\n        File \"/tmp/pip-build-env-c7pd00eg/overlay/lib/python3.11/site-packages/setuptools/dist.py\", line 1107, in run_command\n          super().run_command(command)\n        File \"/tmp/pip-build-env-c7pd00eg/overlay/lib/python3.11/site-packages/setuptools/_distutils/dist.py\", line 1020, in run_command\n          cmd_obj.run()\n        File \"<string>\", line 170, in run\n        File \"<string>\", line 214, in build_extension\n        File \"/usr/local/lib/python3.11/subprocess.py\", line 413, in check_call\n          raise CalledProcessError(retcode, cmd)\n      subprocess.CalledProcessError: Command '['cmake', '/tmp/pip-install-hdjooihu/dlib_5868ebe1afee4ebca62ab997c6b1da40/tools/python', '-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/tmp/pip-install-hdjooihu/dlib_5868ebe1afee4ebca62ab997c6b1da40/build/lib.linux-x86_64-cpython-311', '-DDLIB_USE_FFMPEG=OFF', '-DPYTHON_EXECUTABLE=/opt/venv/bin/python', '-DCMAKE_BUILD_TYPE=Release']' returned non-zero exit status 1.\n      [end of output]\n  \n  note: This error originates from a subprocess, and is likely not a problem with pip.\n  ERROR: Failed building wheel for dlib\nERROR: Could not build wheels for dlib, which is required to install pyproject.toml-based projects\n",
+      "truncated": false,
+      "raw_logs": {
+        "stdout": "logs/install.stdout.txt",
+        "stderr": "logs/install.stderr.txt"
+      },
+      "note": "Found requirements.txt at the repo root."
+    },
+    {
+      "name": "import_check",
+      "skipped": true,
+      "reason": "install failed"
+    }
+  ],
+  "outcome": {
+    "status": "install_failed",
+    "failing_step": "install",
+    "exit_code": 1,
+    "summary_line": "ERROR: Could not build wheels for dlib, which is required to install pyproject.toml-based projects"
+  }
+}

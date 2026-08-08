@@ -1,0 +1,7 @@
+{"ts": "2026-08-08T16:42:12+00:00", "run_id": "20260808T164211Z", "kind": "run_started", "url": "https://github.com/bojone/bert4keras", "owner": "bojone", "repo": "bert4keras"}
+{"ts": "2026-08-08T16:42:13+00:00", "run_id": "20260808T164211Z", "kind": "sandbox_started", "container": "c45ba21321ff"}
+{"ts": "2026-08-08T16:42:15+00:00", "run_id": "20260808T164211Z", "kind": "step", "name": "clone", "exit_code": 0, "duration_s": 1.719, "timed_out": false}
+{"ts": "2026-08-08T16:42:16+00:00", "run_id": "20260808T164211Z", "kind": "install_detected", "strategy": "setuptools", "chosen": "setup.py"}
+{"ts": "2026-08-08T16:42:35+00:00", "run_id": "20260808T164211Z", "kind": "step", "name": "install", "exit_code": 0, "duration_s": 19.313, "timed_out": false}
+{"ts": "2026-08-08T16:42:36+00:00", "run_id": "20260808T164211Z", "kind": "step", "name": "import_check", "exit_code": 0, "duration_s": 0.219, "timed_out": false}
+{"ts": "2026-08-08T16:42:36+00:00", "run_id": "20260808T164211Z", "kind": "run_finished", "status": "ok", "duration_s": 25.007}

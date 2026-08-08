@@ -1,0 +1,41 @@
+# repo-doctor configuration.
+# Every value here has a default in repo_doctor/config.py, so a missing or
+# partial file still produces a working run.
+
+sandbox:
+  image: repo-doctor-sandbox:0.1
+  dockerfile_dir: sandbox
+
+  # Resource ceilings on the container. These are the reason a runaway build
+  # (a source compile that forks forever, a dependency that eats RAM) cannot
+  # take the host down with it.
+  memory: 4g
+  cpus: "2"
+  pids_limit: 512
+
+  # Where the target repo is cloned inside the container.
+  workdir: /work
+  repo_dir: /work/repo
+
+timeouts:
+  # Seconds. Exceeding one of these marks the step timed_out rather than hanging.
+  container_start: 120
+  clone: 180
+  install: 900        # cold ML installs are genuinely slow; torch alone can take minutes
+  import_check: 120
+  probe: 60           # small informational commands (python -V, pip -V)
+
+logging:
+  results_dir: results
+  # run.json inlines a truncated view of each step's output so it stays small
+  # enough to hand to an LLM in increment 1. Truncation drops the MIDDLE: pip
+  # puts the invocation context at the top and the actual error at the bottom,
+  # and the middle is download progress noise.
+  inline_head_lines: 200
+  inline_tail_lines: 400
+  # Raw untruncated output always goes to results/<run_id>/logs/ regardless.
+
+# Present per SPEC.md section 4. Unused until increment 2 (the fix loop);
+# recorded here so the config shape does not change under later increments.
+limits:
+  attempt_cap: 5

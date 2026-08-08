@@ -1,0 +1,7 @@
+{"ts": "2026-08-08T16:43:01+00:00", "run_id": "neg-clonefail", "kind": "run_started", "url": "https://github.com/ageitgey/this-repo-does-not-exist-xyz", "owner": "ageitgey", "repo": "this-repo-does-not-exist-xyz"}
+{"ts": "2026-08-08T16:43:02+00:00", "run_id": "neg-clonefail", "kind": "sandbox_started", "container": "a3fee6c44846"}
+{"ts": "2026-08-08T16:43:03+00:00", "run_id": "neg-clonefail", "kind": "step", "name": "clone", "exit_code": 128, "duration_s": 0.625, "timed_out": false}
+{"ts": "2026-08-08T16:43:03+00:00", "run_id": "neg-clonefail", "kind": "step_skipped", "name": "detect_install", "reason": "clone failed"}
+{"ts": "2026-08-08T16:43:03+00:00", "run_id": "neg-clonefail", "kind": "step_skipped", "name": "install", "reason": "clone failed"}
+{"ts": "2026-08-08T16:43:03+00:00", "run_id": "neg-clonefail", "kind": "step_skipped", "name": "import_check", "reason": "clone failed"}
+{"ts": "2026-08-08T16:43:03+00:00", "run_id": "neg-clonefail", "kind": "run_finished", "status": "clone_failed", "duration_s": 2.821}

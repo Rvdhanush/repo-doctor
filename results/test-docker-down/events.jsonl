@@ -1,0 +1,3 @@
+{"ts": "2026-08-08T16:20:21+00:00", "run_id": "test-docker-down", "kind": "run_started", "url": "https://github.com/CompVis/stable-diffusion", "owner": "CompVis", "repo": "stable-diffusion"}
+{"ts": "2026-08-08T16:20:21+00:00", "run_id": "test-docker-down", "kind": "harness_error", "error": "Docker is installed but the daemon is not responding. Start Docker Desktop and try again.\ndocker info said: error during connect: this error may indicate that the docker daemon is not running: Get \"http://%2F%2F.%2Fpipe%2Fdocker_engine/v1.24/info\": open //./pipe/docker_engine: The system cannot find the file specified."}
+{"ts": "2026-08-08T16:20:21+00:00", "run_id": "test-docker-down", "kind": "run_finished", "status": "harness_error", "duration_s": 0.335}

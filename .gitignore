@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# NOTE: results/ is deliberately NOT ignored. SPEC.md section 4 requires per-run
+# logs and reports to be committed as evidence.

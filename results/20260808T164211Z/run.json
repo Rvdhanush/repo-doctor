@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "run_id": "20260808T164211Z",
+  "started_at": "2026-08-08T16:42:11+00:00",
+  "finished_at": "2026-08-08T16:42:36+00:00",
+  "duration_s": 25.007,
+  "host": {
+    "platform": "Windows-11-10.0.22631-SP0",
+    "python": "3.12.3"
+  },
+  "target": {
+    "url": "https://github.com/bojone/bert4keras",
+    "owner": "bojone",
+    "repo": "bert4keras",
+    "resolved_commit": "c1ae0dc5eff66d329ab3c5c7ee369124ddbb6f87",
+    "default_branch": "master"
+  },
+  "sandbox": {
+    "image": "repo-doctor-sandbox:0.1",
+    "image_id": "sha256:7dd6efdef9b1111ead05a3cc1ee01d1bcbbd9ebf3a406db175c59d7045dec289",
+    "image_digest": "",
+    "container_id": "c45ba21321ff",
+    "container_name": "repo-doctor-20260808T164211Z",
+    "python_version": "Python 3.11.15",
+    "pip_version": "pip 24.0 from /opt/venv/lib/python3.11/site-packages/pip (python 3.11)",
+    "limits": {
+      "memory": "4g",
+      "cpus": "2",
+      "pids_limit": 512,
+      "network": "enabled (required for clone + pip)",
+      "mounts": "none"
+    }
+  },
+  "install_detection": {
+    "supported": true,
+    "strategy": "setuptools",
+    "chosen": "setup.py",
+    "argv": [
+      "pip",
+      "install",
+      "--no-input",
+      "--no-color",
+      "--disable-pip-version-check",
+      "."
+    ],
+    "reason": "Found setup.py; installing the project itself with `pip install .`.",
+    "candidates_found": [
+      "setup.py"
+    ]
+  },
+  "import_detection": {
+    "module": "bert4keras",
+    "confidence": "high",
+    "source": "installed-distribution",
+    "reason": "The installed distribution 'bert4keras' declares top-level module(s): bert4keras.",
+    "candidates": [
+      "bert4keras"
+    ],
+    "installed_top_level": [
+      "bert4keras"
+    ]
+  },
+  "steps": [
+    {
+      "name": "clone",
+      "argv": [
+        "git",
+        "clone",
+        "--depth",
+        "1",
+        "https://github.com/bojone/bert4keras",
+        "/work/repo"
+      ],
+      "cwd": "/work",
+      "exit_code": 0,
+      "duration_s": 1.719,
+      "timed_out": false,
+      "stdout": "",
+      "stderr": "Cloning into '/work/repo'...\n",
+      "truncated": false,
+      "raw_logs": {
+        "stdout": "logs/clone.stdout.txt",
+        "stderr": "logs/clone.stderr.txt"
+      },
+      "note": ""
+    },
+    {
+      "name": "install",
+      "argv": [
+        "pip",
+        "install",
+        "--no-input",
+        "--no-color",
+        "--disable-pip-version-check",
+        "."
+      ],
+      "cwd": "/work/repo",
+      "exit_code": 0,
+      "duration_s": 19.313,
+      "timed_out": false,
+      "stdout": "Processing /work/repo\n  Installing build dependencies: started\n  Installing build dependencies: finished with status 'done'\n  Getting requirements to build wheel: started\n  Getting requirements to build wheel: finished with status 'done'\n  Preparing metadata (pyproject.toml): started\n  Preparing metadata (pyproject.toml): finished with status 'done'\nCollecting keras<=2.3.1 (from bert4keras==0.11.5)\n  Downloading Keras-2.3.1-py2.py3-none-any.whl.metadata (2.2 kB)\nCollecting numpy>=1.9.1 (from keras<=2.3.1->bert4keras==0.11.5)\n  Downloading numpy-2.4.6-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (6.6 kB)\nCollecting scipy>=0.14 (from keras<=2.3.1->bert4keras==0.11.5)\n  Downloading scipy-1.17.1-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (62 kB)\n     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 62.1/62.1 kB 1.4 MB/s eta 0:00:00\nCollecting six>=1.9.0 (from keras<=2.3.1->bert4keras==0.11.5)\n  Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)\nCollecting pyyaml (from keras<=2.3.1->bert4keras==0.11.5)\n  Downloading pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)\nCollecting h5py (from keras<=2.3.1->bert4keras==0.11.5)\n  Downloading h5py-3.16.0-cp311-cp311-manylinux_2_28_x86_64.whl.metadata (3.0 kB)\nCollecting keras-applications>=1.0.6 (from keras<=2.3.1->bert4keras==0.11.5)\n  Downloading Keras_Applications-1.0.8-py3-none-any.whl.metadata (1.7 kB)\nCollecting keras-preprocessing>=1.0.5 (from keras<=2.3.1->bert4keras==0.11.5)\n  Downloading Keras_Preprocessing-1.1.2-py2.py3-none-any.whl.metadata (1.9 kB)\nDownloading Keras-2.3.1-py2.py3-none-any.whl (377 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 377.8/377.8 kB 5.7 MB/s eta 0:00:00\nDownloading Keras_Applications-1.0.8-py3-none-any.whl (50 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 50.7/50.7 kB 7.1 MB/s eta 0:00:00\nDownloading Keras_Preprocessing-1.1.2-py2.py3-none-any.whl (42 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 42.6/42.6 kB 5.1 MB/s eta 0:00:00\nDownloading numpy-2.4.6-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.9 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.9/16.9 MB 11.4 MB/s eta 0:00:00\nDownloading scipy-1.17.1-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (35.3 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.3/35.3 MB 7.4 MB/s eta 0:00:00\nDownloading six-1.17.0-py2.py3-none-any.whl (11 kB)\nDownloading h5py-3.16.0-cp311-cp311-manylinux_2_28_x86_64.whl (5.0 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.0/5.0 MB 8.3 MB/s eta 0:00:00\nDownloading pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (806 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 806.6/806.6 kB 7.9 MB/s eta 0:00:00\nBuilding wheels for collected packages: bert4keras\n  Building wheel for bert4keras (pyproject.toml): started\n  Building wheel for bert4keras (pyproject.toml): finished with status 'done'\n  Created wheel for bert4keras: filename=bert4keras-0.11.5-py3-none-any.whl size=56303 sha256=43ecc2f48b487b4ab00d5700d17d77c2515a0f2c4b77b18b794fe6fbdb3da6aa\n  Stored in directory: /tmp/pip-ephem-wheel-cache-zvgtc92d/wheels/6f/83/2d/7a4ee773ac88f0c63eac4d82b4791eaa305929b0cabc8c015d\nSuccessfully built bert4keras\nInstalling collected packages: six, pyyaml, numpy, scipy, keras-preprocessing, h5py, keras-applications, keras, bert4keras\nSuccessfully installed bert4keras-0.11.5 h5py-3.16.0 keras-2.3.1 keras-applications-1.0.8 keras-preprocessing-1.1.2 numpy-2.4.6 pyyaml-6.0.3 scipy-1.17.1 six-1.17.0\n",
+      "stderr": "",
+      "truncated": false,
+      "raw_logs": {
+        "stdout": "logs/install.stdout.txt",
+        "stderr": "logs/install.stderr.txt"
+      },
+      "note": "Found setup.py; installing the project itself with `pip install .`."
+    },
+    {
+      "name": "import_check",
+      "argv": [
+        "python",
+        "-c",
+        "import bert4keras; print(bert4keras.__file__)"
+      ],
+      "cwd": "/",
+      "exit_code": 0,
+      "duration_s": 0.219,
+      "timed_out": false,
+      "stdout": "/opt/venv/lib/python3.11/site-packages/bert4keras/__init__.py\n",
+      "stderr": "",
+      "truncated": false,
+      "raw_logs": {
+        "stdout": "logs/import_check.stdout.txt",
+        "stderr": "logs/import_check.stderr.txt"
+      },
+      "note": "The installed distribution 'bert4keras' declares top-level module(s): bert4keras."
+    }
+  ],
+  "outcome": {
+    "status": "ok",
+    "failing_step": null,
+    "exit_code": null,
+    "summary_line": "Installed via setuptools; `import bert4keras` succeeded."
+  }
+}

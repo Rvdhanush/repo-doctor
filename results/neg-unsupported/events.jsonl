@@ -1,0 +1,7 @@
+{"ts": "2026-08-08T16:42:56+00:00", "run_id": "neg-unsupported", "kind": "run_started", "url": "https://github.com/karpathy/nanoGPT", "owner": "karpathy", "repo": "nanoGPT"}
+{"ts": "2026-08-08T16:42:58+00:00", "run_id": "neg-unsupported", "kind": "sandbox_started", "container": "e17c8721b66b"}
+{"ts": "2026-08-08T16:42:59+00:00", "run_id": "neg-unsupported", "kind": "step", "name": "clone", "exit_code": 0, "duration_s": 1.469, "timed_out": false}
+{"ts": "2026-08-08T16:43:00+00:00", "run_id": "neg-unsupported", "kind": "install_detected", "strategy": "none", "chosen": ""}
+{"ts": "2026-08-08T16:43:00+00:00", "run_id": "neg-unsupported", "kind": "step_skipped", "name": "install", "reason": "No install file found at the repo root (looked for requirements.txt, pyproject.toml, setup.py, setup.cfg, environment.yml, Pipfile)."}
+{"ts": "2026-08-08T16:43:00+00:00", "run_id": "neg-unsupported", "kind": "step_skipped", "name": "import_check", "reason": "no install was attempted"}
+{"ts": "2026-08-08T16:43:00+00:00", "run_id": "neg-unsupported", "kind": "run_finished", "status": "unsupported", "duration_s": 4.311}

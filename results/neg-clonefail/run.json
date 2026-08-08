@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "run_id": "neg-clonefail",
+  "started_at": "2026-08-08T16:43:01+00:00",
+  "finished_at": "2026-08-08T16:43:03+00:00",
+  "duration_s": 2.821,
+  "host": {
+    "platform": "Windows-11-10.0.22631-SP0",
+    "python": "3.12.3"
+  },
+  "target": {
+    "url": "https://github.com/ageitgey/this-repo-does-not-exist-xyz",
+    "owner": "ageitgey",
+    "repo": "this-repo-does-not-exist-xyz",
+    "resolved_commit": null,
+    "default_branch": null
+  },
+  "sandbox": {
+    "image": "repo-doctor-sandbox:0.1",
+    "image_id": "sha256:7dd6efdef9b1111ead05a3cc1ee01d1bcbbd9ebf3a406db175c59d7045dec289",
+    "image_digest": "",
+    "container_id": "a3fee6c44846",
+    "container_name": "repo-doctor-neg-clonefail",
+    "python_version": "Python 3.11.15",
+    "pip_version": "pip 24.0 from /opt/venv/lib/python3.11/site-packages/pip (python 3.11)",
+    "limits": {
+      "memory": "4g",
+      "cpus": "2",
+      "pids_limit": 512,
+      "network": "enabled (required for clone + pip)",
+      "mounts": "none"
+    }
+  },
+  "install_detection": {},
+  "import_detection": {},
+  "steps": [
+    {
+      "name": "clone",
+      "argv": [
+        "git",
+        "clone",
+        "--depth",
+        "1",
+        "https://github.com/ageitgey/this-repo-does-not-exist-xyz",
+        "/work/repo"
+      ],
+      "cwd": "/work",
+      "exit_code": 128,
+      "duration_s": 0.625,
+      "timed_out": false,
+      "stdout": "",
+      "stderr": "Cloning into '/work/repo'...\nfatal: could not read Username for 'https://github.com': No such device or address\n",
+      "truncated": false,
+      "raw_logs": {
+        "stdout": "logs/clone.stdout.txt",
+        "stderr": "logs/clone.stderr.txt"
+      },
+      "note": ""
+    },
+    {
+      "name": "detect_install",
+      "skipped": true,
+      "reason": "clone failed"
+    },
+    {
+      "name": "install",
+      "skipped": true,
+      "reason": "clone failed"
+    },
+    {
+      "name": "import_check",
+      "skipped": true,
+      "reason": "clone failed"
+    }
+  ],
+  "outcome": {
+    "status": "clone_failed",
+    "failing_step": "clone",
+    "exit_code": 128,
+    "summary_line": "fatal: could not read Username for 'https://github.com': No such device or address"
+  }
+}

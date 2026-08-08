@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "run_id": "neg-unsupported",
+  "started_at": "2026-08-08T16:42:56+00:00",
+  "finished_at": "2026-08-08T16:43:00+00:00",
+  "duration_s": 4.311,
+  "host": {
+    "platform": "Windows-11-10.0.22631-SP0",
+    "python": "3.12.3"
+  },
+  "target": {
+    "url": "https://github.com/karpathy/nanoGPT",
+    "owner": "karpathy",
+    "repo": "nanoGPT",
+    "resolved_commit": "3adf61e154c3fe3fca428ad6bc3818b27a3b8291",
+    "default_branch": "master"
+  },
+  "sandbox": {
+    "image": "repo-doctor-sandbox:0.1",
+    "image_id": "sha256:7dd6efdef9b1111ead05a3cc1ee01d1bcbbd9ebf3a406db175c59d7045dec289",
+    "image_digest": "",
+    "container_id": "e17c8721b66b",
+    "container_name": "repo-doctor-neg-unsupported",
+    "python_version": "Python 3.11.15",
+    "pip_version": "pip 24.0 from /opt/venv/lib/python3.11/site-packages/pip (python 3.11)",
+    "limits": {
+      "memory": "4g",
+      "cpus": "2",
+      "pids_limit": 512,
+      "network": "enabled (required for clone + pip)",
+      "mounts": "none"
+    }
+  },
+  "install_detection": {
+    "supported": false,
+    "strategy": "none",
+    "chosen": "",
+    "argv": [],
+    "reason": "No install file found at the repo root (looked for requirements.txt, pyproject.toml, setup.py, setup.cfg, environment.yml, Pipfile).",
+    "candidates_found": []
+  },
+  "import_detection": {},
+  "steps": [
+    {
+      "name": "clone",
+      "argv": [
+        "git",
+        "clone",
+        "--depth",
+        "1",
+        "https://github.com/karpathy/nanoGPT",
+        "/work/repo"
+      ],
+      "cwd": "/work",
+      "exit_code": 0,
+      "duration_s": 1.469,
+      "timed_out": false,
+      "stdout": "",
+      "stderr": "Cloning into '/work/repo'...\n",
+      "truncated": false,
+      "raw_logs": {
+        "stdout": "logs/clone.stdout.txt",
+        "stderr": "logs/clone.stderr.txt"
+      },
+      "note": ""
+    },
+    {
+      "name": "install",
+      "skipped": true,
+      "reason": "No install file found at the repo root (looked for requirements.txt, pyproject.toml, setup.py, setup.cfg, environment.yml, Pipfile)."
+    },
+    {
+      "name": "import_check",
+      "skipped": true,
+      "reason": "no install was attempted"
+    }
+  ],
+  "outcome": {
+    "status": "unsupported",
+    "failing_step": "detect_install",
+    "exit_code": null,
+    "summary_line": "No install file found at the repo root (looked for requirements.txt, pyproject.toml, setup.py, setup.cfg, environment.yml, Pipfile)."
+  }
+}
