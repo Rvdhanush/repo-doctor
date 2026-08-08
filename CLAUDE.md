@@ -56,7 +56,22 @@ never conflate the two.
 ## Increment status
 - [x] 0 — harness, no LLM. `runner.py` + `sandbox/` + structured logs.
 - [x] 1 — diagnosis. `diagnose.py` + `repo_doctor/{llm,diagnosis}.py`. Diagnose only.
-- [ ] 2 — fix loop (propose -> apply -> re-run -> retry, cap 5)
+- [ ] 2 — **NEXT.** Fix loop: propose -> apply in sandbox -> re-run -> read -> retry, cap 5.
+- [ ] 3 — telemetry · [ ] 4 — honest reporting
+
+**Gate checks are human-judged** (see SPEC.md §5). Increment 2's: watch it fix a repo the
+user couldn't, *and* watch it fail one — the failure is data for increment 4, not a bug.
+Present evidence in the form the gate asks for; don't start the next increment before it clears.
+
+### Notes for increment 2
+- `Sandbox.exec` already persists state between commands — that is why the container is
+  long-lived. The fix loop applies changes and re-runs against the same container.
+- Diagnoses carry `secondary_issues`: problems the primary failure is masking. DeOldify is
+  the worked example — fix the `torch==1.11.0` pin and the `cu113` CUDA index bites next.
+  A fix loop that ignores this will thrash.
+- `confidence` matters. A `low`-confidence diagnosis on a guessed import name is not
+  grounds for a fix.
+- Cap is `limits.attempt_cap` in settings.yaml (default 5), already plumbed, unused so far.
 
 ## Diagnosis (increment 1)
 - `python diagnose.py results/<run_id>` — diagnose a run already captured (no re-install)
@@ -93,6 +108,36 @@ never conflate the two.
   Stopping alone still consumes the storage allowance.
 - Disk (32 GB default), not CPU, is the binding constraint: ML installs land in the
   sandbox container layer. `docker builder prune` reclaims space.
+
+## Evidence on disk (`results/`, committed deliberately)
+| run | repo | outcome | diagnosis |
+|---|---|---|---|
+| `20260808T164042Z` | ageitgey/face_recognition | `install_failed` | `missing_system_package` (dlib needs cmake/g++) |
+| `20260808T164211Z` | bojone/bert4keras | `ok` | — |
+| `deoldify` | jantic/DeOldify | `install_failed` | `python_version_incompatible` + masked `cu113` CUDA index |
+| `neg-unsupported` | karpathy/nanoGPT | `unsupported` | `no_install_file` |
+| `neg-clonefail` | (nonexistent) | `clone_failed` | `repo_unavailable` |
+| `test-docker-down` | — | `harness_error` | — |
+
+Fast repos for iterating: **bert4keras** (~20s, passes), **DeOldify** (~15s, fails at
+resolution), **face_recognition** (~50s, fails at build). Avoid stable-diffusion —
+it downloads torch for 14 minutes.
+
+## Gotchas already paid for (do not rediscover these)
+- **`docker info --format` exits 0 when the daemon is down.** The template renders empty
+  and the error goes to stderr. Check for actual output, not the return code.
+- **Cloudflare rejects the default `Python-urllib` User-Agent** with error 1010 — a 403
+  that looks exactly like an auth failure. `llm.py` sets its own UA.
+- **Credentials collect invisible whitespace.** A Codespaces secret uploaded through a
+  shell pipeline kept a trailing `\r`; `http.client` then raised "Invalid header value",
+  naming neither the key nor the whitespace. `Provider.__post_init__` strips it now.
+- **`run.json` is UTF-8; the Windows console is cp1252.** Read logs with
+  `encoding="utf-8"`, and reconfigure stdout before printing model output.
+- **No TTY on `docker exec`.** A TTY merges stdout into stderr and injects ANSI codes.
+- **Import checks run from `cwd=/`**, never the repo dir — otherwise a source folder on
+  `sys.path` lets an import "pass" for a package that never installed.
+- **Cerebras currently returns 402** (no free quota on this account). Fallback path is
+  wired and correct; everything runs on Groq today.
 
 ## Sandbox notes (do not undo casually)
 - The base image is **deliberately lean** (git + ca-certificates + curl, no compilers).

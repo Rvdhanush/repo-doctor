@@ -31,16 +31,22 @@ back. This is what makes "the agent ran pip install and it broke something" safe
 production-isolation instinct FDE roles screen for.
 
     repo-doctor/
-      sandbox/
-        Dockerfile            # base python image the agent operates inside
-      runner.py               # clone a repo into the sandbox, attempt install, capture stdout/stderr/exit
-      diagnose.py             # pass captured failure to an LLM -> structured diagnosis (JSON)
-      fix_loop.py             # propose fix -> apply in sandbox -> re-run -> read result -> retry (capped)
-      telemetry.py            # per-attempt: fix tried, result, time, token/API cost -> dashboard data
-      report.py               # final per-repo report: fixed/not, fixes applied, cost, why-if-not
-      configs/
-        settings.yaml         # attempt cap, base image, model, cost limits
-      results/                # per-run logs + reports (committed as evidence)
+      sandbox/Dockerfile      # base python image the agent operates inside        [built]
+      runner.py               # clone -> detect -> install -> import; structured log [built]
+      diagnose.py             # CLI: captured failure -> structured diagnosis (JSON) [built]
+      repo_doctor/
+        sandbox.py            # container lifecycle + isolation flags              [built]
+        detect.py             # deterministic install-file / import-target detection [built]
+        logstore.py           # run.json + events.jsonl + raw untruncated logs     [built]
+        llm.py                # OpenAI-compatible client with provider fallback    [built]
+        diagnosis.py          # prompt, category enum, JSON validation             [built]
+        config.py             # settings.yaml -> dataclasses                       [built]
+      fix_loop.py             # propose fix -> apply -> re-run -> retry (capped)   [inc 2]
+      telemetry.py            # per-attempt: fix tried, result, time, token cost   [inc 3]
+      report.py               # final per-repo report: fixed/not, cost, why-if-not [inc 4]
+      configs/settings.yaml   # attempt cap, base image, providers, timeouts
+      .devcontainer/          # Codespaces: docker-in-docker + Claude Code
+      results/                # per-run logs + diagnoses (committed as evidence)
 
 Rules:
 - Everything runs in the sandbox; the host is never modified.
@@ -48,19 +54,50 @@ Rules:
   configurable ceiling.
 - Config-driven and reproducible.
 - Stack: Python 3.11+, Docker, an LLM via API (start with a free/cheap tier), structured JSON logs.
+- Host dependencies stay minimal (PyYAML only). A project about fragile installs should
+  not itself be fragile to install, so the LLM client is plain urllib rather than an SDK.
+- Providers are any OpenAI-compatible endpoint, tried in order with fallback. Currently
+  Groq (`llama-3.3-70b-versatile`) primary, Cerebras configured as backup. Keys live in
+  `.env` locally and as Codespaces secrets in the cloud — never in the repo.
 
 ## 5. Build order — one shippable increment at a time
-- **Increment 0 — harness, NO LLM.** Clone a repo into the sandbox, attempt install, capture the
-  raw failure output to a structured log. Prove isolation + capture work.
-- **Increment 1 — diagnosis only.** Feed the captured error to an LLM; return a structured
+- **[DONE] Increment 0 — harness, NO LLM.** Clone a repo into the sandbox, attempt install, capture
+  the raw failure output to a structured log. Prove isolation + capture work.
+- **[DONE] Increment 1 — diagnosis only.** Feed the captured error to an LLM; return a structured
   diagnosis (what failed, why, fix category). No fixing yet.
-- **Increment 2 — the fix loop (core).** Propose fix -> apply in sandbox -> re-run -> read result
-  -> retry up to the cap. Stop on install+import success or cap.
+- **[NEXT] Increment 2 — the fix loop (core).** Propose fix -> apply in sandbox -> re-run -> read
+  result -> retry up to the cap. Stop on install+import success or cap.
 - **Increment 3 — telemetry.** Surface every attempt, time, and token/API cost as a dashboard.
 - **Increment 4 — honest reporting.** Final report per repo, including a real diagnosis for repos
   it could not fix.
 
 Ship 0-2 and you have a real agent. 3-4 are what make it stand out.
+
+### Gate checks — each increment must clear one before the next begins
+These are judged by a human, not by tests passing:
+- **0:** point it at a broken repo and see the raw failure captured in a log. That's it.
+- **1:** read the diagnoses against repos you already understand. Are they *right*? This is the
+  calibration bar — the difference between a real diagnosis and a plausible-sounding wrong one is
+  something only someone who knows these failure modes can judge. Bad diagnoses here are signal to
+  refine before building the fix loop, not a reason to push on.
+- **2:** watch it fix a repo you couldn't — *and* watch it fail one. The failure is data for
+  increment 4, not a bug.
+- **3:** the dashboard should let someone watch the agent think: try, fail, adjust, cost accruing.
+- **4:** the "could not fix" report must be as informative as the success report.
+
+### Where increment 1 actually landed
+Its first attempt scored 2 of 4 on real repos, and both failures were prompt-design faults rather
+than model limitations. Recording them because they are easy to reintroduce:
+- A **free-text category** produced `"Python Installation"` — the symptom restated. Categories must
+  stay a closed enum.
+- The prompt must carry **sandbox facts** (no compiler, CPU-only); no model infers them from a
+  traceback.
+- But facts about what the image *lacks* are not evidence of cause. Without explicit grounding
+  rules the model invented a compiler failure for a repo where no install ever ran, and a CUDA
+  index for a repo that has none. Categories `no_install_file` and `repo_unavailable` exist so
+  non-install failures have somewhere correct to go.
+- Diagnoses run against **stored** logs, so prompt iteration costs seconds instead of minutes of
+  re-installing. This is what made three rounds of calibration affordable.
 
 ## 6. Worked example scenarios (the failure modes to design against)
 These are representative of what the agent must handle. Use them as test cases.
