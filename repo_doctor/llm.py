@@ -47,6 +47,17 @@ class Provider:
     model: str
     api_key: str = ""
 
+    def __post_init__(self) -> None:
+        # Credentials pick up invisible whitespace astonishingly easily: a copy
+        # paste that grabs the newline, a CRLF file read on Windows, a secret
+        # uploaded through a shell pipeline that kept the \r. The resulting
+        # "Invalid header value" is raised by http.client and names neither the
+        # key nor the whitespace, so it reads like an auth failure and sends you
+        # hunting for the wrong bug. Strip once, here, and it cannot recur.
+        self.api_key = self.api_key.strip()
+        self.base_url = self.base_url.strip()
+        self.model = self.model.strip()
+
     @property
     def configured(self) -> bool:
         return bool(self.api_key)
