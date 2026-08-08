@@ -114,5 +114,32 @@
     "failing_step": "install",
     "exit_code": 1,
     "summary_line": "ERROR: Could not build wheels for dlib, which is required to install pyproject.toml-based projects"
+  },
+  "diagnosis": {
+    "category": "missing_system_package",
+    "what_failed": "The installation of the dlib package failed due to a missing build toolchain.",
+    "why": "The image lacks a C/C++ compiler, cmake, and other essential build tools, which are necessary for compiling dlib from source since no prebuilt wheel is available for Python 3.11.",
+    "evidence": "CMake Error: CMake was unable to find a build program corresponding to \"Unix Makefiles\".  CMAKE_MAKE_PROGRAM is not set.  You probably need to select a different build tool. CMake Error: CMAKE_C_COMPILER not set, after EnableLanguage CMake Error: CMAKE_CXX_COMPILER not set, after EnableLanguage",
+    "fix_category": "install a system package",
+    "confidence": "high",
+    "human_note": "",
+    "secondary_issues": [],
+    "schema_valid": true,
+    "validation_notes": [],
+    "llm": {
+      "provider": "groq",
+      "model": "llama-3.3-70b-versatile",
+      "prompt_tokens": 3660,
+      "completion_tokens": 185,
+      "total_tokens": 3845,
+      "latency_s": 0.921,
+      "attempts": [
+        {
+          "provider": "groq",
+          "status": 200,
+          "total_tokens": 3845
+        }
+      ]
+    }
   }
 }

@@ -78,5 +78,32 @@
     "failing_step": "clone",
     "exit_code": 128,
     "summary_line": "fatal: could not read Username for 'https://github.com': No such device or address"
+  },
+  "diagnosis": {
+    "category": "repo_unavailable",
+    "what_failed": "The git clone command failed to retrieve the repository",
+    "why": "The repository does not exist at the specified URL",
+    "evidence": "fatal: could not read Username for 'https://github.com': No such device or address",
+    "fix_category": "use a valid repository URL",
+    "confidence": "high",
+    "human_note": "",
+    "secondary_issues": [],
+    "schema_valid": true,
+    "validation_notes": [],
+    "llm": {
+      "provider": "groq",
+      "model": "llama-3.3-70b-versatile",
+      "prompt_tokens": 1489,
+      "completion_tokens": 98,
+      "total_tokens": 1587,
+      "latency_s": 0.469,
+      "attempts": [
+        {
+          "provider": "groq",
+          "status": 200,
+          "total_tokens": 1587
+        }
+      ]
+    }
   }
 }

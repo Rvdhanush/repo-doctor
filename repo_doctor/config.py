@@ -47,11 +47,37 @@ class LimitsConfig:
 
 
 @dataclass
+class LLMConfig:
+    """Increment 1 onward. Providers are tried in order until one answers."""
+
+    # Each entry: {name, base_url, api_key_env, model}. All are OpenAI-compatible,
+    # so only these three fields differ between them.
+    providers: list = field(default_factory=lambda: [
+        {"name": "groq",
+         "base_url": "https://api.groq.com/openai/v1",
+         "api_key_env": "GROQ_API_KEY",
+         "model": "llama-3.3-70b-versatile"},
+        {"name": "cerebras",
+         "base_url": "https://api.cerebras.ai/v1",
+         "api_key_env": "CEREBRAS_API_KEY",
+         "model": "gpt-oss-120b"},
+    ])
+    timeout: int = 90
+    max_tokens: int = 700
+    # Prompt-size guards. Independent of the log's own truncation: run.json keeps
+    # a generous view for humans, the prompt gets a tight one to stay well inside
+    # a free tier's tokens-per-minute ceiling.
+    tail_lines: int = 120
+    max_chars: int = 6000
+
+
+@dataclass
 class Config:
     sandbox: SandboxConfig = field(default_factory=SandboxConfig)
     timeouts: TimeoutConfig = field(default_factory=TimeoutConfig)
     logging: LoggingConfig = field(default_factory=LoggingConfig)
     limits: LimitsConfig = field(default_factory=LimitsConfig)
+    llm: LLMConfig = field(default_factory=LLMConfig)
     project_root: Path = field(default_factory=Path.cwd)
 
     @property
@@ -101,4 +127,29 @@ def load_config(path: Path | str | None, project_root: Path | None = None) -> Co
     _apply(cfg.timeouts, raw.get("timeouts"))
     _apply(cfg.logging, raw.get("logging"))
     _apply(cfg.limits, raw.get("limits"))
+    _apply(cfg.llm, raw.get("llm"))
     return cfg
+
+
+def build_llm_client(cfg: Config, env: dict[str, str] | None = None):
+    """Construct an LLMClient from config plus .env / process environment."""
+    import os
+
+    from .llm import LLMClient, Provider, load_dotenv
+
+    resolved = dict(load_dotenv(cfg.project_root / ".env"))
+    resolved.update({k: v for k, v in os.environ.items() if k.endswith("_API_KEY")})
+    if env:
+        resolved.update(env)
+
+    providers = [
+        Provider(
+            name=entry.get("name", "?"),
+            base_url=entry.get("base_url", ""),
+            api_key_env=entry.get("api_key_env", ""),
+            model=entry.get("model", ""),
+            api_key=resolved.get(entry.get("api_key_env", ""), ""),
+        )
+        for entry in cfg.llm.providers
+    ]
+    return LLMClient(providers, timeout=cfg.llm.timeout)

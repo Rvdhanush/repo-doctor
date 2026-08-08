@@ -1,0 +1,26 @@
+Looking in indexes: https://pypi.org/simple, https://download.pytorch.org/whl/cu113
+Collecting wandb (from -r requirements.txt (line 1))
+  Downloading wandb-0.28.1-py3-none-manylinux_2_28_x86_64.whl.metadata (11 kB)
+Collecting fastai==1.0.60 (from -r requirements.txt (line 2))
+  Downloading fastai-1.0.60-py3-none-any.whl.metadata (14 kB)
+Collecting tensorboardX>=1.6 (from -r requirements.txt (line 3))
+  Downloading tensorboardx-2.6.5-py3-none-any.whl.metadata (6.6 kB)
+Collecting ffmpeg (from -r requirements.txt (line 4))
+  Downloading ffmpeg-1.4.tar.gz (5.1 kB)
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Collecting ffmpeg-python (from -r requirements.txt (line 5))
+  Downloading ffmpeg_python-0.2.0-py3-none-any.whl.metadata (1.7 kB)
+Collecting yt-dlp (from -r requirements.txt (line 6))
+  Downloading yt_dlp-2026.7.4-py3-none-any.whl.metadata (183 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 183.8/183.8 kB 1.8 MB/s eta 0:00:00
+Collecting jupyterlab (from -r requirements.txt (line 7))
+  Downloading jupyterlab-4.6.2-py3-none-any.whl.metadata (16 kB)
+Collecting opencv-python>=4.2.0.32 (from -r requirements.txt (line 8))
+  Downloading opencv_python-5.0.0.93-cp37-abi3-manylinux_2_28_x86_64.whl.metadata (19 kB)
+Collecting Pillow==9.3.0 (from -r requirements.txt (line 9))
+  Downloading Pillow-9.3.0-cp311-cp311-manylinux_2_28_x86_64.whl.metadata (9.2 kB)

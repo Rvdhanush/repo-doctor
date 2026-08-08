@@ -17,6 +17,7 @@ A failing target repo is a successful harness run; the two are never conflated.
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import sys
 import time
@@ -187,6 +188,13 @@ def _pipeline(sandbox: Sandbox, cfg: Config, log: RunLog, url: str,
 
     # --- detect install ---
     plan = detect_install(sandbox, repo_dir)
+    # Capture what the repo actually declared. This is often the single most
+    # informative artifact for diagnosis — pins, extra index URLs, and git
+    # dependencies all live here — and it cannot be recovered after teardown.
+    if plan.chosen:
+        declared = sandbox.read_file(f"{repo_dir}/{plan.chosen}", max_bytes=20_000)
+        if declared:
+            log.set_declared_dependencies(plan.chosen, declared)
     log.set_install_detection(plan)
     print(f"[repo-doctor] install strategy: {plan.strategy}"
           + (f" ({plan.chosen})" if plan.chosen else ""))
@@ -301,7 +309,16 @@ def main(argv: list[str] | None = None) -> int:
                         help="rebuild the sandbox image even if it already exists")
     parser.add_argument("--skip-import", action="store_true",
                         help="stop after install; do not attempt the import check")
+    parser.add_argument("--diagnose", action="store_true",
+                        help="on failure, ask an LLM what went wrong (increment 1). "
+                             "Diagnoses only — never applies a fix.")
     args = parser.parse_args(argv)
+
+    # Model output and captured logs routinely contain characters the Windows
+    # console codepage cannot encode.
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
 
     project_root = Path(__file__).resolve().parent
     cfg = load_config(args.config, project_root=project_root)
@@ -314,7 +331,44 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     print(f"[repo-doctor] status: {status}")
+
+    if args.diagnose and status != logstore.STATUS_OK:
+        _diagnose_after_run(cfg, run_id)
+
     return code
+
+
+def _diagnose_after_run(cfg: Config, run_id: str) -> None:
+    """Increment 1: explain the failure. Strictly read-only — no fix is applied."""
+    # Imported here so increment 0's harness keeps working with no LLM
+    # configured, and so a diagnosis failure can never fail the run itself.
+    from diagnose import load_run, print_human, read_install_file
+    from repo_doctor.config import build_llm_client
+    from repo_doctor.diagnosis import diagnose_run
+    from repo_doctor.llm import LLMError
+
+    run_dir = cfg.results_root / run_id
+    try:
+        client = build_llm_client(cfg)
+        if not client.configured_providers:
+            print("[repo-doctor] --diagnose: no LLM provider configured "
+                  "(see .env.example); skipping.", file=sys.stderr)
+            return
+        run_doc = load_run(run_dir)
+        print()
+        diag = diagnose_run(
+            run_doc, client,
+            install_file_content=read_install_file(run_doc, run_dir),
+            tail_lines=cfg.llm.tail_lines,
+            max_chars=cfg.llm.max_chars,
+        )
+        print_human(run_doc, diag)
+        run_doc["diagnosis"] = diag.as_dict()
+        (run_dir / "run.json").write_text(
+            json.dumps(run_doc, indent=2, ensure_ascii=False), encoding="utf-8")
+    except (LLMError, OSError, ValueError) as exc:
+        # A failed diagnosis must not change the harness's verdict about the repo.
+        print(f"[repo-doctor] --diagnose failed: {exc}", file=sys.stderr)
 
 
 if __name__ == "__main__":

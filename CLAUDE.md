@@ -55,7 +55,29 @@ never conflate the two.
 
 ## Increment status
 - [x] 0 — harness, no LLM. `runner.py` + `sandbox/` + structured logs.
-- [ ] 1 — diagnosis (LLM reads `results/<run_id>/run.json`)
+- [x] 1 — diagnosis. `diagnose.py` + `repo_doctor/{llm,diagnosis}.py`. Diagnose only.
+- [ ] 2 — fix loop (propose -> apply -> re-run -> retry, cap 5)
+
+## Diagnosis (increment 1)
+- `python diagnose.py results/<run_id>` — diagnose a run already captured (no re-install)
+- `python diagnose.py --all --save` — every failed run, written back into run.json
+- `python runner.py <url> --diagnose` — run and diagnose in one pass
+- Keys live in `.env` (gitignored); `.env.example` is the template. Providers are
+  tried in order and fall through on 402/429/5xx — all OpenAI-compatible, so only
+  `base_url`/`model`/key differ.
+
+### Calibration notes (learned the hard way — do not regress these)
+- **Categories must stay a closed enum.** Free text produced "Python Installation",
+  a restatement rather than a diagnosis.
+- **The prompt must carry sandbox facts** (no compiler, CPU-only). The model cannot
+  infer them from a traceback.
+- **But facts about what the image lacks are not evidence of cause.** Without
+  grounding rules the model invented a compiler failure for a repo where no install
+  ever ran, and a CUDA index for a repo that has none. `no_install_file` and
+  `repo_unavailable` exist so non-install failures have somewhere correct to go.
+- **Prompt size is capped separately from the log.** `run.json` keeps a generous
+  view for humans; the prompt gets ~120 tail lines / 6000 chars, because a free
+  tier allows only ~12k tokens/minute.
 
 ## Running in GitHub Codespaces (cloud-first)
 `.devcontainer/devcontainer.json` configures a Codespace with a real Docker daemon

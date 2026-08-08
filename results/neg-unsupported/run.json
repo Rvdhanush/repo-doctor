@@ -80,5 +80,32 @@
     "failing_step": "detect_install",
     "exit_code": null,
     "summary_line": "No install file found at the repo root (looked for requirements.txt, pyproject.toml, setup.py, setup.cfg, environment.yml, Pipfile)."
+  },
+  "diagnosis": {
+    "category": "no_install_file",
+    "what_failed": "The repository did not contain an installable manifest.",
+    "why": "The repository lacks a requirements.txt, pyproject.toml, setup.py, setup.cfg, environment.yml, or Pipfile, which are necessary for installing dependencies.",
+    "evidence": "No install file found at the repo root (looked for requirements.txt, pyproject.toml, setup.py, setup.cfg, environment.yml, Pipfile).",
+    "fix_category": "add an install file",
+    "confidence": "high",
+    "human_note": "",
+    "secondary_issues": [],
+    "schema_valid": true,
+    "validation_notes": [],
+    "llm": {
+      "provider": "groq",
+      "model": "llama-3.3-70b-versatile",
+      "prompt_tokens": 1547,
+      "completion_tokens": 133,
+      "total_tokens": 1680,
+      "latency_s": 0.5,
+      "attempts": [
+        {
+          "provider": "groq",
+          "status": 200,
+          "total_tokens": 1680
+        }
+      ]
+    }
   }
 }

@@ -1,0 +1,7 @@
+{"ts": "2026-08-08T19:18:33+00:00", "run_id": "deoldify", "kind": "run_started", "url": "https://github.com/jantic/DeOldify", "owner": "jantic", "repo": "DeOldify"}
+{"ts": "2026-08-08T19:18:35+00:00", "run_id": "deoldify", "kind": "sandbox_started", "container": "ae20484a7031"}
+{"ts": "2026-08-08T19:18:37+00:00", "run_id": "deoldify", "kind": "step", "name": "clone", "exit_code": 0, "duration_s": 1.469, "timed_out": false}
+{"ts": "2026-08-08T19:18:38+00:00", "run_id": "deoldify", "kind": "install_detected", "strategy": "requirements.txt", "chosen": "requirements.txt"}
+{"ts": "2026-08-08T19:18:50+00:00", "run_id": "deoldify", "kind": "step", "name": "install", "exit_code": 1, "duration_s": 12.016, "timed_out": false}
+{"ts": "2026-08-08T19:18:50+00:00", "run_id": "deoldify", "kind": "step_skipped", "name": "import_check", "reason": "install failed"}
+{"ts": "2026-08-08T19:18:50+00:00", "run_id": "deoldify", "kind": "run_finished", "status": "install_failed", "duration_s": 18.082}

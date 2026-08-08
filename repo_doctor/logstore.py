@@ -85,6 +85,7 @@ class RunLog:
             "target": {"url": url, "owner": None, "repo": None,
                        "resolved_commit": None, "default_branch": None},
             "sandbox": {},
+            "declared_dependencies": {},
             "install_detection": {},
             "import_detection": {},
             "steps": [],
@@ -163,6 +164,16 @@ class RunLog:
             "pip_version": info.pip_version,
             "limits": info.limits,
         }
+
+    def set_declared_dependencies(self, filename: str, content: str) -> None:
+        """Record the dependency file the repo shipped, verbatim.
+
+        Kept separately from the step output because it is evidence about the
+        repo rather than about a command, and it is unrecoverable once the
+        container is gone.
+        """
+        self.doc["declared_dependencies"] = {"file": filename, "content": content}
+        (self.logs_dir / "declared_dependencies.txt").write_text(content, encoding="utf-8")
 
     def set_install_detection(self, plan) -> None:
         self.doc["install_detection"] = plan.as_dict()

@@ -4,9 +4,10 @@ An agent that takes a broken Python ML repository and gets it to **install and i
 successfully inside a Docker sandbox** — diagnosing dependency, version, and environment
 errors, applying fixes, verifying them, and reporting honestly on the repos it cannot fix.
 
-> **Status: increment 0 of 5 complete.** The harness works — it clones, installs, imports, and
-> captures everything to a structured log. There is **no LLM and no fixing logic yet**; those
-> are increments 1 and 2. Everything below describes what actually runs today.
+> **Status: increments 0-1 of 5 complete.** The harness clones, installs, imports, and captures
+> everything to a structured log; an LLM then turns a captured failure into a structured
+> diagnosis. There is **no fixing logic yet** — that is increment 2. Everything below describes
+> what actually runs today.
 
 ## Why
 
@@ -64,6 +65,33 @@ The sandbox image builds automatically on first run (~244 MB).
 Docker-in-Docker, so *Code → Codespaces → Create codespace* gives you a working environment
 with no local Docker at all.
 
+## Diagnosis
+
+```bash
+python diagnose.py results/<run_id>     # diagnose a captured run — no re-install
+python runner.py <url> --diagnose       # run and diagnose in one pass
+```
+
+```
+CATEGORY     missing_system_package   (confidence: high)
+WHAT FAILED  The installation of the dlib package failed due to a missing build toolchain.
+WHY          The image lacks a C/C++ compiler, cmake, and other essential build tools,
+             which are necessary for compiling dlib from source since no prebuilt wheel
+             is available for Python 3.11.
+FIX CLASS    install a system package
+cost         groq/llama-3.3-70b-versatile  3845 tokens  0.9s
+```
+
+Categories are a closed enum, not free text — the first version returned
+`"Python Installation"`, which restates the symptom instead of diagnosing it. The prompt
+carries the sandbox's actual configuration, because no model can infer "this image has no
+compiler" from a stack trace. Grounding rules stop it inventing causes when a run produced
+no output at all. Diagnoses run against *stored* logs, so iterating on the prompt costs
+seconds rather than re-installing a repo.
+
+Providers are OpenAI-compatible and tried in order, falling through on rate limits and
+quota errors. Keys go in `.env` (gitignored); see `.env.example`.
+
 ## Design
 
 ```
@@ -112,7 +140,7 @@ completely is what makes this shippable.
 ## Roadmap
 
 - [x] **0 — Harness, no LLM.** Clone, install, import, structured logs.
-- [ ] **1 — Diagnosis.** LLM turns a captured error into structured JSON.
+- [x] **1 — Diagnosis.** LLM turns a captured error into structured JSON.
 - [ ] **2 — Fix loop.** Propose → apply → re-run → retry, capped at 5 attempts.
 - [ ] **3 — Telemetry.** Every attempt, time, and token cost.
 - [ ] **4 — Honest reporting.** Real diagnosis for repos it could not fix.
