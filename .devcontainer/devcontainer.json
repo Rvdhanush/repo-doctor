@@ -28,6 +28,11 @@
   // run of runner.py or via `docker build -t repo-doctor-sandbox:0.1 ./sandbox`.
   "postCreateCommand": "pip install --user -r requirements.txt",
 
+  // GROQ_API_KEY / CEREBRAS_API_KEY / REPO_DOCTOR_MODEL arrive as Codespaces
+  // secrets (repo Settings -> Secrets -> Codespaces), NOT via .env — .env is
+  // gitignored and never reaches the container. build_llm_client() reads the
+  // process environment, so no .env is needed here.
+
   "customizations": {
     "vscode": {
       "extensions": [

@@ -137,8 +137,13 @@ def build_llm_client(cfg: Config, env: dict[str, str] | None = None):
 
     from .llm import LLMClient, Provider, load_dotenv
 
+    # .env first, then the real environment. The process environment wins because
+    # that is how a Codespace (or CI) injects secrets — there is no .env there.
     resolved = dict(load_dotenv(cfg.project_root / ".env"))
-    resolved.update({k: v for k, v in os.environ.items() if k.endswith("_API_KEY")})
+    resolved.update({
+        k: v for k, v in os.environ.items()
+        if k.endswith("_API_KEY") or k == "REPO_DOCTOR_MODEL"
+    })
     if env:
         resolved.update(env)
 
@@ -152,4 +157,12 @@ def build_llm_client(cfg: Config, env: dict[str, str] | None = None):
         )
         for entry in cfg.llm.providers
     ]
+
+    # REPO_DOCTOR_MODEL overrides the PRIMARY provider's model only. Applying it
+    # to every provider would be wrong: model names are provider-specific, so a
+    # Groq model id would simply 404 on Cerebras.
+    override = resolved.get("REPO_DOCTOR_MODEL", "").strip()
+    if override and providers:
+        providers[0].model = override
+
     return LLMClient(providers, timeout=cfg.llm.timeout)
