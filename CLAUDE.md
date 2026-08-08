@@ -57,6 +57,17 @@ never conflate the two.
 - [x] 0 — harness, no LLM. `runner.py` + `sandbox/` + structured logs.
 - [ ] 1 — diagnosis (LLM reads `results/<run_id>/run.json`)
 
+## Running in GitHub Codespaces (cloud-first)
+`.devcontainer/devcontainer.json` configures a Codespace with a real Docker daemon
+(the `docker-in-docker` feature — without it the harness cannot start a sandbox).
+- Launch: repo page -> Code -> Codespaces -> Create codespace.
+- Free tier (GitHub Free): 120 core-hours/month (~60h on the default 2-core box) and
+  15 GB-month storage.
+- **Stop** a codespace to halt compute billing; **delete** it to stop storage billing.
+  Stopping alone still consumes the storage allowance.
+- Disk (32 GB default), not CPU, is the binding constraint: ML installs land in the
+  sandbox container layer. `docker builder prune` reclaims space.
+
 ## Sandbox notes (do not undo casually)
 - The base image is **deliberately lean** (git + ca-certificates + curl, no compilers).
   Adding build tooling here would make SPEC §6 Scenario C unreproducible.

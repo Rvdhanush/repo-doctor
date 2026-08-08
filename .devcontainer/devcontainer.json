@@ -1,0 +1,45 @@
+{
+  "name": "repo-doctor",
+
+  "image": "mcr.microsoft.com/devcontainers/python:3.11-bookworm",
+
+  "features": {
+    // THE load-bearing line. repo-doctor's whole design is "run the target repo
+    // inside a Docker sandbox", so the dev environment needs a real Docker daemon
+    // of its own. Without this feature the harness cannot start a container and
+    // every run fails at check_docker(). Do not remove it.
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "moby": true,
+      "version": "latest"
+    }
+  },
+
+  // The default 2-core machine is the cheapest against the 120 core-hour monthly
+  // allowance (~60 hours). Storage is the real constraint, not CPU: ML installs
+  // land in the sandbox container's writable layer, and with docker-in-docker
+  // those live on this disk. Run `docker builder prune` if it fills up.
+  "hostRequirements": {
+    "cpus": 2,
+    "memory": "8gb",
+    "storage": "32gb"
+  },
+
+  // Host-side deps only (PyYAML). The sandbox image is built separately, on first
+  // run of runner.py or via `docker build -t repo-doctor-sandbox:0.1 ./sandbox`.
+  "postCreateCommand": "pip install --user -r requirements.txt",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "files.eol": "\n"
+      }
+    }
+  },
+
+  "remoteUser": "vscode"
+}

@@ -1,0 +1,7 @@
+# The repo is developed on Windows but runs on Linux (sandbox + Codespaces).
+# Normalise to LF in the repository so nothing arrives in a container with CRLF.
+* text=auto eol=lf
+
+# Captured evidence: keep byte-for-byte as produced. These are logs of real
+# command output and must not be rewritten by line-ending normalisation.
+results/** -text
