@@ -83,6 +83,10 @@ never conflate the two.
 `.devcontainer/devcontainer.json` configures a Codespace with a real Docker daemon
 (the `docker-in-docker` feature — without it the harness cannot start a sandbox).
 - Launch: repo page -> Code -> Codespaces -> Create codespace.
+- Claude Code is preinstalled there via a devcontainer feature; run `claude` and
+  authenticate once per Codespace. The whole workflow can live in the cloud.
+- API keys arrive as **Codespaces secrets**, not .env (.env is gitignored and never
+  reaches the container). build_llm_client reads the process environment first.
 - Free tier (GitHub Free): 120 core-hours/month (~60h on the default 2-core box) and
   15 GB-month storage.
 - **Stop** a codespace to halt compute billing; **delete** it to stop storage billing.

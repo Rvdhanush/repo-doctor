@@ -11,7 +11,13 @@
     "ghcr.io/devcontainers/features/docker-in-docker:2": {
       "moby": true,
       "version": "latest"
-    }
+    },
+
+    // Claude Code preinstalled, so the whole workflow lives in the Codespace and
+    // nothing has to be shuttled back to a laptop. Pulls in Node.js if absent.
+    // You still authenticate once per Codespace (`claude`, then the browser
+    // prompt) — credentials are deliberately not baked into the image.
+    "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {}
   },
 
   // The default 2-core machine is the cheapest against the 120 core-hour monthly
