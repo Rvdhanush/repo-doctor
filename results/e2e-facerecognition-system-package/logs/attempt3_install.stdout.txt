@@ -1,0 +1,11 @@
+Requirement already satisfied: face_recognition_models in /opt/venv/lib/python3.11/site-packages (from -r requirements.txt (line 1)) (0.3.0)
+Requirement already satisfied: Click>=6.0 in /opt/venv/lib/python3.11/site-packages (from -r requirements.txt (line 2)) (8.4.2)
+Requirement already satisfied: dlib>=19.3.0 in /opt/venv/lib/python3.11/site-packages (from -r requirements.txt (line 3)) (20.0.1)
+Requirement already satisfied: numpy in /opt/venv/lib/python3.11/site-packages (from -r requirements.txt (line 4)) (2.4.6)
+Requirement already satisfied: Pillow in /opt/venv/lib/python3.11/site-packages (from -r requirements.txt (line 5)) (12.3.0)
+Requirement already satisfied: scipy>=0.17.0 in /opt/venv/lib/python3.11/site-packages (from -r requirements.txt (line 6)) (1.17.1)
+Collecting face_recognition (from -r requirements.txt (line 7))
+  Downloading face_recognition-1.3.0-py2.py3-none-any.whl.metadata (21 kB)
+Downloading face_recognition-1.3.0-py2.py3-none-any.whl (15 kB)
+Installing collected packages: face_recognition
+Successfully installed face_recognition-1.3.0

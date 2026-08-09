@@ -1,0 +1,319 @@
+  error: subprocess-exited-with-error
+  
+  × Building wheel for dlib (pyproject.toml) did not run successfully.
+  │ exit code: 1
+  ╰─> [309 lines of output]
+      INFO:root:running bdist_wheel
+      INFO:root:running build
+      INFO:root:running build_ext
+      Building extension for Python 3.11.15 (main, Aug  5 2026, 01:11:44) [GCC 12.2.0]
+      Invoking CMake setup: 'cmake /tmp/pip-install-togrlq7o/dlib_b94bfefa4539477a9bca35e46056a192/tools/python -DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/tmp/pip-install-togrlq7o/dlib_b94bfefa4539477a9bca35e46056a192/build/lib.linux-x86_64-cpython-311 -DDLIB_USE_FFMPEG=OFF -DPYTHON_EXECUTABLE=/opt/venv/bin/python -DCMAKE_BUILD_TYPE=Release'
+      -- The C compiler identification is GNU 12.2.0
+      -- The CXX compiler identification is GNU 12.2.0
+      -- Detecting C compiler ABI info
+      -- Detecting C compiler ABI info - done
+      -- Check for working C compiler: /usr/bin/cc - skipped
+      -- Detecting C compile features
+      -- Detecting C compile features - done
+      -- Detecting CXX compiler ABI info
+      -- Detecting CXX compiler ABI info - done
+      -- Check for working CXX compiler: /usr/bin/c++ - skipped
+      -- Detecting CXX compile features
+      -- Detecting CXX compile features - done
+      CMake Warning (deprecated) at /tmp/pip-install-togrlq7o/dlib_b94bfefa4539477a9bca35e46056a192/dlib/external/pybind11/CMakeLists.txt:13 (cmake_minimum_required):
+        Compatibility with CMake < 3.10 will be removed from a future version of
+        CMake.
+      
+        Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+        to tell CMake that the project requires at least <min> but has been updated
+        to work with policies introduced by <max> or earlier.
+      This warning is for project developers.  Use -Wno-author or -Wno-deprecated
+      to suppress it.
+      
+      -- pybind11 v2.12.0
+      CMake Warning (deprecated) at /tmp/pip-install-togrlq7o/dlib_b94bfefa4539477a9bca35e46056a192/dlib/external/pybind11/tools/FindPythonLibsNew.cmake:110 (cmake_policy):
+        The OLD behavior for policy CMP0148 will be removed from a future version
+        of CMake.
+      
+        The cmake-policies(7) manual explains that the OLD behaviors of all
+        policies are deprecated and that a policy should be set to OLD only under
+        specific short-term circumstances.  Projects should be ported to the NEW
+        behavior and not rely on setting a policy to OLD.
+      Call Stack (most recent call first):
+        /tmp/pip-install-togrlq7o/dlib_b94bfefa4539477a9bca35e46056a192/dlib/external/pybind11/tools/pybind11Tools.cmake:50 (find_package)
+        /tmp/pip-install-togrlq7o/dlib_b94bfefa4539477a9bca35e46056a192/dlib/external/pybind11/tools/pybind11Common.cmake:192 (include)
+        /tmp/pip-install-togrlq7o/dlib_b94bfefa4539477a9bca35e46056a192/dlib/external/pybind11/CMakeLists.txt:247 (include)
+      This warning is for project developers.  Use -Wno-author or -Wno-deprecated
+      to suppress it.
+      
+      -- Found PythonInterp: /opt/venv/bin/python (found suitable version "3.11.15", minimum required is "3.6")
+      -- Found PythonLibs: /usr/local/lib/libpython3.11.so
+      -- Performing Test HAS_FLTO
+      -- Performing Test HAS_FLTO - Success
+      -- Using CMake version: 4.4.2
+      -- Compiling dlib version: 20.0.1
+      -- SSE4 instructions can be executed by the host processor.
+      -- AVX instructions can be executed by the host processor.
+      -- Enabling AVX instructions
+      -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+      -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+      -- Found Threads: TRUE
+      -- Could NOT find X11 (missing: X11_X11_INCLUDE_PATH X11_X11_LIB)
+       *****************************************************************************
+       *** DLIB GUI SUPPORT DISABLED BECAUSE X11 DEVELOPMENT LIBRARIES NOT FOUND ***
+       *** Make sure libx11-dev is installed if you want GUI support.            ***
+       *** On Ubuntu run: sudo apt-get install libx11-dev                        ***
+       *****************************************************************************
+      -- Searching for JPEG XL
+      -- Could NOT find PkgConfig (missing: PKG_CONFIG_EXECUTABLE)
+      -- PkgConfig could not be found, JPEG XL support won't be available
+      -- Searching for BLAS and LAPACK
+      -- Searching for BLAS and LAPACK
+      -- Could NOT find PkgConfig (missing: PKG_CONFIG_EXECUTABLE)
+      -- Looking for cblas_ddot
+      -- Looking for cblas_ddot - not found
+      -- Looking for sys/types.h
+      -- Looking for sys/types.h - found
+      -- Looking for stdint.h
+      -- Looking for stdint.h - found
+      -- Looking for stddef.h
+      -- Looking for stddef.h - found
+      -- Check size of void*
+      -- Check size of void* - done
+       *****************************************************************************
+       *** No BLAS library found so using dlib's built in BLAS.  However, if you ***
+       *** install an optimized BLAS such as OpenBLAS or the Intel MKL your code ***
+       *** will run faster.  On Ubuntu you can install OpenBLAS by executing:    ***
+       ***    sudo apt-get install libopenblas-dev liblapack-dev                 ***
+       *** Or you can easily install OpenBLAS from source by downloading the     ***
+       *** source tar file from http://www.openblas.net, extracting it, and      ***
+       *** running:                                                              ***
+       ***    make; sudo make install                                            ***
+       *****************************************************************************
+      -- Could not find `nvcc` executable in any searched paths, please set CUDAToolkit_ROOT
+      -- DID NOT FIND CUDA
+      -- Disabling CUDA support for dlib.  DLIB WILL NOT USE CUDA
+      -- Configuring done (2.5s)
+      -- Generating done (0.0s)
+      -- Build files have been written to: /tmp/pip-install-togrlq7o/dlib_b94bfefa4539477a9bca35e46056a192/build/temp.linux-x86_64-cpython-311
+      Invoking CMake build: 'cmake --build . --config Release -- -j2'
+      [  1%] Building CXX object dlib_build/CMakeFiles/dlib.dir/base64/base64_kernel_1.cpp.o
+      [  1%] Building CXX object dlib_build/CMakeFiles/dlib.dir/bigint/bigint_kernel_1.cpp.o
+      [  2%] Building CXX object dlib_build/CMakeFiles/dlib.dir/bigint/bigint_kernel_2.cpp.o
+      [  3%] Building CXX object dlib_build/CMakeFiles/dlib.dir/bit_stream/bit_stream_kernel_1.cpp.o
+      [  3%] Building CXX object dlib_build/CMakeFiles/dlib.dir/entropy_decoder/entropy_decoder_kernel_1.cpp.o
+      [  4%] Building CXX object dlib_build/CMakeFiles/dlib.dir/entropy_decoder/entropy_decoder_kernel_2.cpp.o
+      [  5%] Building CXX object dlib_build/CMakeFiles/dlib.dir/entropy_encoder/entropy_encoder_kernel_1.cpp.o
+      [  5%] Building CXX object dlib_build/CMakeFiles/dlib.dir/entropy_encoder/entropy_encoder_kernel_2.cpp.o
+      [  6%] Building CXX object dlib_build/CMakeFiles/dlib.dir/md5/md5_kernel_1.cpp.o
+      [  6%] Building CXX object dlib_build/CMakeFiles/dlib.dir/tokenizer/tokenizer_kernel_1.cpp.o
+      [  7%] Building CXX object dlib_build/CMakeFiles/dlib.dir/unicode/unicode.cpp.o
+      [  8%] Building CXX object dlib_build/CMakeFiles/dlib.dir/test_for_odr_violations.cpp.o
+      [  8%] Building CXX object dlib_build/CMakeFiles/dlib.dir/fft/fft.cpp.o
+      [  9%] Building CXX object dlib_build/CMakeFiles/dlib.dir/sockets/sockets_kernel_1.cpp.o
+      [ 10%] Building CXX object dlib_build/CMakeFiles/dlib.dir/bsp/bsp.cpp.o
+      [ 10%] Building CXX object dlib_build/CMakeFiles/dlib.dir/dir_nav/dir_nav_kernel_1.cpp.o
+      [ 11%] Building CXX object dlib_build/CMakeFiles/dlib.dir/dir_nav/dir_nav_kernel_2.cpp.o
+      [ 12%] Building CXX object dlib_build/CMakeFiles/dlib.dir/dir_nav/dir_nav_extensions.cpp.o
+      [ 12%] Building CXX object dlib_build/CMakeFiles/dlib.dir/gui_widgets/fonts.cpp.o
+      [ 13%] Building CXX object dlib_build/CMakeFiles/dlib.dir/linker/linker_kernel_1.cpp.o
+      [ 13%] Building CXX object dlib_build/CMakeFiles/dlib.dir/logger/extra_logger_headers.cpp.o
+      [ 14%] Building CXX object dlib_build/CMakeFiles/dlib.dir/logger/logger_kernel_1.cpp.o
+      [ 15%] Building CXX object dlib_build/CMakeFiles/dlib.dir/logger/logger_config_file.cpp.o
+      [ 15%] Building CXX object dlib_build/CMakeFiles/dlib.dir/misc_api/misc_api_kernel_1.cpp.o
+      [ 16%] Building CXX object dlib_build/CMakeFiles/dlib.dir/misc_api/misc_api_kernel_2.cpp.o
+      [ 17%] Building CXX object dlib_build/CMakeFiles/dlib.dir/sockets/sockets_extensions.cpp.o
+      [ 17%] Building CXX object dlib_build/CMakeFiles/dlib.dir/sockets/sockets_kernel_2.cpp.o
+      [ 18%] Building CXX object dlib_build/CMakeFiles/dlib.dir/sockstreambuf/sockstreambuf.cpp.o
+      [ 19%] Building CXX object dlib_build/CMakeFiles/dlib.dir/sockstreambuf/sockstreambuf_unbuffered.cpp.o
+      [ 19%] Building CXX object dlib_build/CMakeFiles/dlib.dir/server/server_kernel.cpp.o
+      [ 20%] Building CXX object dlib_build/CMakeFiles/dlib.dir/server/server_iostream.cpp.o
+      [ 20%] Building CXX object dlib_build/CMakeFiles/dlib.dir/server/server_http.cpp.o
+      [ 21%] Building CXX object dlib_build/CMakeFiles/dlib.dir/threads/multithreaded_object_extension.cpp.o
+      [ 22%] Building CXX object dlib_build/CMakeFiles/dlib.dir/threads/threaded_object_extension.cpp.o
+      [ 22%] Building CXX object dlib_build/CMakeFiles/dlib.dir/threads/threads_kernel_1.cpp.o
+      [ 23%] Building CXX object dlib_build/CMakeFiles/dlib.dir/threads/threads_kernel_2.cpp.o
+      [ 24%] Building CXX object dlib_build/CMakeFiles/dlib.dir/threads/threads_kernel_shared.cpp.o
+      [ 24%] Building CXX object dlib_build/CMakeFiles/dlib.dir/threads/thread_pool_extension.cpp.o
+      [ 25%] Building CXX object dlib_build/CMakeFiles/dlib.dir/threads/async.cpp.o
+      [ 26%] Building CXX object dlib_build/CMakeFiles/dlib.dir/timer/timer.cpp.o
+      [ 26%] Building CXX object dlib_build/CMakeFiles/dlib.dir/stack_trace.cpp.o
+      [ 27%] Building CXX object dlib_build/CMakeFiles/dlib.dir/cuda/cpu_dlib.cpp.o
+      [ 27%] Building CXX object dlib_build/CMakeFiles/dlib.dir/cuda/tensor_tools.cpp.o
+      [ 28%] Building CXX object dlib_build/CMakeFiles/dlib.dir/data_io/image_dataset_metadata.cpp.o
+      [ 29%] Building CXX object dlib_build/CMakeFiles/dlib.dir/data_io/mnist.cpp.o
+      [ 29%] Building CXX object dlib_build/CMakeFiles/dlib.dir/data_io/cifar.cpp.o
+      [ 30%] Building CXX object dlib_build/CMakeFiles/dlib.dir/global_optimization/global_function_search.cpp.o
+      [ 31%] Building CXX object dlib_build/CMakeFiles/dlib.dir/filtering/kalman_filter.cpp.o
+      [ 31%] Building CXX object dlib_build/CMakeFiles/dlib.dir/svm/auto.cpp.o
+      [ 32%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libpng/arm/arm_init.c.o
+      [ 33%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libpng/arm/filter_neon_intrinsics.c.o
+      [ 33%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libpng/arm/palette_neon_intrinsics.c.o
+      [ 34%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libpng/png.c.o
+      [ 34%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libpng/pngerror.c.o
+      [ 35%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libpng/pngget.c.o
+      [ 36%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libpng/pngmem.c.o
+      [ 36%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libpng/pngpread.c.o
+      [ 37%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libpng/pngread.c.o
+      [ 38%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libpng/pngrio.c.o
+      [ 38%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libpng/pngrtran.c.o
+      [ 39%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libpng/pngrutil.c.o
+      [ 40%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libpng/pngset.c.o
+      [ 40%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libpng/pngtrans.c.o
+      [ 41%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libpng/pngwio.c.o
+      [ 41%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libpng/pngwrite.c.o
+      [ 42%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libpng/pngwtran.c.o
+      [ 43%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libpng/pngwutil.c.o
+      [ 43%] Building C object dlib_build/CMakeFiles/dlib.dir/external/zlib/adler32.c.o
+      [ 44%] Building C object dlib_build/CMakeFiles/dlib.dir/external/zlib/compress.c.o
+      [ 45%] Building C object dlib_build/CMakeFiles/dlib.dir/external/zlib/crc32.c.o
+      [ 45%] Building C object dlib_build/CMakeFiles/dlib.dir/external/zlib/deflate.c.o
+      [ 46%] Building C object dlib_build/CMakeFiles/dlib.dir/external/zlib/gzclose.c.o
+      [ 47%] Building C object dlib_build/CMakeFiles/dlib.dir/external/zlib/gzlib.c.o
+      [ 47%] Building C object dlib_build/CMakeFiles/dlib.dir/external/zlib/gzread.c.o
+      [ 48%] Building C object dlib_build/CMakeFiles/dlib.dir/external/zlib/gzwrite.c.o
+      [ 48%] Building C object dlib_build/CMakeFiles/dlib.dir/external/zlib/infback.c.o
+      [ 49%] Building C object dlib_build/CMakeFiles/dlib.dir/external/zlib/inffast.c.o
+      [ 50%] Building C object dlib_build/CMakeFiles/dlib.dir/external/zlib/inflate.c.o
+      [ 50%] Building C object dlib_build/CMakeFiles/dlib.dir/external/zlib/inftrees.c.o
+      [ 51%] Building C object dlib_build/CMakeFiles/dlib.dir/external/zlib/trees.c.o
+      [ 52%] Building C object dlib_build/CMakeFiles/dlib.dir/external/zlib/uncompr.c.o
+      [ 52%] Building C object dlib_build/CMakeFiles/dlib.dir/external/zlib/zutil.c.o
+      [ 53%] Building CXX object dlib_build/CMakeFiles/dlib.dir/image_loader/png_loader.cpp.o
+      [ 54%] Building CXX object dlib_build/CMakeFiles/dlib.dir/image_saver/save_png.cpp.o
+      [ 54%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jaricom.c.o
+      [ 55%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jcapimin.c.o
+      [ 55%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jcapistd.c.o
+      [ 56%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jcarith.c.o
+      [ 57%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jccoefct.c.o
+      [ 57%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jccolor.c.o
+      [ 58%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jcdctmgr.c.o
+      [ 59%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jchuff.c.o
+      [ 59%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jcinit.c.o
+      [ 60%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jcmainct.c.o
+      [ 61%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jcmarker.c.o
+      [ 61%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jcmaster.c.o
+      [ 62%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jcomapi.c.o
+      [ 62%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jcparam.c.o
+      [ 63%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jcprepct.c.o
+      [ 64%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jcsample.c.o
+      [ 64%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jdapimin.c.o
+      [ 65%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jdapistd.c.o
+      [ 66%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jdarith.c.o
+      [ 66%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jdatadst.c.o
+      [ 67%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jdatasrc.c.o
+      [ 68%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jdcoefct.c.o
+      [ 68%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jdcolor.c.o
+      [ 69%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jddctmgr.c.o
+      [ 69%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jdhuff.c.o
+      [ 70%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jdinput.c.o
+      [ 71%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jdmainct.c.o
+      [ 71%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jdmarker.c.o
+      [ 72%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jdmaster.c.o
+      [ 73%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jdmerge.c.o
+      [ 73%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jdpostct.c.o
+      [ 74%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jdsample.c.o
+      [ 74%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jfdctflt.c.o
+      [ 75%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jerror.c.o
+      [ 76%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jfdctfst.c.o
+      [ 76%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jfdctint.c.o
+      [ 77%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jidctflt.c.o
+      [ 78%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jidctfst.c.o
+      [ 78%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jidctint.c.o
+      [ 79%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jmemmgr.c.o
+      [ 80%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jmemnobs.c.o
+      [ 80%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jquant1.c.o
+      [ 81%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jquant2.c.o
+      [ 82%] Building C object dlib_build/CMakeFiles/dlib.dir/external/libjpeg/jutils.c.o
+      [ 82%] Building CXX object dlib_build/CMakeFiles/dlib.dir/image_loader/jpeg_loader.cpp.o
+      [ 83%] Building CXX object dlib_build/CMakeFiles/dlib.dir/image_saver/save_jpeg.cpp.o
+      [ 84%] Linking CXX static library libdlib.a
+      [ 84%] Built target dlib
+      [ 84%] Building CXX object CMakeFiles/_dlib_pybind11.dir/src/dlib.cpp.o
+      [ 85%] Building CXX object CMakeFiles/_dlib_pybind11.dir/src/matrix.cpp.o
+      [ 85%] Building CXX object CMakeFiles/_dlib_pybind11.dir/src/vector.cpp.o
+      [ 86%] Building CXX object CMakeFiles/_dlib_pybind11.dir/src/svm_c_trainer.cpp.o
+      [ 87%] Building CXX object CMakeFiles/_dlib_pybind11.dir/src/svm_rank_trainer.cpp.o
+      [ 87%] Building CXX object CMakeFiles/_dlib_pybind11.dir/src/decision_functions.cpp.o
+      [ 88%] Building CXX object CMakeFiles/_dlib_pybind11.dir/src/other.cpp.o
+      [ 89%] Building CXX object CMakeFiles/_dlib_pybind11.dir/src/basic.cpp.o
+      [ 89%] Building CXX object CMakeFiles/_dlib_pybind11.dir/src/cca.cpp.o
+      [ 90%] Building CXX object CMakeFiles/_dlib_pybind11.dir/src/sequence_segmenter.cpp.o
+      [ 91%] Building CXX object CMakeFiles/_dlib_pybind11.dir/src/svm_struct.cpp.o
+      [ 91%] Building CXX object CMakeFiles/_dlib_pybind11.dir/src/image.cpp.o
+      [ 92%] Building CXX object CMakeFiles/_dlib_pybind11.dir/src/image2.cpp.o
+      [ 92%] Building CXX object CMakeFiles/_dlib_pybind11.dir/src/image3.cpp.o
+      [ 93%] Building CXX object CMakeFiles/_dlib_pybind11.dir/src/image4.cpp.o
+      [ 94%] Building CXX object CMakeFiles/_dlib_pybind11.dir/src/rectangles.cpp.o
+      [ 94%] Building CXX object CMakeFiles/_dlib_pybind11.dir/src/object_detection.cpp.o
+      [ 95%] Building CXX object CMakeFiles/_dlib_pybind11.dir/src/shape_predictor.cpp.o
+      [ 96%] Building CXX object CMakeFiles/_dlib_pybind11.dir/src/correlation_tracker.cpp.o
+      [ 96%] Building CXX object CMakeFiles/_dlib_pybind11.dir/src/face_recognition.cpp.o
+      [ 97%] Building CXX object CMakeFiles/_dlib_pybind11.dir/src/cnn_face_detector.cpp.o
+      c++: fatal error: Terminated signal terminated program cc1plus
+      compilation terminated.
+      gmake[2]: *** [CMakeFiles/_dlib_pybind11.dir/build.make:345: CMakeFiles/_dlib_pybind11.dir/src/face_recognition.cpp.o] Error 1
+      gmake[2]: *** Waiting for unfinished jobs....
+      gmake[1]: *** [CMakeFiles/Makefile2:132: CMakeFiles/_dlib_pybind11.dir/all] Error 2
+      gmake: *** [Makefile:91: all] Error 2
+      Traceback (most recent call last):
+        File "/opt/venv/lib/python3.11/site-packages/pip/_vendor/pyproject_hooks/_in_process/_in_process.py", line 353, in <module>
+          main()
+        File "/opt/venv/lib/python3.11/site-packages/pip/_vendor/pyproject_hooks/_in_process/_in_process.py", line 335, in main
+          json_out['return_val'] = hook(**hook_input['kwargs'])
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File "/opt/venv/lib/python3.11/site-packages/pip/_vendor/pyproject_hooks/_in_process/_in_process.py", line 251, in build_wheel
+          return _build_backend().build_wheel(wheel_directory, config_settings,
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File "/tmp/pip-build-env-m45l1gni/overlay/lib/python3.11/site-packages/setuptools/build_meta.py", line 441, in build_wheel
+          return _build(['bdist_wheel', '--dist-info-dir', str(metadata_directory)])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File "/tmp/pip-build-env-m45l1gni/overlay/lib/python3.11/site-packages/setuptools/build_meta.py", line 429, in _build
+          return self._build_with_temp_dir(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File "/tmp/pip-build-env-m45l1gni/overlay/lib/python3.11/site-packages/setuptools/build_meta.py", line 410, in _build_with_temp_dir
+          self.run_setup()
+        File "/tmp/pip-build-env-m45l1gni/overlay/lib/python3.11/site-packages/setuptools/build_meta.py", line 317, in run_setup
+          exec(code, locals())  # noqa: S102 # exec is intentional here
+          ^^^^^^^^^^^^^^^^^^^^
+        File "<string>", line 247, in <module>
+        File "/tmp/pip-build-env-m45l1gni/overlay/lib/python3.11/site-packages/setuptools/__init__.py", line 117, in setup
+          return distutils.core.setup(**attrs)  # type: ignore[return-value]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File "/tmp/pip-build-env-m45l1gni/overlay/lib/python3.11/site-packages/setuptools/_distutils/core.py", line 168, in setup
+          return run_commands(dist)
+                 ^^^^^^^^^^^^^^^^^^
+        File "/tmp/pip-build-env-m45l1gni/overlay/lib/python3.11/site-packages/setuptools/_distutils/core.py", line 184, in run_commands
+          dist.run_commands()
+        File "/tmp/pip-build-env-m45l1gni/overlay/lib/python3.11/site-packages/setuptools/_distutils/dist.py", line 1028, in run_commands
+          self.run_command(cmd)
+        File "/tmp/pip-build-env-m45l1gni/overlay/lib/python3.11/site-packages/setuptools/dist.py", line 1106, in run_command
+          super().run_command(command)
+        File "/tmp/pip-build-env-m45l1gni/overlay/lib/python3.11/site-packages/setuptools/_distutils/dist.py", line 1047, in run_command
+          cmd_obj.run()
+        File "/tmp/pip-build-env-m45l1gni/overlay/lib/python3.11/site-packages/setuptools/command/bdist_wheel.py", line 385, in run
+          self.run_command("build")
+        File "/tmp/pip-build-env-m45l1gni/overlay/lib/python3.11/site-packages/setuptools/_distutils/cmd.py", line 342, in run_command
+          self.distribution.run_command(command)
+        File "/tmp/pip-build-env-m45l1gni/overlay/lib/python3.11/site-packages/setuptools/dist.py", line 1106, in run_command
+          super().run_command(command)
+        File "/tmp/pip-build-env-m45l1gni/overlay/lib/python3.11/site-packages/setuptools/_distutils/dist.py", line 1047, in run_command
+          cmd_obj.run()
+        File "/tmp/pip-build-env-m45l1gni/overlay/lib/python3.11/site-packages/setuptools/_distutils/command/build.py", line 137, in run
+          self.run_command(cmd_name)
+        File "/tmp/pip-build-env-m45l1gni/overlay/lib/python3.11/site-packages/setuptools/_distutils/cmd.py", line 342, in run_command
+          self.distribution.run_command(command)
+        File "/tmp/pip-build-env-m45l1gni/overlay/lib/python3.11/site-packages/setuptools/dist.py", line 1106, in run_command
+          super().run_command(command)
+        File "/tmp/pip-build-env-m45l1gni/overlay/lib/python3.11/site-packages/setuptools/_distutils/dist.py", line 1047, in run_command
+          cmd_obj.run()
+        File "<string>", line 170, in run
+        File "<string>", line 217, in build_extension
+        File "/usr/local/lib/python3.11/subprocess.py", line 413, in check_call
+          raise CalledProcessError(retcode, cmd)
+      subprocess.CalledProcessError: Command '['cmake', '--build', '.', '--config', 'Release', '--', '-j2']' returned non-zero exit status 2.
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+  ERROR: Failed building wheel for dlib
+ERROR: Could not build wheels for dlib, which is required to install pyproject.toml-based projects

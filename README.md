@@ -55,6 +55,8 @@ Every run in [`results/`](results/) is committed as evidence, covering all five 
 | `neg-clonefail` | (nonexistent repo) | `clone_failed` |
 | `test-docker-down` | — | `harness_error` — daemon not running |
 | `e2e-deoldify-fix` | jantic/DeOldify `--fix` | `install_failed` — fix loop resolved the CUDA-index/stale-pin failure (scenario A), then hit a real packaging problem the repo itself has (no `setup.py`) and honestly gave up rather than guess further |
+| `e2e-mimo-version-conflict` | menyifang/MIMO `--fix` | `install_failed` — a real, live `version_conflict` (scenario B) fully resolved on attempt 1 (711.6s reinstall, exit 0); honest give-up on an unrelated real problem (repo ships no installable package) |
+| `e2e-facerecognition-system-package` | ageitgey/face_recognition `--fix` | `ok` — **fully fixed**: `apt_install` got dlib compiling (scenario C), a follow-up `edit_dependency_file` then installed the package itself; `import face_recognition` succeeds |
 
 ## Quickstart
 
@@ -130,6 +132,25 @@ empty dependency file, and `run.json`'s `fix_loop.attempts[2].proposal.schema_va
 exactly why. DeOldify genuinely ships no `setup.py`, so nothing installs the `deoldify` package
 itself — a real limitation of the repo, and the honest stop is the correct outcome (SPEC.md
 section 6, Scenario E).
+
+Not every run ends in a give-up. Against `ageitgey/face_recognition` — `dlib` needs a C/C++
+toolchain the lean sandbox deliberately doesn't ship (scenario C) — the loop fully closes:
+
+```
+[repo-doctor] fix attempt 1: proposing apt_install — cmake and build-essential
+[repo-doctor] install exit=1 (413.0s) ... still failing (incomplete package set)
+[repo-doctor] fix attempt 2: proposing apt_install — the missing build toolchain
+[repo-doctor] install exit=0 (613.6s) ... dlib compiles; import FAILED — package itself never installed
+[repo-doctor] fix attempt 3: proposing edit_dependency_file — add face_recognition itself
+[repo-doctor] install exit=0 (2.6s) ... import face_recognition succeeded
+[repo-doctor] fix loop: SUCCESS after 3 attempt(s).
+```
+
+`FIXED — installed and imported after 3 fix attempt(s).` Attempt 1's fix wasn't quite enough
+and cost 7 minutes finding that out; attempt 2 got the compiler toolchain right and `dlib` built,
+but `pip install -r requirements.txt` only installs *dependencies*, not the repo's own package —
+attempt 3 caught that and added it explicitly. Three real, different diagnoses in one run,
+each correct for what it saw at the time.
 
 The action space proposing a fix can choose from is closed, same discipline as diagnosis's
 category enum: `apt_install` (a missing system package/build tool), `edit_dependency_file` (the

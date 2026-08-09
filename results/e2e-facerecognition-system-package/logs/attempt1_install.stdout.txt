@@ -1,0 +1,32 @@
+Collecting face_recognition_models (from -r requirements.txt (line 1))
+  Using cached face_recognition_models-0.3.0-py2.py3-none-any.whl
+Collecting Click>=6.0 (from -r requirements.txt (line 2))
+  Using cached click-8.4.2-py3-none-any.whl.metadata (2.6 kB)
+Collecting dlib>=19.3.0 (from -r requirements.txt (line 3))
+  Using cached dlib-20.0.1.tar.gz (3.3 MB)
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Collecting numpy (from -r requirements.txt (line 4))
+  Using cached numpy-2.4.6-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (6.6 kB)
+Collecting Pillow (from -r requirements.txt (line 5))
+  Using cached pillow-12.3.0-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (9.1 kB)
+Collecting scipy>=0.17.0 (from -r requirements.txt (line 6))
+  Using cached scipy-1.17.1-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (62 kB)
+Using cached click-8.4.2-py3-none-any.whl (119 kB)
+Using cached numpy-2.4.6-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.9 MB)
+Using cached pillow-12.3.0-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (6.9 MB)
+Using cached scipy-1.17.1-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (35.3 MB)
+Building wheels for collected packages: dlib
+  Building wheel for dlib (pyproject.toml): started
+  Building wheel for dlib (pyproject.toml): still running...
+  Building wheel for dlib (pyproject.toml): still running...
+  Building wheel for dlib (pyproject.toml): still running...
+  Building wheel for dlib (pyproject.toml): still running...
+  Building wheel for dlib (pyproject.toml): still running...
+  Building wheel for dlib (pyproject.toml): still running...
+  Building wheel for dlib (pyproject.toml): finished with status 'error'
+Failed to build dlib

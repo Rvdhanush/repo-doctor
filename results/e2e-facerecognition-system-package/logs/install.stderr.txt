@@ -1,0 +1,75 @@
+  error: subprocess-exited-with-error
+  
+  × Building wheel for dlib (pyproject.toml) did not run successfully.
+  │ exit code: 1
+  ╰─> [65 lines of output]
+      INFO:root:running bdist_wheel
+      INFO:root:running build
+      INFO:root:running build_ext
+      Building extension for Python 3.11.15 (main, Aug  5 2026, 01:11:44) [GCC 12.2.0]
+      Invoking CMake setup: 'cmake /tmp/pip-install-iiev59yw/dlib_1d430c78beed462a9e855cb66595f575/tools/python -DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/tmp/pip-install-iiev59yw/dlib_1d430c78beed462a9e855cb66595f575/build/lib.linux-x86_64-cpython-311 -DDLIB_USE_FFMPEG=OFF -DPYTHON_EXECUTABLE=/opt/venv/bin/python -DCMAKE_BUILD_TYPE=Release'
+      CMake Error: CMake was unable to find a build program corresponding to "Unix Makefiles".  CMAKE_MAKE_PROGRAM is not set.  You probably need to select a different build tool.
+      CMake Error: CMAKE_C_COMPILER not set, after EnableLanguage
+      CMake Error: CMAKE_CXX_COMPILER not set, after EnableLanguage
+      -- Configuring incomplete, errors occurred!
+      Traceback (most recent call last):
+        File "/opt/venv/lib/python3.11/site-packages/pip/_vendor/pyproject_hooks/_in_process/_in_process.py", line 353, in <module>
+          main()
+        File "/opt/venv/lib/python3.11/site-packages/pip/_vendor/pyproject_hooks/_in_process/_in_process.py", line 335, in main
+          json_out['return_val'] = hook(**hook_input['kwargs'])
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File "/opt/venv/lib/python3.11/site-packages/pip/_vendor/pyproject_hooks/_in_process/_in_process.py", line 251, in build_wheel
+          return _build_backend().build_wheel(wheel_directory, config_settings,
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File "/tmp/pip-build-env-a60vuzao/overlay/lib/python3.11/site-packages/setuptools/build_meta.py", line 441, in build_wheel
+          return _build(['bdist_wheel', '--dist-info-dir', str(metadata_directory)])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File "/tmp/pip-build-env-a60vuzao/overlay/lib/python3.11/site-packages/setuptools/build_meta.py", line 429, in _build
+          return self._build_with_temp_dir(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File "/tmp/pip-build-env-a60vuzao/overlay/lib/python3.11/site-packages/setuptools/build_meta.py", line 410, in _build_with_temp_dir
+          self.run_setup()
+        File "/tmp/pip-build-env-a60vuzao/overlay/lib/python3.11/site-packages/setuptools/build_meta.py", line 317, in run_setup
+          exec(code, locals())  # noqa: S102 # exec is intentional here
+          ^^^^^^^^^^^^^^^^^^^^
+        File "<string>", line 247, in <module>
+        File "/tmp/pip-build-env-a60vuzao/overlay/lib/python3.11/site-packages/setuptools/__init__.py", line 117, in setup
+          return distutils.core.setup(**attrs)  # type: ignore[return-value]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File "/tmp/pip-build-env-a60vuzao/overlay/lib/python3.11/site-packages/setuptools/_distutils/core.py", line 168, in setup
+          return run_commands(dist)
+                 ^^^^^^^^^^^^^^^^^^
+        File "/tmp/pip-build-env-a60vuzao/overlay/lib/python3.11/site-packages/setuptools/_distutils/core.py", line 184, in run_commands
+          dist.run_commands()
+        File "/tmp/pip-build-env-a60vuzao/overlay/lib/python3.11/site-packages/setuptools/_distutils/dist.py", line 1028, in run_commands
+          self.run_command(cmd)
+        File "/tmp/pip-build-env-a60vuzao/overlay/lib/python3.11/site-packages/setuptools/dist.py", line 1106, in run_command
+          super().run_command(command)
+        File "/tmp/pip-build-env-a60vuzao/overlay/lib/python3.11/site-packages/setuptools/_distutils/dist.py", line 1047, in run_command
+          cmd_obj.run()
+        File "/tmp/pip-build-env-a60vuzao/overlay/lib/python3.11/site-packages/setuptools/command/bdist_wheel.py", line 385, in run
+          self.run_command("build")
+        File "/tmp/pip-build-env-a60vuzao/overlay/lib/python3.11/site-packages/setuptools/_distutils/cmd.py", line 342, in run_command
+          self.distribution.run_command(command)
+        File "/tmp/pip-build-env-a60vuzao/overlay/lib/python3.11/site-packages/setuptools/dist.py", line 1106, in run_command
+          super().run_command(command)
+        File "/tmp/pip-build-env-a60vuzao/overlay/lib/python3.11/site-packages/setuptools/_distutils/dist.py", line 1047, in run_command
+          cmd_obj.run()
+        File "/tmp/pip-build-env-a60vuzao/overlay/lib/python3.11/site-packages/setuptools/_distutils/command/build.py", line 137, in run
+          self.run_command(cmd_name)
+        File "/tmp/pip-build-env-a60vuzao/overlay/lib/python3.11/site-packages/setuptools/_distutils/cmd.py", line 342, in run_command
+          self.distribution.run_command(command)
+        File "/tmp/pip-build-env-a60vuzao/overlay/lib/python3.11/site-packages/setuptools/dist.py", line 1106, in run_command
+          super().run_command(command)
+        File "/tmp/pip-build-env-a60vuzao/overlay/lib/python3.11/site-packages/setuptools/_distutils/dist.py", line 1047, in run_command
+          cmd_obj.run()
+        File "<string>", line 170, in run
+        File "<string>", line 214, in build_extension
+        File "/usr/local/lib/python3.11/subprocess.py", line 413, in check_call
+          raise CalledProcessError(retcode, cmd)
+      subprocess.CalledProcessError: Command '['cmake', '/tmp/pip-install-iiev59yw/dlib_1d430c78beed462a9e855cb66595f575/tools/python', '-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/tmp/pip-install-iiev59yw/dlib_1d430c78beed462a9e855cb66595f575/build/lib.linux-x86_64-cpython-311', '-DDLIB_USE_FFMPEG=OFF', '-DPYTHON_EXECUTABLE=/opt/venv/bin/python', '-DCMAKE_BUILD_TYPE=Release']' returned non-zero exit status 1.
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+  ERROR: Failed building wheel for dlib
+ERROR: Could not build wheels for dlib, which is required to install pyproject.toml-based projects

@@ -1,0 +1,26 @@
+{"ts": "2026-08-09T18:38:21+00:00", "run_id": "e2e-facerecognition-system-package", "kind": "run_started", "url": "https://github.com/ageitgey/face_recognition", "owner": "ageitgey", "repo": "face_recognition"}
+{"ts": "2026-08-09T18:38:29+00:00", "run_id": "e2e-facerecognition-system-package", "kind": "sandbox_started", "container": "c787a9fad45d"}
+{"ts": "2026-08-09T18:38:32+00:00", "run_id": "e2e-facerecognition-system-package", "kind": "step", "name": "clone", "exit_code": 0, "duration_s": 3.475, "timed_out": false}
+{"ts": "2026-08-09T18:38:33+00:00", "run_id": "e2e-facerecognition-system-package", "kind": "install_detected", "strategy": "requirements.txt", "chosen": "requirements.txt"}
+{"ts": "2026-08-09T18:39:31+00:00", "run_id": "e2e-facerecognition-system-package", "kind": "step", "name": "install", "exit_code": 1, "duration_s": 57.652, "timed_out": false}
+{"ts": "2026-08-09T18:39:31+00:00", "run_id": "e2e-facerecognition-system-package", "kind": "step_skipped", "name": "import_check", "reason": "install failed"}
+{"ts": "2026-08-09T18:39:31+00:00", "run_id": "e2e-facerecognition-system-package", "kind": "fix_loop_started", "attempt_cap": 5}
+{"ts": "2026-08-09T18:42:23+00:00", "run_id": "e2e-facerecognition-system-package", "kind": "step", "name": "attempt1_apt_update", "exit_code": 0, "duration_s": 4.193, "timed_out": false}
+{"ts": "2026-08-09T18:42:23+00:00", "run_id": "e2e-facerecognition-system-package", "kind": "step", "name": "attempt1_apt_install", "exit_code": 0, "duration_s": 166.756, "timed_out": false}
+{"ts": "2026-08-09T18:42:24+00:00", "run_id": "e2e-facerecognition-system-package", "kind": "install_detected", "strategy": "requirements.txt", "chosen": "requirements.txt"}
+{"ts": "2026-08-09T18:49:17+00:00", "run_id": "e2e-facerecognition-system-package", "kind": "step", "name": "attempt1_install", "exit_code": 1, "duration_s": 413.026, "timed_out": false}
+{"ts": "2026-08-09T18:49:17+00:00", "run_id": "e2e-facerecognition-system-package", "kind": "step_skipped", "name": "attempt1_import_check", "reason": "install failed"}
+{"ts": "2026-08-09T18:49:17+00:00", "run_id": "e2e-facerecognition-system-package", "kind": "fix_attempt", "index": 1, "action": "apt_install", "applied": true, "result_status": "install_failed"}
+{"ts": "2026-08-09T18:57:54+00:00", "run_id": "e2e-facerecognition-system-package", "kind": "step", "name": "attempt2_apt_update", "exit_code": 0, "duration_s": 1.826, "timed_out": false}
+{"ts": "2026-08-09T18:57:54+00:00", "run_id": "e2e-facerecognition-system-package", "kind": "step", "name": "attempt2_apt_install", "exit_code": 0, "duration_s": 513.867, "timed_out": false}
+{"ts": "2026-08-09T18:57:54+00:00", "run_id": "e2e-facerecognition-system-package", "kind": "install_detected", "strategy": "requirements.txt", "chosen": "requirements.txt"}
+{"ts": "2026-08-09T19:08:08+00:00", "run_id": "e2e-facerecognition-system-package", "kind": "step", "name": "attempt2_install", "exit_code": 0, "duration_s": 613.612, "timed_out": false}
+{"ts": "2026-08-09T19:08:10+00:00", "run_id": "e2e-facerecognition-system-package", "kind": "step", "name": "attempt2_import_check", "exit_code": 1, "duration_s": 0.222, "timed_out": false}
+{"ts": "2026-08-09T19:08:10+00:00", "run_id": "e2e-facerecognition-system-package", "kind": "fix_attempt", "index": 2, "action": "apt_install", "applied": true, "result_status": "import_failed"}
+{"ts": "2026-08-09T19:08:14+00:00", "run_id": "e2e-facerecognition-system-package", "kind": "step", "name": "attempt3_edit_file", "exit_code": 0, "duration_s": 3.46, "timed_out": false}
+{"ts": "2026-08-09T19:08:15+00:00", "run_id": "e2e-facerecognition-system-package", "kind": "install_detected", "strategy": "requirements.txt", "chosen": "requirements.txt"}
+{"ts": "2026-08-09T19:08:17+00:00", "run_id": "e2e-facerecognition-system-package", "kind": "step", "name": "attempt3_install", "exit_code": 0, "duration_s": 2.612, "timed_out": false}
+{"ts": "2026-08-09T19:08:20+00:00", "run_id": "e2e-facerecognition-system-package", "kind": "step", "name": "attempt3_import_check", "exit_code": 0, "duration_s": 1.892, "timed_out": false}
+{"ts": "2026-08-09T19:08:20+00:00", "run_id": "e2e-facerecognition-system-package", "kind": "fix_attempt", "index": 3, "action": "edit_dependency_file", "applied": true, "result_status": "ok"}
+{"ts": "2026-08-09T19:08:20+00:00", "run_id": "e2e-facerecognition-system-package", "kind": "fix_loop_finished", "final_status": "ok", "stopped_reason": "success"}
+{"ts": "2026-08-09T19:08:25+00:00", "run_id": "e2e-facerecognition-system-package", "kind": "run_finished", "status": "ok", "duration_s": 1803.941}

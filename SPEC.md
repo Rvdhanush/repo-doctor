@@ -99,8 +99,11 @@ These were judged by a human, not by tests passing:
   refine before building the fix loop, not a reason to push on.
 - **2:** watch it fix a repo you couldn't — *and* watch it fail one. The failure is data for
   increment 4, not a bug. Cleared live against real repos: `results/e2e-deoldify-fix` (CUDA/pin
-  fix, then an honest give-up on a real second problem) and `results/e2e-mimo-version-conflict`
-  (version conflict fixed outright, then the same honest-give-up pattern on an unrelated issue).
+  fix, then an honest give-up on a real second problem), `results/e2e-mimo-version-conflict`
+  (version conflict fixed outright, then the same honest-give-up pattern on an unrelated issue),
+  and `results/e2e-facerecognition-system-package` — the full "fix a repo you couldn't" case:
+  `FIXED` after 3 attempts (apt_install for dlib's toolchain, then edit_dependency_file for the
+  package itself), no give-up needed.
 - **3:** the dashboard should let someone watch the agent think: try, fail, adjust, cost accruing.
   `telemetry.py` does this as a CLI table, deliberately not a web product (out of scope for v1).
 - **4:** the "could not fix" report must be as informative as the success report. `report.py`

@@ -71,7 +71,9 @@ never conflate the two.
 
 **Gate checks were human-judged** (see SPEC.md §5's "Gate checks" and "Where increment 1
 actually landed"). Increment 2's gate — watch it fix a repo, and watch it fail one honestly —
-cleared against `results/e2e-deoldify-fix` and `results/e2e-mimo-version-conflict`.
+cleared against `results/e2e-deoldify-fix`, `results/e2e-mimo-version-conflict`, and
+`results/e2e-facerecognition-system-package` (the last one a full "watch it fix a repo" —
+`FIXED` after 3 attempts, not just a partial fix).
 
 Known gap carried forward from the increment-2 design notes: `Diagnosis.secondary_issues`
 (problems the primary failure is currently masking, e.g. DeOldify's CUDA index waiting behind
@@ -186,6 +188,7 @@ anticipated. Works fine within the attempt cap; would matter more with a tighter
 | `deoldify` | jantic/DeOldify | `install_failed` | `python_version_incompatible` + masked `cu113` CUDA index |
 | `e2e-deoldify-fix` | jantic/DeOldify `--fix` | `install_failed` | attempt 1 fixed the CUDA/pin failure (scenario A); honest give-up on a real second problem (no `setup.py`) |
 | `e2e-mimo-version-conflict` | menyifang/MIMO `--fix` | `install_failed` | attempt 1 fully resolved a real `version_conflict` (scenario B, 711.6s reinstall, exit 0); honest give-up on an unrelated real problem (no installable package) |
+| `e2e-facerecognition-system-package` | ageitgey/face_recognition `--fix` | `ok` | **fully fixed** in 3 attempts (scenario C): `apt_install` got dlib compiling, `edit_dependency_file` then installed the package itself; 1803.9s / 6 LLM calls |
 | `neg-unsupported` | karpathy/nanoGPT | `unsupported` | `no_install_file` |
 | `neg-clonefail` | (nonexistent) | `clone_failed` | `repo_unavailable` |
 | `test-docker-down` | — | `harness_error` | — |
