@@ -168,14 +168,17 @@ python telemetry.py --json          # machine-readable
 ```
 
 ```
-RUN ID            STATUS          DURATION  ATTEMPTS  LLM CALLS  TOKENS  STOPPED REASON
-----------------  --------------  --------  --------  ---------  ------  --------------
-20260808T164042Z  install_failed  58.9s     1         1          3845
-20260808T164211Z  ok              25.0s     1         0          0
-e2e-deoldify-fix  install_failed  528.4s    4         6          10294   give_up
+RUN ID                              STATUS          DURATION  ATTEMPTS  LLM CALLS  TOKENS  STOPPED REASON
+----------------------------------  --------------  --------  --------  ---------  ------  --------------
+20260808T164042Z                    install_failed  58.9s     1         1          3845
+20260808T164211Z                    ok              25.0s     1         0          0
+e2e-deoldify-fix                    install_failed  528.4s    4         6          10294   give_up
+e2e-facerecognition-system-package  ok              1803.9s   4         6          13258   success
+e2e-mimo-version-conflict           install_failed  784.4s    4         6          9835    give_up
+...
 
-7 run(s) — 1 clone_failed, 1 harness_error, 3 install_failed, 1 ok, 1 unsupported —
-10 LLM call(s), 20066 token(s) total
+9 run(s) — 1 clone_failed, 1 harness_error, 4 install_failed, 2 ok, 1 unsupported —
+22 LLM call(s), 43159 token(s) total
 ```
 
 Purely a read-only aggregator over `run.json` files already on disk — it never touches Docker or
@@ -218,6 +221,17 @@ WHY IT'S STILL BROKEN
 
 COST
   6 LLM call(s), 10294 token(s), 4.7s API latency, 528.4s wall clock total
+```
+
+And when the loop does fully succeed — `results/e2e-facerecognition-system-package`, the same
+report format, no "why it's still broken" section needed:
+
+```
+FIXED — installed and imported after 3 fix attempt(s).
+  Installed via requirements.txt; `import face_recognition` succeeded.
+
+COST
+  6 LLM call(s), 13258 token(s), 3.76s API latency, 1803.9s wall clock total
 ```
 
 Every fix attempted, in order, with what was diagnosed, what was tried, and what happened — not
