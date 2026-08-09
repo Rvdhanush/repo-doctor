@@ -167,21 +167,14 @@ def _tail(text: str, lines: int, max_chars: int) -> str:
     return out
 
 
-def build_prompt(run: dict, install_file_content: str = "",
-                 tail_lines: int = 120, max_chars: int = 6000) -> str:
-    """Assemble the user prompt from a run.json document."""
-    outcome = run.get("outcome", {})
+def sandbox_facts_block(run: dict) -> str:
+    """The sandbox description shared by the diagnosis and fix-proposal prompts.
+
+    Kept in one place so a fact added here (or corrected) cannot drift between
+    the two prompts, which reason about the same container.
+    """
     sandbox = run.get("sandbox", {})
-    target = run.get("target", {})
-    detection = run.get("install_detection", {})
-    import_detection = run.get("import_detection", {})
-
-    failing = outcome.get("failing_step")
-    step = next((s for s in run.get("steps", []) if s.get("name") == failing), None)
-
-    parts: list[str] = []
-
-    parts.append(
+    return (
         "## Sandbox facts (the environment the failure happened in)\n"
         f"- Base image: {sandbox.get('image', 'python:3.11-slim-bookworm')} "
         "(Debian bookworm slim)\n"
@@ -193,6 +186,20 @@ def build_prompt(run: dict, install_file_content: str = "",
         "- Packages install into a venv at /opt/venv. Network access is available.\n"
         "- The repo is at /work/repo."
     )
+
+
+def build_prompt(run: dict, install_file_content: str = "",
+                 tail_lines: int = 120, max_chars: int = 6000) -> str:
+    """Assemble the user prompt from a run.json document."""
+    outcome = run.get("outcome", {})
+    target = run.get("target", {})
+    detection = run.get("install_detection", {})
+    import_detection = run.get("import_detection", {})
+
+    failing = outcome.get("failing_step")
+    step = next((s for s in run.get("steps", []) if s.get("name") == failing), None)
+
+    parts: list[str] = [sandbox_facts_block(run)]
 
     parts.append(
         "## What was attempted\n"

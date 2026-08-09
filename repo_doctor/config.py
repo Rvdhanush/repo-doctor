@@ -42,7 +42,8 @@ class LoggingConfig:
 
 @dataclass
 class LimitsConfig:
-    # Unused until increment 2. Present so the config shape is stable.
+    # Consumed by repo_doctor/fix_loop.py (increment 2): the fix loop stops
+    # after this many propose/apply/re-run cycles even if still failing.
     attempt_cap: int = 5
 
 

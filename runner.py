@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
-"""repo-doctor runner — increment 0: the harness, with NO LLM.
+"""repo-doctor runner — the harness, plus optional diagnosis and fixing.
 
 Clones a GitHub repo into a Docker sandbox, attempts to install it, attempts a
-basic import, and writes everything to a structured log. It does not diagnose and
-it does not fix; those are increments 1 and 2.
+basic import, and writes everything to a structured log. By default it does
+not diagnose and does not fix — that is `--diagnose` (increment 1) and `--fix`
+(increment 2), both opt-in so the base `runner.py <url>` behavior never
+silently starts spending LLM tokens or wall-clock time.
 
     python runner.py https://github.com/owner/repo
+    python runner.py https://github.com/owner/repo --fix
 
 Exit codes describe the TARGET repo, not the harness:
     0  the repo installed and imported
@@ -20,15 +23,14 @@ import argparse
 import json
 import re
 import sys
-import time
 import traceback
 from datetime import datetime, timezone
 from pathlib import Path
 
 from repo_doctor import logstore
 from repo_doctor.config import Config, load_config
-from repo_doctor.detect import detect_import_target, detect_install
 from repo_doctor.logstore import RunLog
+from repo_doctor.pipeline import first_error_line, install_and_import
 from repo_doctor.sandbox import (
     DockerNotAvailable,
     Sandbox,
@@ -84,8 +86,11 @@ def ensure_image(cfg: Config, log: RunLog, force_build: bool) -> None:
         )
 
 
+_FIXABLE_STATUSES = {logstore.STATUS_INSTALL_FAILED, logstore.STATUS_IMPORT_FAILED}
+
+
 def run(url: str, cfg: Config, run_id: str, force_build: bool,
-        skip_import: bool) -> tuple[str, int]:
+        skip_import: bool, fix: bool = False) -> tuple[str, int]:
     """Execute the pipeline. Returns (status, process exit code)."""
     owner, repo = parse_github_url(url)
 
@@ -114,6 +119,15 @@ def run(url: str, cfg: Config, run_id: str, force_build: bool,
               f"({sandbox.info.python_version})")
 
         status, exit_code = _pipeline(sandbox, cfg, log, url, repo, skip_import)
+
+        # clone_failed/unsupported are not install-or-import problems this loop
+        # can act on — the same reasoning fix_loop.py applies to its own
+        # unfixable diagnosis categories, checked here first to skip an LLM call
+        # entirely rather than spend one reaching the same conclusion.
+        if fix and status in _FIXABLE_STATUSES:
+            status, exit_code = _run_fix_loop(cfg, log, sandbox, repo, skip_import,
+                                              status, exit_code)
+
         return status, exit_code
 
     except (DockerNotAvailable, SandboxError) as exc:
@@ -172,7 +186,7 @@ def _pipeline(sandbox: Sandbox, cfg: Config, log: RunLog, url: str,
         log.add_skipped_step("detect_install", "clone failed")
         log.add_skipped_step("install", "clone failed")
         log.add_skipped_step("import_check", "clone failed")
-        summary = _first_error_line(clone.stderr) or "git clone failed"
+        summary = first_error_line(clone.stderr) or "git clone failed"
         log.set_outcome(logstore.STATUS_CLONE_FAILED, failing_step="clone",
                         exit_code=clone.exit_code, summary_line=summary)
         print(f"[repo-doctor] clone FAILED: {summary}")
@@ -186,120 +200,45 @@ def _pipeline(sandbox: Sandbox, cfg: Config, log: RunLog, url: str,
                    default_branch=branch.stdout.strip() or None)
     print(f"[repo-doctor] cloned at {head.stdout.strip()[:12]}")
 
-    # --- detect install ---
-    plan = detect_install(sandbox, repo_dir)
-    # Capture what the repo actually declared. This is often the single most
-    # informative artifact for diagnosis — pins, extra index URLs, and git
-    # dependencies all live here — and it cannot be recovered after teardown.
-    if plan.chosen:
-        declared = sandbox.read_file(f"{repo_dir}/{plan.chosen}", max_bytes=20_000)
-        if declared:
-            log.set_declared_dependencies(plan.chosen, declared)
-    log.set_install_detection(plan)
-    print(f"[repo-doctor] install strategy: {plan.strategy}"
-          + (f" ({plan.chosen})" if plan.chosen else ""))
-
-    if not plan.supported:
-        log.add_skipped_step("install", plan.reason)
-        log.add_skipped_step("import_check", "no install was attempted")
-        log.set_outcome(logstore.STATUS_UNSUPPORTED, failing_step="detect_install",
-                        summary_line=plan.reason)
-        print(f"[repo-doctor] UNSUPPORTED: {plan.reason}")
-        return logstore.STATUS_UNSUPPORTED, 1
-
-    # --- install ---
-    print(f"[repo-doctor] installing (timeout {cfg.timeouts.install}s) ...", flush=True)
-    started = time.monotonic()
-    install = sandbox.exec(plan.argv, cwd=repo_dir, timeout=cfg.timeouts.install)
-    log.add_step("install", install, note=plan.reason)
-    print(f"[repo-doctor] install exit={install.exit_code} "
-          f"({install.duration_s:.1f}s, {time.monotonic() - started:.1f}s wall)")
-
-    if not install.ok:
-        log.add_skipped_step("import_check", "install failed")
-        summary = _first_error_line(install.stderr) or _first_error_line(install.stdout) \
-            or f"pip exited {install.exit_code}"
-        if install.timed_out:
-            summary = f"install exceeded the {cfg.timeouts.install}s timeout"
-        log.set_outcome(logstore.STATUS_INSTALL_FAILED, failing_step="install",
-                        exit_code=install.exit_code, summary_line=summary)
-        print(f"[repo-doctor] install FAILED: {summary}")
-        return logstore.STATUS_INSTALL_FAILED, 1
-
-    # --- import check ---
-    if skip_import:
-        log.add_skipped_step("import_check", "--skip-import was passed")
-        log.set_outcome(logstore.STATUS_OK, summary_line="Install succeeded; import check skipped.")
-        return logstore.STATUS_OK, 0
-
-    target = detect_import_target(
-        sandbox,
-        repo_dir,
-        repo,
-        # Only the project-install strategies produce a distribution we can
-        # interrogate; a requirements.txt install installs dependencies, not this repo.
-        installed_project=plan.strategy in {"pyproject", "setuptools"},
-        timeout=cfg.timeouts.probe,
-    )
-    log.set_import_detection(target)
-    print(f"[repo-doctor] import target: {target.module} "
-          f"(confidence: {target.confidence}, via {target.source})")
-
-    if target.module is None:
-        log.add_skipped_step("import_check", target.reason)
-        log.set_outcome(logstore.STATUS_IMPORT_FAILED, failing_step="import_check",
-                        summary_line=f"Install succeeded but {target.reason}")
-        print(f"[repo-doctor] import target undetermined: {target.reason}")
-        return logstore.STATUS_IMPORT_FAILED, 1
-
-    print(f"[repo-doctor] import check: import {target.module}", flush=True)
-    # cwd="/" matters: run from anywhere BUT the repo directory. Inside the repo,
-    # a source folder on sys.path would satisfy the import even when nothing was
-    # actually installed, turning a real failure into a false pass.
-    check = sandbox.exec(
-        ["python", "-c", f"import {target.module}; print({target.module}.__file__)"],
-        cwd="/",
-        timeout=cfg.timeouts.import_check,
-    )
-    log.add_step("import_check", check, note=target.reason)
-
-    if not check.ok:
-        summary = _first_error_line(check.stderr) or f"import {target.module} exited {check.exit_code}"
-        if target.confidence == "low":
-            # Be explicit that the module name was a guess, so a downstream reader
-            # does not treat a ModuleNotFoundError as a fact about the repo.
-            summary += f" (module name was guessed via {target.source}; low confidence)"
-        log.set_outcome(logstore.STATUS_IMPORT_FAILED, failing_step="import_check",
-                        exit_code=check.exit_code, summary_line=summary)
-        print(f"[repo-doctor] import FAILED: {summary}")
-        return logstore.STATUS_IMPORT_FAILED, 1
-
-    log.set_outcome(logstore.STATUS_OK,
-                    summary_line=f"Installed via {plan.strategy}; `import {target.module}` succeeded.")
-    print(f"[repo-doctor] OK: installed and imported {target.module}")
-    return logstore.STATUS_OK, 0
+    return install_and_import(sandbox, cfg, log, repo_dir, repo, skip_import)
 
 
-def _first_error_line(text: str) -> str:
-    """Pick the most informative single line for the summary.
+def _run_fix_loop(cfg: Config, log: RunLog, sandbox: Sandbox, repo: str,
+                  skip_import: bool, status: str, exit_code: int) -> tuple[str, int]:
+    """Increment 2: propose/apply/re-run fixes, capped at cfg.limits.attempt_cap.
 
-    Prefers the LAST error-looking line: pip reports the actual cause at the end
-    of its output, after the resolution log.
+    Mirrors _diagnose_after_run's guarantee: a fix-loop problem (no LLM
+    configured, an unexpected exception) must not overwrite the verdict the
+    initial pipeline already reached, and must never surface as harness_error —
+    that would conflate a fixer bug with a fact about the target repo.
     """
-    if not text:
-        return ""
-    lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
-    for line in reversed(lines):
-        if line.upper().startswith("ERROR") or "Error:" in line or line.endswith("Error"):
-            return line[:500]
-    return lines[-1][:500] if lines else ""
+    from repo_doctor.config import build_llm_client
+    from repo_doctor.fix_loop import run_fix_loop
+
+    client = build_llm_client(cfg)
+    if not client.configured_providers:
+        print("[repo-doctor] --fix: no LLM provider configured "
+              "(see .env.example); skipping.", file=sys.stderr)
+        return status, exit_code
+
+    try:
+        return run_fix_loop(
+            sandbox, cfg, log, cfg.sandbox.repo_dir, repo, skip_import, client,
+            initial_status=status, initial_exit_code=exit_code,
+        )
+    except Exception as exc:  # noqa: BLE001 - a fix-loop bug must not become a harness_error
+        print(f"[repo-doctor] --fix: fix loop crashed, keeping the prior verdict: {exc!r}",
+              file=sys.stderr)
+        log.event("fix_loop_crashed", error=repr(exc))
+        return status, exit_code
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="runner.py",
         description="Clone a GitHub repo into a Docker sandbox, attempt install + import, "
-                    "and capture everything to a structured log. No LLM, no fixing.",
+                    "and capture everything to a structured log. --diagnose and --fix "
+                    "are opt-in; the base command never calls an LLM.",
     )
     parser.add_argument("url", help="https://github.com/<owner>/<repo>")
     parser.add_argument("--config", default="configs/settings.yaml",
@@ -312,6 +251,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--diagnose", action="store_true",
                         help="on failure, ask an LLM what went wrong (increment 1). "
                              "Diagnoses only — never applies a fix.")
+    parser.add_argument("--fix", action="store_true",
+                        help="on an install/import failure, diagnose -> propose a fix -> "
+                             "apply it in the sandbox -> re-run, up to the attempt cap "
+                             "(increment 2). Opt-in: never runs unless passed.")
     args = parser.parse_args(argv)
 
     # Model output and captured logs routinely contain characters the Windows
@@ -325,7 +268,7 @@ def main(argv: list[str] | None = None) -> int:
     run_id = args.run_id or new_run_id()
 
     try:
-        status, code = run(args.url, cfg, run_id, args.build, args.skip_import)
+        status, code = run(args.url, cfg, run_id, args.build, args.skip_import, args.fix)
     except UsageError as exc:
         print(f"[repo-doctor] {exc}", file=sys.stderr)
         return 2

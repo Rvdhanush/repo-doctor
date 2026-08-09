@@ -1,0 +1,2 @@
+ERROR: Cannot install -r requirements.txt (line 10), -r requirements.txt (line 2) and Pillow==9.3.0 because these package versions have conflicting dependencies.
+ERROR: ResolutionImpossible: for help visit https://pip.pypa.io/en/latest/topics/dependency-resolution/#dealing-with-dependency-conflicts

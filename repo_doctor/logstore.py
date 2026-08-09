@@ -20,7 +20,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 
 # Terminal outcomes. Anything that is not "ok" must carry a failing_step and a
 # human-readable summary_line.
@@ -89,6 +89,10 @@ class RunLog:
             "install_detection": {},
             "import_detection": {},
             "steps": [],
+            # Populated only when the fix loop (increment 2) runs. None means
+            # the run never got past its initial attempt, or --fix was not
+            # passed — both are meaningfully different from "ran and did nothing".
+            "fix_loop": None,
             "outcome": {"status": None, "failing_step": None,
                         "exit_code": None, "summary_line": None},
         }
@@ -181,6 +185,40 @@ class RunLog:
 
     def set_import_detection(self, target) -> None:
         self.doc["import_detection"] = target.as_dict()
+
+    # -- fix loop (increment 2) ---------------------------------------------
+
+    def start_fix_loop(self, attempt_cap: int) -> None:
+        self.doc["fix_loop"] = {
+            "attempt_cap": attempt_cap,
+            "attempts": [],
+            "stopped_reason": None,   # "success" | "give_up" | "cap_reached" | "unfixable_category"
+            "final_status": None,
+        }
+        self.event("fix_loop_started", attempt_cap=attempt_cap)
+
+    def add_fix_attempt(self, index: int, *, diagnosis: dict | None,
+                        proposal: dict | None, applied: bool,
+                        result_status: str | None) -> None:
+        """Record one iteration: what we diagnosed, what we proposed, and what happened."""
+        record = {
+            "index": index,
+            "diagnosis": diagnosis,
+            "proposal": proposal,
+            "applied": applied,
+            "result_status": result_status,
+        }
+        self.doc["fix_loop"]["attempts"].append(record)
+        self.event(
+            "fix_attempt", index=index,
+            action=(proposal or {}).get("action"),
+            applied=applied, result_status=result_status,
+        )
+
+    def finish_fix_loop(self, final_status: str, stopped_reason: str) -> None:
+        self.doc["fix_loop"]["final_status"] = final_status
+        self.doc["fix_loop"]["stopped_reason"] = stopped_reason
+        self.event("fix_loop_finished", final_status=final_status, stopped_reason=stopped_reason)
 
     def set_outcome(self, status: str, *, failing_step: str | None = None,
                     exit_code: int | None = None, summary_line: str = "") -> None:

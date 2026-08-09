@@ -4,10 +4,11 @@ An agent that takes a broken Python ML repository and gets it to **install and i
 successfully inside a Docker sandbox** — diagnosing dependency, version, and environment
 errors, applying fixes, verifying them, and reporting honestly on the repos it cannot fix.
 
-> **Status: increments 0-1 of 5 complete.** The harness clones, installs, imports, and captures
-> everything to a structured log; an LLM then turns a captured failure into a structured
-> diagnosis. There is **no fixing logic yet** — that is increment 2. Everything below describes
-> what actually runs today.
+> **Status: increments 0-2 of 5 complete.** The harness clones, installs, imports, and captures
+> everything to a structured log; an LLM turns a captured failure into a structured diagnosis;
+> and (opt-in, via `--fix`) a capped loop proposes a concrete fix, applies it inside the
+> sandbox, and re-runs install + import, retrying up to 5 times. Telemetry and polished honest
+> reporting are increments 3-4. Everything below describes what actually runs today.
 
 ## Why
 
@@ -49,6 +50,7 @@ Every run in [`results/`](results/) is committed as evidence, covering all five 
 | `neg-unsupported` | karpathy/nanoGPT | `unsupported` — no install file exists |
 | `neg-clonefail` | (nonexistent repo) | `clone_failed` |
 | `test-docker-down` | — | `harness_error` — daemon not running |
+| `e2e-deoldify-fix` | jantic/DeOldify `--fix` | `install_failed` — fix loop resolved the CUDA-index/stale-pin failure (scenario A), then hit a real packaging problem the repo itself has (no `setup.py`) and honestly gave up rather than guess further |
 
 ## Quickstart
 
@@ -92,13 +94,57 @@ seconds rather than re-installing a repo.
 Providers are OpenAI-compatible and tried in order, falling through on rate limits and
 quota errors. Keys go in `.env` (gitignored); see `.env.example`.
 
+## Fixing
+
+```bash
+python runner.py <url> --fix       # on failure: diagnose -> propose -> apply -> re-run, capped at 5
+```
+
+Opt-in, like `--diagnose` — the base `runner.py <url>` never spends a token or an extra install
+cycle unless asked. Real run against `jantic/DeOldify`, which pins a CUDA build of torch the
+sandbox can't satisfy:
+
+```
+[repo-doctor] install FAILED: ERROR: No matching distribution found for torch==1.11.0
+[repo-doctor] fix attempt 1/5: diagnosing ...
+[repo-doctor] fix attempt 1: category=python_version_incompatible (confidence: high)
+[repo-doctor] fix attempt 1: proposing edit_dependency_file — remove the version pin so a
+              cp311-compatible torch build can be selected
+[repo-doctor] install exit=0 (477.5s wall)
+[repo-doctor] import FAILED: ModuleNotFoundError: No module named 'deoldify'
+[repo-doctor] fix attempt 2/5: diagnosing ...
+[repo-doctor] fix attempt 2: category=missing_python_dependency (confidence: high)
+...
+[repo-doctor] fix attempt 3/5: proposing give_up — No file content was proposed.
+[repo-doctor] fix loop stopping: model gave up
+```
+
+Attempt 1 fixed the real scenario-A failure. Attempt 3 shows the guardrails working, not
+failing: the model's reply claimed `edit_dependency_file` but left `file_content` empty —
+`repo_doctor/fix.py`'s `validate()` catches that and forces `give_up` rather than writing an
+empty dependency file, and `run.json`'s `fix_loop.attempts[2].proposal.schema_valid` records
+exactly why. DeOldify genuinely ships no `setup.py`, so nothing installs the `deoldify` package
+itself — a real limitation of the repo, and the honest stop is the correct outcome (SPEC.md
+section 6, Scenario E).
+
+The action space proposing a fix can choose from is closed, same discipline as diagnosis's
+category enum: `apt_install` (a missing system package/build tool), `edit_dependency_file` (the
+model rewrites the complete content of the ONE dependency file it was shown — never a diff, and
+never a path other than the one it was given), or `give_up`. Every attempt — diagnosis, proposal,
+whether it applied, and the result — is recorded under `run.json`'s `fix_loop` key, so a run that
+exhausts the cap still leaves a full, honest trail of what was tried.
+
 ## Design
 
 ```
 sandbox/Dockerfile        base image the agent operates inside
-runner.py                 pipeline: clone -> detect -> install -> import
-repo_doctor/sandbox.py    container lifecycle + isolation
+runner.py                 CLI: clone -> install/import (-> diagnose) (-> fix loop)
+repo_doctor/sandbox.py    container lifecycle + isolation + write_file/apt_install
 repo_doctor/detect.py     deterministic install-file and import-target detection
+repo_doctor/pipeline.py   install -> import, shared by the initial run and each fix attempt
+repo_doctor/diagnosis.py  LLM: captured failure -> structured diagnosis (closed category enum)
+repo_doctor/fix.py        LLM: diagnosis -> one concrete action (closed action enum)
+repo_doctor/fix_loop.py   orchestrates diagnose -> propose -> apply -> re-run, capped at 5
 repo_doctor/logstore.py   structured run logs
 results/<run_id>/         run.json, events.jsonl, raw logs
 ```
@@ -108,15 +154,19 @@ Three decisions carry the design:
 **All target-repo code runs in the container, never on the host** — and there are **no bind
 mounts**. Output returns over captured `docker exec` streams; mounting a host directory in
 would hand target-repo code a write path onto the host. Memory, CPU, and PID ceilings mean a
-runaway build can't take the machine with it.
+runaway build can't take the machine with it. The fix loop's file edits and package installs go
+through the same `docker exec` boundary (`Sandbox.write_file`/`apt_install`), never a shell
+string built from LLM output — the same argv-list discipline as everything else in the sandbox.
 
 **The base image is deliberately lean** — git and certs, no compilers. If it pre-installed
 every system library, "pip install succeeded but import fails on a missing shared object"
 could never reproduce, and the agent would have no real system-dependency failures to fix.
-The `dlib` failure above is that decision working as intended.
+The `dlib` failure above is that decision working as intended, and now `apt_install` is how the
+fix loop closes that gap at runtime instead of the image shipping it upfront.
 
 **The container is long-lived and `exec`'d against**, so state survives between commands —
-which is what the fix loop in increment 2 needs.
+which is what the fix loop needs: each attempt's `pip install` builds on whatever the previous
+attempt already changed, in the same filesystem, without re-cloning.
 
 ### The log is the product
 
@@ -141,7 +191,7 @@ completely is what makes this shippable.
 
 - [x] **0 — Harness, no LLM.** Clone, install, import, structured logs.
 - [x] **1 — Diagnosis.** LLM turns a captured error into structured JSON.
-- [ ] **2 — Fix loop.** Propose → apply → re-run → retry, capped at 5 attempts.
+- [x] **2 — Fix loop.** Propose → apply → re-run → retry, capped at 5 attempts.
 - [ ] **3 — Telemetry.** Every attempt, time, and token cost.
 - [ ] **4 — Honest reporting.** Real diagnosis for repos it could not fix.
 

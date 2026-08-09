@@ -1,0 +1,60 @@
+Looking in indexes: https://pypi.org/simple, https://download.pytorch.org/whl/cpu
+Requirement already satisfied: wandb in /opt/venv/lib/python3.11/site-packages (from -r requirements.txt (line 1)) (0.28.1)
+Requirement already satisfied: fastai==1.0.60 in /opt/venv/lib/python3.11/site-packages (from -r requirements.txt (line 2)) (1.0.60)
+Requirement already satisfied: tensorboardX>=1.6 in /opt/venv/lib/python3.11/site-packages (from -r requirements.txt (line 3)) (2.6.5)
+Requirement already satisfied: ffmpeg in /opt/venv/lib/python3.11/site-packages (from -r requirements.txt (line 4)) (1.4)
+Requirement already satisfied: ffmpeg-python in /opt/venv/lib/python3.11/site-packages (from -r requirements.txt (line 5)) (0.2.0)
+Requirement already satisfied: yt-dlp in /opt/venv/lib/python3.11/site-packages (from -r requirements.txt (line 6)) (2026.7.4)
+Requirement already satisfied: jupyterlab in /opt/venv/lib/python3.11/site-packages (from -r requirements.txt (line 7)) (4.6.2)
+Requirement already satisfied: opencv-python>=4.2.0.32 in /opt/venv/lib/python3.11/site-packages (from -r requirements.txt (line 8)) (5.0.0.93)
+Requirement already satisfied: Pillow==9.3.0 in /opt/venv/lib/python3.11/site-packages (from -r requirements.txt (line 9)) (9.3.0)
+Collecting deoldify (from -r requirements.txt (line 10))
+  Downloading deoldify-0.0.1-py3-none-any.whl.metadata (28 kB)
+Requirement already satisfied: torch in /opt/venv/lib/python3.11/site-packages (from -r requirements.txt (line 12)) (2.13.0+cpu)
+Requirement already satisfied: torchvision in /opt/venv/lib/python3.11/site-packages (from -r requirements.txt (line 13)) (0.28.0+cpu)
+Requirement already satisfied: ipywidgets in /opt/venv/lib/python3.11/site-packages (from -r requirements.txt (line 14)) (8.1.8)
+Requirement already satisfied: bottleneck in /opt/venv/lib/python3.11/site-packages (from fastai==1.0.60->-r requirements.txt (line 2)) (1.6.0)
+Requirement already satisfied: fastprogress>=0.2.1 in /opt/venv/lib/python3.11/site-packages (from fastai==1.0.60->-r requirements.txt (line 2)) (1.1.6)
+Requirement already satisfied: beautifulsoup4 in /opt/venv/lib/python3.11/site-packages (from fastai==1.0.60->-r requirements.txt (line 2)) (4.15.0)
+Requirement already satisfied: matplotlib in /opt/venv/lib/python3.11/site-packages (from fastai==1.0.60->-r requirements.txt (line 2)) (3.11.1)
+Requirement already satisfied: numexpr in /opt/venv/lib/python3.11/site-packages (from fastai==1.0.60->-r requirements.txt (line 2)) (2.14.2)
+Requirement already satisfied: numpy>=1.15 in /opt/venv/lib/python3.11/site-packages (from fastai==1.0.60->-r requirements.txt (line 2)) (2.4.6)
+Requirement already satisfied: nvidia-ml-py3 in /opt/venv/lib/python3.11/site-packages (from fastai==1.0.60->-r requirements.txt (line 2)) (7.352.0)
+Requirement already satisfied: pandas in /opt/venv/lib/python3.11/site-packages (from fastai==1.0.60->-r requirements.txt (line 2)) (3.0.5)
+Requirement already satisfied: packaging in /opt/venv/lib/python3.11/site-packages (from fastai==1.0.60->-r requirements.txt (line 2)) (26.3)
+Requirement already satisfied: pyyaml in /opt/venv/lib/python3.11/site-packages (from fastai==1.0.60->-r requirements.txt (line 2)) (6.0.3)
+Requirement already satisfied: requests in /opt/venv/lib/python3.11/site-packages (from fastai==1.0.60->-r requirements.txt (line 2)) (2.34.2)
+Requirement already satisfied: scipy in /opt/venv/lib/python3.11/site-packages (from fastai==1.0.60->-r requirements.txt (line 2)) (1.17.1)
+Requirement already satisfied: spacy>=2.0.18 in /opt/venv/lib/python3.11/site-packages (from fastai==1.0.60->-r requirements.txt (line 2)) (3.8.15)
+Requirement already satisfied: click>=8.2.0 in /opt/venv/lib/python3.11/site-packages (from wandb->-r requirements.txt (line 1)) (8.4.2)
+Requirement already satisfied: platformdirs in /opt/venv/lib/python3.11/site-packages (from wandb->-r requirements.txt (line 1)) (4.11.1)
+Requirement already satisfied: protobuf!=5.28.0,!=5.29.0,<8,>=5 in /opt/venv/lib/python3.11/site-packages (from wandb->-r requirements.txt (line 1)) (7.35.1)
+Requirement already satisfied: pydantic<3,>=2.6 in /opt/venv/lib/python3.11/site-packages (from wandb->-r requirements.txt (line 1)) (2.13.4)
+Requirement already satisfied: sentry-sdk>=2.0.0 in /opt/venv/lib/python3.11/site-packages (from wandb->-r requirements.txt (line 1)) (2.66.1)
+Requirement already satisfied: typing-extensions<5,>=4.8 in /opt/venv/lib/python3.11/site-packages (from wandb->-r requirements.txt (line 1)) (4.16.0)
+Requirement already satisfied: future in /opt/venv/lib/python3.11/site-packages (from ffmpeg-python->-r requirements.txt (line 5)) (1.0.0)
+Requirement already satisfied: async-lru>=1.0.0 in /opt/venv/lib/python3.11/site-packages (from jupyterlab->-r requirements.txt (line 7)) (2.3.0)
+Requirement already satisfied: httpx<1,>=0.25.0 in /opt/venv/lib/python3.11/site-packages (from jupyterlab->-r requirements.txt (line 7)) (0.28.1)
+Requirement already satisfied: ipykernel!=6.30.0,>=6.5.0 in /opt/venv/lib/python3.11/site-packages (from jupyterlab->-r requirements.txt (line 7)) (7.3.0)
+Requirement already satisfied: jinja2>=3.0.3 in /opt/venv/lib/python3.11/site-packages (from jupyterlab->-r requirements.txt (line 7)) (3.1.6)
+Requirement already satisfied: jupyter-builder>=1.0.2 in /opt/venv/lib/python3.11/site-packages (from jupyterlab->-r requirements.txt (line 7)) (1.2.2)
+Requirement already satisfied: jupyter-core in /opt/venv/lib/python3.11/site-packages (from jupyterlab->-r requirements.txt (line 7)) (5.9.1)
+Requirement already satisfied: jupyter-lsp>=2.0.0 in /opt/venv/lib/python3.11/site-packages (from jupyterlab->-r requirements.txt (line 7)) (2.3.1)
+Requirement already satisfied: jupyter-server<3,>=2.19.0 in /opt/venv/lib/python3.11/site-packages (from jupyterlab->-r requirements.txt (line 7)) (2.20.0)
+Requirement already satisfied: jupyterlab-server<3,>=2.28.0 in /opt/venv/lib/python3.11/site-packages (from jupyterlab->-r requirements.txt (line 7)) (2.28.0)
+Requirement already satisfied: notebook-shim>=0.2 in /opt/venv/lib/python3.11/site-packages (from jupyterlab->-r requirements.txt (line 7)) (0.2.4)
+Requirement already satisfied: tornado>=6.2.0 in /opt/venv/lib/python3.11/site-packages (from jupyterlab->-r requirements.txt (line 7)) (6.5.8)
+Requirement already satisfied: traitlets in /opt/venv/lib/python3.11/site-packages (from jupyterlab->-r requirements.txt (line 7)) (5.16.1)
+INFO: pip is looking at multiple versions of deoldify to determine which version is compatible with other requirements. This could take a while.
+Collecting fastai==1.0.60 (from -r requirements.txt (line 2))
+  Using cached fastai-1.0.60-py3-none-any.whl.metadata (14 kB)
+
+The conflict is caused by:
+    The user requested Pillow==9.3.0
+    fastai 1.0.60 depends on Pillow
+    deoldify 0.0.1 depends on Pillow>=9.5.0
+
+To fix this you could try to:
+1. loosen the range of package versions you've specified
+2. remove package versions to allow pip attempt to solve the dependency conflict
+

@@ -35,7 +35,7 @@ logging:
   inline_tail_lines: 400
   # Raw untruncated output always goes to results/<run_id>/logs/ regardless.
 
-# Present per SPEC.md section 4. Unused until increment 2 (the fix loop);
-# recorded here so the config shape does not change under later increments.
+# Per SPEC.md section 4: caps repo_doctor/fix_loop.py's propose/apply/re-run
+# cycles (increment 2). Never loop unbounded.
 limits:
   attempt_cap: 5

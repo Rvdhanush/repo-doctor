@@ -1,0 +1,434 @@
+{
+  "schema_version": 2,
+  "run_id": "e2e-deoldify-fix",
+  "started_at": "2026-08-09T16:35:05+00:00",
+  "finished_at": "2026-08-09T16:43:54+00:00",
+  "duration_s": 528.409,
+  "host": {
+    "platform": "Linux-6.8.0-1052-azure-x86_64-with-glibc2.36",
+    "python": "3.11.15"
+  },
+  "target": {
+    "url": "https://github.com/jantic/DeOldify",
+    "owner": "jantic",
+    "repo": "DeOldify",
+    "resolved_commit": "5f86c28923799036ad4b1bf7af8c629ac65efd75",
+    "default_branch": "master"
+  },
+  "sandbox": {
+    "image": "repo-doctor-sandbox:0.1",
+    "image_id": "sha256:c43df5d9658eccee15cdf43f26fc4cbb7c6f69ae7c9dd4c520c61393e91af06a",
+    "image_digest": "repo-doctor-sandbox@sha256:c43df5d9658eccee15cdf43f26fc4cbb7c6f69ae7c9dd4c520c61393e91af06a",
+    "container_id": "6b5b90ed158c",
+    "container_name": "repo-doctor-e2e-deoldify-fix",
+    "python_version": "Python 3.11.15",
+    "pip_version": "pip 24.0 from /opt/venv/lib/python3.11/site-packages/pip (python 3.11)",
+    "limits": {
+      "memory": "4g",
+      "cpus": "2",
+      "pids_limit": 512,
+      "network": "enabled (required for clone + pip)",
+      "mounts": "none"
+    }
+  },
+  "declared_dependencies": {
+    "file": "requirements.txt",
+    "content": "wandb\nfastai==1.0.60\ntensorboardX>=1.6\nffmpeg\nffmpeg-python\nyt-dlp\njupyterlab\nopencv-python>=4.2.0.32\nPillow==9.3.0\ndeoldify\n--extra-index-url https://download.pytorch.org/whl/cpu\ntorch\ntorchvision\nipywidgets"
+  },
+  "install_detection": {
+    "supported": true,
+    "strategy": "requirements.txt",
+    "chosen": "requirements.txt",
+    "argv": [
+      "pip",
+      "install",
+      "--no-input",
+      "--no-color",
+      "--disable-pip-version-check",
+      "-r",
+      "requirements.txt"
+    ],
+    "reason": "Found requirements.txt at the repo root.",
+    "candidates_found": [
+      "requirements.txt",
+      "setup.py",
+      "environment.yml",
+      "requirements-colab.txt",
+      "requirements-dev.txt"
+    ]
+  },
+  "import_detection": {
+    "module": "deoldify",
+    "confidence": "medium",
+    "source": "source-tree-package",
+    "reason": "Top-level package directory with __init__.py (candidates: deoldify, fastai).",
+    "candidates": [
+      "deoldify",
+      "fastai"
+    ],
+    "installed_top_level": []
+  },
+  "steps": [
+    {
+      "name": "clone",
+      "argv": [
+        "git",
+        "clone",
+        "--depth",
+        "1",
+        "https://github.com/jantic/DeOldify",
+        "/work/repo"
+      ],
+      "cwd": "/work",
+      "exit_code": 0,
+      "duration_s": 1.601,
+      "timed_out": false,
+      "stdout": "",
+      "stderr": "Cloning into '/work/repo'...\n",
+      "truncated": false,
+      "raw_logs": {
+        "stdout": "logs/clone.stdout.txt",
+        "stderr": "logs/clone.stderr.txt"
+      },
+      "note": ""
+    },
+    {
+      "name": "install",
+      "argv": [
+        "pip",
+        "install",
+        "--no-input",
+        "--no-color",
+        "--disable-pip-version-check",
+        "-r",
+        "requirements.txt"
+      ],
+      "cwd": "/work/repo",
+      "exit_code": 1,
+      "duration_s": 20.884,
+      "timed_out": false,
+      "stdout": "Looking in indexes: https://pypi.org/simple, https://download.pytorch.org/whl/cu113\nCollecting wandb (from -r requirements.txt (line 1))\n  Downloading wandb-0.28.1-py3-none-manylinux_2_28_x86_64.whl.metadata (11 kB)\nCollecting fastai==1.0.60 (from -r requirements.txt (line 2))\n  Downloading fastai-1.0.60-py3-none-any.whl.metadata (14 kB)\nCollecting tensorboardX>=1.6 (from -r requirements.txt (line 3))\n  Downloading tensorboardx-2.6.5-py3-none-any.whl.metadata (6.6 kB)\nCollecting ffmpeg (from -r requirements.txt (line 4))\n  Downloading ffmpeg-1.4.tar.gz (5.1 kB)\n  Installing build dependencies: started\n  Installing build dependencies: finished with status 'done'\n  Getting requirements to build wheel: started\n  Getting requirements to build wheel: finished with status 'done'\n  Preparing metadata (pyproject.toml): started\n  Preparing metadata (pyproject.toml): finished with status 'done'\nCollecting ffmpeg-python (from -r requirements.txt (line 5))\n  Downloading ffmpeg_python-0.2.0-py3-none-any.whl.metadata (1.7 kB)\nCollecting yt-dlp (from -r requirements.txt (line 6))\n  Downloading yt_dlp-2026.7.4-py3-none-any.whl.metadata (183 kB)\n     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 183.8/183.8 kB 517.8 kB/s eta 0:00:00\nCollecting jupyterlab (from -r requirements.txt (line 7))\n  Downloading jupyterlab-4.6.2-py3-none-any.whl.metadata (16 kB)\nCollecting opencv-python>=4.2.0.32 (from -r requirements.txt (line 8))\n  Downloading opencv_python-5.0.0.93-cp37-abi3-manylinux_2_28_x86_64.whl.metadata (19 kB)\nCollecting Pillow==9.3.0 (from -r requirements.txt (line 9))\n  Downloading Pillow-9.3.0-cp311-cp311-manylinux_2_28_x86_64.whl.metadata (9.2 kB)\n",
+      "stderr": "ERROR: Could not find a version that satisfies the requirement torch==1.11.0 (from versions: 1.13.0, 1.13.1, 2.0.0, 2.0.1, 2.1.0, 2.1.1, 2.1.2, 2.2.0, 2.2.1, 2.2.2, 2.3.0, 2.3.1, 2.4.0, 2.4.1, 2.5.0, 2.5.1, 2.6.0, 2.7.0, 2.7.1, 2.8.0, 2.9.0, 2.9.1, 2.10.0, 2.11.0, 2.12.0, 2.12.1, 2.13.0)\nERROR: No matching distribution found for torch==1.11.0\n",
+      "truncated": false,
+      "raw_logs": {
+        "stdout": "logs/install.stdout.txt",
+        "stderr": "logs/install.stderr.txt"
+      },
+      "note": "Found requirements.txt at the repo root."
+    },
+    {
+      "name": "import_check",
+      "skipped": true,
+      "reason": "install failed"
+    },
+    {
+      "name": "attempt1_edit_file",
+      "argv": [
+        "python",
+        "-c",
+        "import sys, base64, pathlib\npathlib.Path(sys.argv[1]).write_text(base64.b64decode(sys.argv[2]).decode('utf-8'), encoding='utf-8')\n",
+        "/work/repo/requirements.txt",
+        "d2FuZGIKZmFzdGFpPT0xLjAuNjAKdGVuc29yYm9hcmRYPj0xLjYKZmZtcGVnCmZmbXBlZy1weXRob24KeXQtZGxwCmp1cHl0ZXJsYWIKb3BlbmN2LXB5dGhvbj49NC4yLjAuMzIKUGlsbG93PT05LjMuMAotLWV4dHJhLWluZGV4LXVybCBodHRwczovL2Rvd25sb2FkLnB5dG9yY2gub3JnL3dobC9jcHUKdG9yY2gKdG9yY2h2aXNpb24KaXB5d2lkZ2V0cw=="
+      ],
+      "cwd": "/work",
+      "exit_code": 0,
+      "duration_s": 0.219,
+      "timed_out": false,
+      "stdout": "",
+      "stderr": "",
+      "truncated": false,
+      "raw_logs": {
+        "stdout": "logs/attempt1_edit_file.stdout.txt",
+        "stderr": "logs/attempt1_edit_file.stderr.txt"
+      },
+      "note": "rewrote requirements.txt"
+    },
+    {
+      "name": "attempt1_install",
+      "argv": [
+        "pip",
+        "install",
+        "--no-input",
+        "--no-color",
+        "--disable-pip-version-check",
+        "-r",
+        "requirements.txt"
+      ],
+      "cwd": "/work/repo",
+      "exit_code": 0,
+      "duration_s": 477.46,
+      "timed_out": false,
+      "stdout": "Looking in indexes: https://pypi.org/simple, https://download.pytorch.org/whl/cpu\nCollecting wandb (from -r requirements.txt (line 1))\n  Using cached wandb-0.28.1-py3-none-manylinux_2_28_x86_64.whl.metadata (11 kB)\nCollecting fastai==1.0.60 (from -r requirements.txt (line 2))\n  Using cached fastai-1.0.60-py3-none-any.whl.metadata (14 kB)\nCollecting tensorboardX>=1.6 (from -r requirements.txt (line 3))\n  Using cached tensorboardx-2.6.5-py3-none-any.whl.metadata (6.6 kB)\nCollecting ffmpeg (from -r requirements.txt (line 4))\n  Using cached ffmpeg-1.4.tar.gz (5.1 kB)\n  Installing build dependencies: started\n  Installing build dependencies: finished with status 'done'\n  Getting requirements to build wheel: started\n  Getting requirements to build wheel: finished with status 'done'\n  Preparing metadata (pyproject.toml): started\n  Preparing metadata (pyproject.toml): finished with status 'done'\nCollecting ffmpeg-python (from -r requirements.txt (line 5))\n  Using cached ffmpeg_python-0.2.0-py3-none-any.whl.metadata (1.7 kB)\nCollecting yt-dlp (from -r requirements.txt (line 6))\n  Using cached yt_dlp-2026.7.4-py3-none-any.whl.metadata (183 kB)\nCollecting jupyterlab (from -r requirements.txt (line 7))\n  Using cached jupyterlab-4.6.2-py3-none-any.whl.metadata (16 kB)\nCollecting opencv-python>=4.2.0.32 (from -r requirements.txt (line 8))\n  Using cached opencv_python-5.0.0.93-cp37-abi3-manylinux_2_28_x86_64.whl.metadata (19 kB)\nCollecting Pillow==9.3.0 (from -r requirements.txt (line 9))\n  Using cached Pillow-9.3.0-cp311-cp311-manylinux_2_28_x86_64.whl.metadata (9.2 kB)\nCollecting torch (from -r requirements.txt (line 11))\n  Downloading https://download-r2.pytorch.org/whl/cpu/torch-2.13.0%2Bcpu-cp311-cp311-manylinux_2_28_x86_64.whl.metadata (37 kB)\nCollecting torchvision (from -r requirements.txt (line 12))\n  Downloading https://download-r2.pytorch.org/whl/cpu/torchvision-0.28.0%2Bcpu-cp311-cp311-manylinux_2_28_x86_64.whl.metadata (5.6 kB)\nCollecting ipywidgets (from -r requirements.txt (line 13))\n  Downloading ipywidgets-8.1.8-py3-none-any.whl.metadata (2.4 kB)\nCollecting bottleneck (from fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading bottleneck-1.6.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (8.2 kB)\nCollecting fastprogress>=0.2.1 (from fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading fastprogress-1.1.6-py3-none-any.whl.metadata (4.9 kB)\nCollecting beautifulsoup4 (from fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading beautifulsoup4-4.15.0-py3-none-any.whl.metadata (3.8 kB)\nCollecting matplotlib (from fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading matplotlib-3.11.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (80 kB)\n     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 80.3/80.3 kB 211.7 kB/s eta 0:00:00\nCollecting numexpr (from fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading numexpr-2.14.2-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (9.0 kB)\nCollecting numpy>=1.15 (from fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading numpy-2.4.6-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (6.6 kB)\nCollecting nvidia-ml-py3 (from fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading nvidia-ml-py3-7.352.0.tar.gz (19 kB)\n  Installing build dependencies: started\n  Installing build dependencies: finished with status 'done'\n  Getting requirements to build wheel: started\n  Getting requirements to build wheel: finished with status 'done'\n  Preparing metadata (pyproject.toml): started\n  Preparing metadata (pyproject.toml): finished with status 'done'\nCollecting pandas (from fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading pandas-3.0.5-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (79 kB)\n     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 79.5/79.5 kB 248.1 kB/s eta 0:00:00\nCollecting packaging (from fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)\nCollecting pyyaml (from fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)\nCollecting requests (from fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)\nCollecting scipy (from fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading scipy-1.17.1-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (62 kB)\n     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 62.1/62.1 kB 164.4 kB/s eta 0:00:00\nCollecting spacy>=2.0.18 (from fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading spacy-3.8.15-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (28 kB)\nCollecting click>=8.2.0 (from wandb->-r requirements.txt (line 1))\n  Downloading click-8.4.2-py3-none-any.whl.metadata (2.6 kB)\nCollecting platformdirs (from wandb->-r requirements.txt (line 1))\n  Downloading platformdirs-4.11.1-py3-none-any.whl.metadata (5.5 kB)\nCollecting protobuf!=5.28.0,!=5.29.0,<8,>=5 (from wandb->-r requirements.txt (line 1))\n  Downloading protobuf-7.35.1-cp310-abi3-manylinux2014_x86_64.whl.metadata (595 bytes)\nCollecting pydantic<3,>=2.6 (from wandb->-r requirements.txt (line 1))\n  Downloading pydantic-2.13.4-py3-none-any.whl.metadata (109 kB)\n     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 109.4/109.4 kB 353.9 kB/s eta 0:00:00\nCollecting sentry-sdk>=2.0.0 (from wandb->-r requirements.txt (line 1))\n  Downloading sentry_sdk-2.66.1-py3-none-any.whl.metadata (11 kB)\nCollecting typing-extensions<5,>=4.8 (from wandb->-r requirements.txt (line 1))\n  Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)\nCollecting future (from ffmpeg-python->-r requirements.txt (line 5))\n  Downloading future-1.0.0-py3-none-any.whl.metadata (4.0 kB)\nCollecting async-lru>=1.0.0 (from jupyterlab->-r requirements.txt (line 7))\n  Downloading async_lru-2.3.0-py3-none-any.whl.metadata (7.6 kB)\nCollecting httpx<1,>=0.25.0 (from jupyterlab->-r requirements.txt (line 7))\n  Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)\nCollecting ipykernel!=6.30.0,>=6.5.0 (from jupyterlab->-r requirements.txt (line 7))\n  Downloading ipykernel-7.3.0-py3-none-any.whl.metadata (4.5 kB)\nCollecting jinja2>=3.0.3 (from jupyterlab->-r requirements.txt (line 7))\n  Downloading https://download.pytorch.org/whl/jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)\nCollecting jupyter-builder>=1.0.2 (from jupyterlab->-r requirements.txt (line 7))\n  Downloading jupyter_builder-1.2.2-py3-none-any.whl.metadata (7.7 kB)\nCollecting jupyter-core (from jupyterlab->-r requirements.txt (line 7))\n  Downloading jupyter_core-5.9.1-py3-none-any.whl.metadata (1.5 kB)\nCollecting jupyter-lsp>=2.0.0 (from jupyterlab->-r requirements.txt (line 7))\n  Downloading jupyter_lsp-2.3.1-py3-none-any.whl.metadata (1.8 kB)\nCollecting jupyter-server<3,>=2.19.0 (from jupyterlab->-r requirements.txt (line 7))\n  Downloading jupyter_server-2.20.0-py3-none-any.whl.metadata (8.5 kB)\nCollecting jupyterlab-server<3,>=2.28.0 (from jupyterlab->-r requirements.txt (line 7))\n  Downloading jupyterlab_server-2.28.0-py3-none-any.whl.metadata (5.9 kB)\nCollecting notebook-shim>=0.2 (from jupyterlab->-r requirements.txt (line 7))\n  Downloading notebook_shim-0.2.4-py3-none-any.whl.metadata (4.0 kB)\nCollecting tornado>=6.2.0 (from jupyterlab->-r requirements.txt (line 7))\n  Downloading tornado-6.5.8-cp39-abi3-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (2.8 kB)\nCollecting traitlets (from jupyterlab->-r requirements.txt (line 7))\n  Downloading traitlets-5.16.1-py3-none-any.whl.metadata (10 kB)\nCollecting filelock (from torch->-r requirements.txt (line 11))\n  Downloading filelock-3.32.2-py3-none-any.whl.metadata (2.0 kB)\nRequirement already satisfied: setuptools>=77.0.3 in /opt/venv/lib/python3.11/site-packages (from torch->-r requirements.txt (line 11)) (79.0.1)\nCollecting sympy>=1.13.3 (from torch->-r requirements.txt (line 11))\n  Downloading sympy-1.14.0-py3-none-any.whl.metadata (12 kB)\nCollecting networkx>=2.5.1 (from torch->-r requirements.txt (line 11))\n  Downloading networkx-3.6.1-py3-none-any.whl.metadata (6.8 kB)\nCollecting fsspec>=0.8.5 (from torch->-r requirements.txt (line 11))\n  Downloading fsspec-2026.7.0-py3-none-any.whl.metadata (10 kB)\nCollecting comm>=0.1.3 (from ipywidgets->-r requirements.txt (line 13))\n  Downloading comm-0.2.3-py3-none-any.whl.metadata (3.7 kB)\nCollecting ipython>=6.1.0 (from ipywidgets->-r requirements.txt (line 13))\n  Downloading ipython-9.16.1-py3-none-any.whl.metadata (4.6 kB)\nCollecting widgetsnbextension~=4.0.14 (from ipywidgets->-r requirements.txt (line 13))\n  Downloading widgetsnbextension-4.0.15-py3-none-any.whl.metadata (1.6 kB)\nCollecting jupyterlab_widgets~=3.0.15 (from ipywidgets->-r requirements.txt (line 13))\n  Downloading jupyterlab_widgets-3.0.16-py3-none-any.whl.metadata (20 kB)\nCollecting fastcore>=1.10.0 (from fastprogress>=0.2.1->fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading fastcore-2.2.6-py3-none-any.whl.metadata (9.1 kB)\nCollecting python-fasthtml>=0.12.34 (from fastprogress>=0.2.1->fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading python_fasthtml-0.14.11-py3-none-any.whl.metadata (8.9 kB)\nCollecting anyio (from httpx<1,>=0.25.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading anyio-4.14.2-py3-none-any.whl.metadata (4.6 kB)\nCollecting certifi (from httpx<1,>=0.25.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading certifi-2026.7.22-py3-none-any.whl.metadata (2.5 kB)\nCollecting httpcore==1.* (from httpx<1,>=0.25.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)\nCollecting idna (from httpx<1,>=0.25.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading idna-3.18-py3-none-any.whl.metadata (6.1 kB)\nCollecting h11>=0.16 (from httpcore==1.*->httpx<1,>=0.25.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)\nCollecting debugpy>=1.6.5 (from ipykernel!=6.30.0,>=6.5.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading debugpy-1.8.21-cp311-cp311-manylinux_2_34_x86_64.whl.metadata (1.4 kB)\nCollecting jupyter-client>=8.9.0 (from ipykernel!=6.30.0,>=6.5.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading jupyter_client-8.9.1-py3-none-any.whl.metadata (8.5 kB)\nCollecting matplotlib-inline>=0.1 (from ipykernel!=6.30.0,>=6.5.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading matplotlib_inline-0.2.2-py3-none-any.whl.metadata (2.4 kB)\nCollecting nest-asyncio2>=1.7.0 (from ipykernel!=6.30.0,>=6.5.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading nest_asyncio2-1.7.2-py3-none-any.whl.metadata (6.3 kB)\nCollecting psutil>=5.7 (from ipykernel!=6.30.0,>=6.5.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading psutil-7.2.2-cp36-abi3-manylinux2010_x86_64.manylinux_2_12_x86_64.manylinux_2_28_x86_64.whl.metadata (22 kB)\nCollecting pyzmq>=25 (from ipykernel!=6.30.0,>=6.5.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading pyzmq-27.1.0-cp311-cp311-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl.metadata (6.0 kB)\nCollecting ipython-pygments-lexers>=1.0.0 (from ipython>=6.1.0->ipywidgets->-r requirements.txt (line 13))\n  Downloading ipython_pygments_lexers-1.1.1-py3-none-any.whl.metadata (1.1 kB)\nCollecting jedi>=0.18.2 (from ipython>=6.1.0->ipywidgets->-r requirements.txt (line 13))\n  Downloading jedi-0.20.0-py2.py3-none-any.whl.metadata (23 kB)\nCollecting pexpect>4.6 (from ipython>=6.1.0->ipywidgets->-r requirements.txt (line 13))\n  Downloading pexpect-4.9.0-py2.py3-none-any.whl.metadata (2.5 kB)\nCollecting prompt_toolkit<3.1.0,>=3.0.41 (from ipython>=6.1.0->ipywidgets->-r requirements.txt (line 13))\n  Downloading prompt_toolkit-3.0.53-py3-none-any.whl.metadata (6.4 kB)\nCollecting pygments>=2.14.0 (from ipython>=6.1.0->ipywidgets->-r requirements.txt (line 13))\n  Downloading pygments-2.20.0-py3-none-any.whl.metadata (2.5 kB)\nCollecting stack_data>=0.6.0 (from ipython>=6.1.0->ipywidgets->-r requirements.txt (line 13))\n  Downloading stack_data-0.6.3-py3-none-any.whl.metadata (18 kB)\nCollecting MarkupSafe>=2.0 (from jinja2>=3.0.3->jupyterlab->-r requirements.txt (line 7))\n  Downloading https://download.pytorch.org/whl/markupsafe-3.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.7 kB)\nCollecting argon2-cffi>=21.1 (from jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading argon2_cffi-25.1.0-py3-none-any.whl.metadata (4.1 kB)\nCollecting jupyter-events>=0.11.0 (from jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading jupyter_events-0.12.1-py3-none-any.whl.metadata (5.8 kB)\nCollecting jupyter-server-terminals>=0.4.4 (from jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading jupyter_server_terminals-0.5.4-py3-none-any.whl.metadata (5.9 kB)\nCollecting nbconvert>=6.4.4 (from jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading nbconvert-7.17.1-py3-none-any.whl.metadata (8.4 kB)\nCollecting nbformat>=5.3.0 (from jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading nbformat-5.11.0-py3-none-any.whl.metadata (3.7 kB)\nCollecting overrides>=5.0 (from jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading overrides-7.7.0-py3-none-any.whl.metadata (5.8 kB)\nCollecting prometheus-client>=0.9 (from jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading prometheus_client-0.26.0-py3-none-any.whl.metadata (2.1 kB)\nCollecting send2trash>=1.8.2 (from jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading send2trash-2.1.0-py3-none-any.whl.metadata (4.1 kB)\nCollecting terminado>=0.8.3 (from jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading terminado-0.18.1-py3-none-any.whl.metadata (5.8 kB)\nCollecting websocket-client>=1.7 (from jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading websocket_client-1.9.0-py3-none-any.whl.metadata (8.3 kB)\nCollecting babel>=2.10 (from jupyterlab-server<3,>=2.28.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading babel-2.18.0-py3-none-any.whl.metadata (2.2 kB)\nCollecting json5>=0.9.0 (from jupyterlab-server<3,>=2.28.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading json5-0.15.0-py3-none-any.whl.metadata (37 kB)\nCollecting jsonschema>=4.18.0 (from jupyterlab-server<3,>=2.28.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)\nCollecting annotated-types>=0.6.0 (from pydantic<3,>=2.6->wandb->-r requirements.txt (line 1))\n  Downloading annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)\nCollecting pydantic-core==2.46.4 (from pydantic<3,>=2.6->wandb->-r requirements.txt (line 1))\n  Downloading pydantic_core-2.46.4-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.6 kB)\nCollecting typing-inspection>=0.4.2 (from pydantic<3,>=2.6->wandb->-r requirements.txt (line 1))\n  Downloading typing_inspection-0.4.2-py3-none-any.whl.metadata (2.6 kB)\nCollecting charset_normalizer<4,>=2 (from requests->fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading charset_normalizer-3.4.9-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (41 kB)\n     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 41.7/41.7 kB 108.6 kB/s eta 0:00:00\nCollecting urllib3<3,>=1.26 (from requests->fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading urllib3-2.7.0-py3-none-any.whl.metadata (6.9 kB)\nCollecting spacy-legacy<3.1.0,>=3.0.11 (from spacy>=2.0.18->fastai==1.0.60->-r requirements.txt (line 2))\n... [repo-doctor] 43 lines omitted; full output in logs/ ...\nCollecting argon2-cffi-bindings (from argon2-cffi>=21.1->jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading argon2_cffi_bindings-25.1.0-cp39-abi3-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl.metadata (7.4 kB)\nCollecting parso<0.9.0,>=0.8.6 (from jedi>=0.18.2->ipython>=6.1.0->ipywidgets->-r requirements.txt (line 13))\n  Downloading parso-0.8.7-py2.py3-none-any.whl.metadata (8.2 kB)\nCollecting attrs>=22.2.0 (from jsonschema>=4.18.0->jupyterlab-server<3,>=2.28.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)\nCollecting jsonschema-specifications>=2023.03.6 (from jsonschema>=4.18.0->jupyterlab-server<3,>=2.28.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)\nCollecting referencing>=0.28.4 (from jsonschema>=4.18.0->jupyterlab-server<3,>=2.28.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)\nCollecting rpds-py>=0.25.0 (from jsonschema>=4.18.0->jupyterlab-server<3,>=2.28.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading rpds_py-2026.6.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.1 kB)\nCollecting python-json-logger>=2.0.4 (from jupyter-events>=0.11.0->jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading python_json_logger-4.1.0-py3-none-any.whl.metadata (3.7 kB)\nCollecting rfc3339-validator (from jupyter-events>=0.11.0->jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading rfc3339_validator-0.1.4-py2.py3-none-any.whl.metadata (1.5 kB)\nCollecting rfc3986-validator>=0.1.1 (from jupyter-events>=0.11.0->jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading rfc3986_validator-0.1.1-py2.py3-none-any.whl.metadata (1.7 kB)\nCollecting bleach!=5.0.0 (from bleach[css]!=5.0.0->nbconvert>=6.4.4->jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading bleach-6.4.0-py3-none-any.whl.metadata (32 kB)\nCollecting defusedxml (from nbconvert>=6.4.4->jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading defusedxml-0.7.1-py2.py3-none-any.whl.metadata (32 kB)\nCollecting jupyterlab-pygments (from nbconvert>=6.4.4->jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading jupyterlab_pygments-0.3.0-py3-none-any.whl.metadata (4.4 kB)\nCollecting mistune<4,>=2.0.3 (from nbconvert>=6.4.4->jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading mistune-3.3.4-py3-none-any.whl.metadata (1.9 kB)\nCollecting nbclient>=0.5.0 (from nbconvert>=6.4.4->jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading nbclient-0.11.0-py3-none-any.whl.metadata (7.3 kB)\nCollecting pandocfilters>=1.4.1 (from nbconvert>=6.4.4->jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading pandocfilters-1.5.1-py2.py3-none-any.whl.metadata (9.0 kB)\nCollecting fastjsonschema>=2.15 (from nbformat>=5.3.0->jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading fastjsonschema-2.22.1-py3-none-any.whl.metadata (2.1 kB)\nCollecting ptyprocess>=0.5 (from pexpect>4.6->ipython>=6.1.0->ipywidgets->-r requirements.txt (line 13))\n  Downloading ptyprocess-0.7.0-py2.py3-none-any.whl.metadata (1.3 kB)\nCollecting wcwidth>=0.1.4 (from prompt_toolkit<3.1.0,>=3.0.41->ipython>=6.1.0->ipywidgets->-r requirements.txt (line 13))\n  Downloading wcwidth-0.8.2-py3-none-any.whl.metadata (43 kB)\n     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 43.3/43.3 kB 105.5 kB/s eta 0:00:00\nCollecting six>=1.5 (from python-dateutil>=2.7->matplotlib->fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)\nCollecting starlette>=1.0.1 (from python-fasthtml>=0.12.34->fastprogress>=0.2.1->fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading starlette-1.6.0-py3-none-any.whl.metadata (6.4 kB)\nCollecting oauthlib (from python-fasthtml>=0.12.34->fastprogress>=0.2.1->fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading oauthlib-3.3.1-py3-none-any.whl.metadata (7.9 kB)\nCollecting itsdangerous (from python-fasthtml>=0.12.34->fastprogress>=0.2.1->fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading itsdangerous-2.2.0-py3-none-any.whl.metadata (1.9 kB)\nCollecting uvicorn>=0.30 (from uvicorn[standard]>=0.30->python-fasthtml>=0.12.34->fastprogress>=0.2.1->fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading uvicorn-0.52.1-py3-none-any.whl.metadata (6.6 kB)\nCollecting httpx2 (from python-fasthtml>=0.12.34->fastprogress>=0.2.1->fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading httpx2-2.10.0-py3-none-any.whl.metadata (10 kB)\nCollecting python-multipart (from python-fasthtml>=0.12.34->fastprogress>=0.2.1->fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading python_multipart-0.0.32-py3-none-any.whl.metadata (2.1 kB)\nCollecting executing>=1.2.0 (from stack_data>=0.6.0->ipython>=6.1.0->ipywidgets->-r requirements.txt (line 13))\n  Downloading executing-2.2.1-py2.py3-none-any.whl.metadata (8.9 kB)\nCollecting asttokens>=2.1.0 (from stack_data>=0.6.0->ipython>=6.1.0->ipywidgets->-r requirements.txt (line 13))\n  Downloading asttokens-3.0.2-py3-none-any.whl.metadata (5.7 kB)\nCollecting pure-eval (from stack_data>=0.6.0->ipython>=6.1.0->ipywidgets->-r requirements.txt (line 13))\n  Downloading pure_eval-0.2.3-py3-none-any.whl.metadata (6.3 kB)\nCollecting blis<1.4.0,>=1.3.0 (from thinc<8.4.0,>=8.3.12->spacy>=2.0.18->fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading blis-1.3.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (7.5 kB)\nCollecting shellingham>=1.3.0 (from typer<1.0.0,>=0.3.0->spacy>=2.0.18->fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading shellingham-1.5.4-py2.py3-none-any.whl.metadata (3.5 kB)\nCollecting rich>=13.8.0 (from typer<1.0.0,>=0.3.0->spacy>=2.0.18->fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading rich-15.0.0-py3-none-any.whl.metadata (18 kB)\nCollecting annotated-doc>=0.0.2 (from typer<1.0.0,>=0.3.0->spacy>=2.0.18->fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading annotated_doc-0.0.5-py3-none-any.whl.metadata (6.5 kB)\nCollecting cloudpathlib>=0.7.0 (from weasel<2.0.0,>=1.0.0->spacy>=2.0.18->fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading cloudpathlib-0.24.0-py3-none-any.whl.metadata (16 kB)\nCollecting smart-open>=5.2.1 (from weasel<2.0.0,>=1.0.0->spacy>=2.0.18->fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading smart_open-8.0.1-py3-none-any.whl.metadata (24 kB)\nCollecting webencodings (from bleach!=5.0.0->bleach[css]!=5.0.0->nbconvert>=6.4.4->jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading webencodings-0.5.1-py2.py3-none-any.whl.metadata (2.1 kB)\nCollecting tinycss2>=1.1.0 (from bleach[css]!=5.0.0->nbconvert>=6.4.4->jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading tinycss2-1.5.1-py3-none-any.whl.metadata (3.0 kB)\nCollecting fqdn (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading fqdn-1.5.1-py3-none-any.whl.metadata (1.4 kB)\nCollecting isoduration (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading isoduration-20.11.0-py3-none-any.whl.metadata (5.7 kB)\nCollecting jsonpointer>1.13 (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading jsonpointer-3.1.1-py3-none-any.whl.metadata (2.4 kB)\nCollecting rfc3987-syntax>=1.1.0 (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading rfc3987_syntax-1.1.0-py3-none-any.whl.metadata (7.7 kB)\nCollecting uri-template (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading uri_template-1.3.0-py3-none-any.whl.metadata (8.8 kB)\nCollecting webcolors>=24.6.0 (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading webcolors-25.10.0-py3-none-any.whl.metadata (2.2 kB)\nCollecting markdown-it-py>=2.2.0 (from rich>=13.8.0->typer<1.0.0,>=0.3.0->spacy>=2.0.18->fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading markdown_it_py-4.2.0-py3-none-any.whl.metadata (7.4 kB)\nCollecting wrapt (from smart-open>=5.2.1->weasel<2.0.0,>=1.0.0->spacy>=2.0.18->fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading wrapt-2.3.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (7.4 kB)\nCollecting httptools>=0.8.0 (from uvicorn[standard]>=0.30->python-fasthtml>=0.12.34->fastprogress>=0.2.1->fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading httptools-0.8.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (3.5 kB)\nCollecting python-dotenv>=0.13 (from uvicorn[standard]>=0.30->python-fasthtml>=0.12.34->fastprogress>=0.2.1->fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading python_dotenv-1.2.2-py3-none-any.whl.metadata (27 kB)\nCollecting uvloop>=0.15.1 (from uvicorn[standard]>=0.30->python-fasthtml>=0.12.34->fastprogress>=0.2.1->fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading uvloop-0.22.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (4.9 kB)\nCollecting watchfiles>=0.20 (from uvicorn[standard]>=0.30->python-fasthtml>=0.12.34->fastprogress>=0.2.1->fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading watchfiles-1.2.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.9 kB)\nCollecting websockets>=13.0 (from uvicorn[standard]>=0.30->python-fasthtml>=0.12.34->fastprogress>=0.2.1->fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading websockets-17.0.1-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (6.3 kB)\nCollecting cffi>=1.0.1 (from argon2-cffi-bindings->argon2-cffi>=21.1->jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading cffi-2.1.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.5 kB)\nCollecting httpcore2==2.10.0 (from httpx2->python-fasthtml>=0.12.34->fastprogress>=0.2.1->fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading httpcore2-2.10.0-py3-none-any.whl.metadata (25 kB)\nCollecting truststore>=0.10 (from httpx2->python-fasthtml>=0.12.34->fastprogress>=0.2.1->fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading truststore-0.10.4-py3-none-any.whl.metadata (4.4 kB)\nCollecting pycparser (from cffi>=1.0.1->argon2-cffi-bindings->argon2-cffi>=21.1->jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)\nCollecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich>=13.8.0->typer<1.0.0,>=0.3.0->spacy>=2.0.18->fastai==1.0.60->-r requirements.txt (line 2))\n  Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)\nCollecting lark>=1.2.2 (from rfc3987-syntax>=1.1.0->jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading lark-1.3.1-py3-none-any.whl.metadata (1.8 kB)\nCollecting arrow>=0.15.0 (from isoduration->jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading arrow-1.4.0-py3-none-any.whl.metadata (7.7 kB)\nCollecting tzdata (from arrow>=0.15.0->isoduration->jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.19.0->jupyterlab->-r requirements.txt (line 7))\n  Downloading tzdata-2026.3-py2.py3-none-any.whl.metadata (1.4 kB)\nDownloading fastai-1.0.60-py3-none-any.whl (237 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 237.3/237.3 kB 822.1 kB/s eta 0:00:00\nDownloading Pillow-9.3.0-cp311-cp311-manylinux_2_28_x86_64.whl (3.3 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.3/3.3 MB 7.0 MB/s eta 0:00:00\nDownloading wandb-0.28.1-py3-none-manylinux_2_28_x86_64.whl (26.5 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 26.5/26.5 MB 9.9 MB/s eta 0:00:00\nDownloading tensorboardx-2.6.5-py3-none-any.whl (87 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 87.5/87.5 kB 284.4 kB/s eta 0:00:00\nDownloading ffmpeg_python-0.2.0-py3-none-any.whl (25 kB)\nDownloading yt_dlp-2026.7.4-py3-none-any.whl (3.2 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.2/3.2 MB 8.8 MB/s eta 0:00:00\nDownloading jupyterlab-4.6.2-py3-none-any.whl (17.2 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 17.2/17.2 MB 12.9 MB/s eta 0:00:00\nDownloading opencv_python-5.0.0.93-cp37-abi3-manylinux_2_28_x86_64.whl (73.8 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 73.8/73.8 MB 3.9 MB/s eta 0:00:00\nDownloading https://download-r2.pytorch.org/whl/cpu/torch-2.13.0%2Bcpu-cp311-cp311-manylinux_2_28_x86_64.whl (191.8 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 191.8/191.8 MB 500.7 kB/s eta 0:00:00\nDownloading https://download-r2.pytorch.org/whl/cpu/torchvision-0.28.0%2Bcpu-cp311-cp311-manylinux_2_28_x86_64.whl (1.8 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.8/1.8 MB 2.7 MB/s eta 0:00:00\nDownloading ipywidgets-8.1.8-py3-none-any.whl (139 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 139.8/139.8 kB 442.9 kB/s eta 0:00:00\nDownloading async_lru-2.3.0-py3-none-any.whl (8.4 kB)\nDownloading click-8.4.2-py3-none-any.whl (119 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 119.2/119.2 kB 365.2 kB/s eta 0:00:00\nDownloading comm-0.2.3-py3-none-any.whl (7.3 kB)\nDownloading fastprogress-1.1.6-py3-none-any.whl (14 kB)\nDownloading fsspec-2026.7.0-py3-none-any.whl (206 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 206.6/206.6 kB 676.1 kB/s eta 0:00:00\nDownloading httpx-0.28.1-py3-none-any.whl (73 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 73.5/73.5 kB 273.1 kB/s eta 0:00:00\nDownloading httpcore-1.0.9-py3-none-any.whl (78 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.8/78.8 kB 293.1 kB/s eta 0:00:00\nDownloading ipykernel-7.3.0-py3-none-any.whl (120 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 120.6/120.6 kB 415.9 kB/s eta 0:00:00\nDownloading ipython-9.16.1-py3-none-any.whl (625 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 626.0/626.0 kB 2.2 MB/s eta 0:00:00\nDownloading https://download.pytorch.org/whl/jinja2-3.1.6-py3-none-any.whl (134 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 134.9/134.9 kB 423.0 kB/s eta 0:00:00\nDownloading jupyter_builder-1.2.2-py3-none-any.whl (915 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 915.3/915.3 kB 3.5 MB/s eta 0:00:00\nDownloading jupyter_core-5.9.1-py3-none-any.whl (29 kB)\nDownloading jupyter_lsp-2.3.1-py3-none-any.whl (77 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 77.5/77.5 kB 278.6 kB/s eta 0:00:00\nDownloading jupyter_server-2.20.0-py3-none-any.whl (393 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 393.1/393.1 kB 1.6 MB/s eta 0:00:00\nDownloading jupyterlab_server-2.28.0-py3-none-any.whl (59 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 59.8/59.8 kB 199.7 kB/s eta 0:00:00\nDownloading jupyterlab_widgets-3.0.16-py3-none-any.whl (914 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 914.9/914.9 kB 3.3 MB/s eta 0:00:00\nDownloading networkx-3.6.1-py3-none-any.whl (2.1 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 3.5 MB/s eta 0:00:00\nDownloading notebook_shim-0.2.4-py3-none-any.whl (13 kB)\nDownloading numpy-2.4.6-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.9 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.9/16.9 MB 12.9 MB/s eta 0:00:00\nDownloading packaging-26.3-py3-none-any.whl (129 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 130.0/130.0 kB 449.8 kB/s eta 0:00:00\nDownloading platformdirs-4.11.1-py3-none-any.whl (23 kB)\nDownloading protobuf-7.35.1-cp310-abi3-manylinux2014_x86_64.whl (327 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 327.1/327.1 kB 1.1 MB/s eta 0:00:00\nDownloading pydantic-2.13.4-py3-none-any.whl (472 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 472.3/472.3 kB 1.9 MB/s eta 0:00:00\nDownloading pydantic_core-2.46.4-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.1 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 5.9 MB/s eta 0:00:00\nDownloading requests-2.34.2-py3-none-any.whl (73 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 73.1/73.1 kB 251.3 kB/s eta 0:00:00\nDownloading sentry_sdk-2.66.1-py3-none-any.whl (505 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 505.6/505.6 kB 1.6 MB/s eta 0:00:00\nDownloading spacy-3.8.15-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (32.4 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 32.4/32.4 MB 7.9 MB/s eta 0:00:00\nDownloading sympy-1.14.0-py3-none-any.whl (6.3 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 6.3/6.3 MB 12.7 MB/s eta 0:00:00\nDownloading tornado-6.5.8-cp39-abi3-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (450 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 450.7/450.7 kB 1.7 MB/s eta 0:00:00\nDownloading traitlets-5.16.1-py3-none-any.whl (86 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 86.2/86.2 kB 272.7 kB/s eta 0:00:00\nDownloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 45.6/45.6 kB 113.6 kB/s eta 0:00:00\nDownloading widgetsnbextension-4.0.15-py3-none-any.whl (2.2 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.2/2.2 MB 5.3 MB/s eta 0:00:00\nDownloading beautifulsoup4-4.15.0-py3-none-any.whl (109 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 109.9/109.9 kB 366.8 kB/s eta 0:00:00\nDownloading bottleneck-1.6.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (375 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 375.9/375.9 kB 1.1 MB/s eta 0:00:00\nDownloading filelock-3.32.2-py3-none-any.whl (98 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 98.8/98.8 kB 281.6 kB/s eta 0:00:00\nDownloading future-1.0.0-py3-none-any.whl (491 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 491.3/491.3 kB 1.4 MB/s eta 0:00:00\nDownloading matplotlib-3.11.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (10.0 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.0/10.0 MB 15.4 MB/s eta 0:00:00\nDownloading numexpr-2.14.2-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (443 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 443.5/443.5 kB 1.5 MB/s eta 0:00:00\nDownloading pandas-3.0.5-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (11.3 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 11.3/11.3 MB 15.2 MB/s eta 0:00:00\nDownloading pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (806 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 806.6/806.6 kB 2.9 MB/s eta 0:00:00\nDownloading scipy-1.17.1-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (35.3 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.3/35.3 MB 8.9 MB/s eta 0:00:00\nDownloading annotated_types-0.8.0-py3-none-any.whl (13 kB)\nDownloading anyio-4.14.2-py3-none-any.whl (125 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 125.8/125.8 kB 453.3 kB/s eta 0:00:00\nDownloading argon2_cffi-25.1.0-py3-none-any.whl (14 kB)\nDownloading babel-2.18.0-py3-none-any.whl (10.2 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.2/10.2 MB 15.4 MB/s eta 0:00:00\nDownloading catalogue-2.0.10-py3-none-any.whl (17 kB)\nDownloading certifi-2026.7.22-py3-none-any.whl (136 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 137.0/137.0 kB 379.1 kB/s eta 0:00:00\nDownloading charset_normalizer-3.4.9-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (221 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 221.3/221.3 kB 84.0 kB/s eta 0:00:00\nDownloading confection-1.3.3-py3-none-any.whl (35 kB)\nDownloading contourpy-1.3.3-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (355 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 355.2/355.2 kB 1.1 MB/s eta 0:00:00\nDownloading cycler-0.12.1-py3-none-any.whl (8.3 kB)\nDownloading cymem-2.0.13-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (244 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 244.5/244.5 kB 798.2 kB/s eta 0:00:00\nDownloading debugpy-1.8.21-cp311-cp311-manylinux_2_34_x86_64.whl (3.1 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.1/3.1 MB 8.8 MB/s eta 0:00:00\nDownloading fastcore-2.2.6-py3-none-any.whl (146 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 146.4/146.4 kB 464.5 kB/s eta 0:00:00\nDownloading fonttools-4.63.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (5.1 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.1/5.1 MB 10.3 MB/s eta 0:00:00\nDownloading idna-3.18-py3-none-any.whl (65 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 65.5/65.5 kB 152.9 kB/s eta 0:00:00\nDownloading ipython_pygments_lexers-1.1.1-py3-none-any.whl (8.1 kB)\nDownloading jedi-0.20.0-py2.py3-none-any.whl (4.9 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.9/4.9 MB 11.0 MB/s eta 0:00:00\nDownloading json5-0.15.0-py3-none-any.whl (36 kB)\nDownloading jsonschema-4.26.0-py3-none-any.whl (90 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 90.6/90.6 kB 308.5 kB/s eta 0:00:00\nDownloading jupyter_client-8.9.1-py3-none-any.whl (109 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 109.8/109.8 kB 359.5 kB/s eta 0:00:00\nDownloading jupyter_events-0.12.1-py3-none-any.whl (19 kB)\nDownloading jupyter_server_terminals-0.5.4-py3-none-any.whl (13 kB)\nDownloading kiwisolver-1.5.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (1.4 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.4/1.4 MB 4.6 MB/s eta 0:00:00\nDownloading https://download.pytorch.org/whl/markupsafe-3.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (22 kB)\nDownloading matplotlib_inline-0.2.2-py3-none-any.whl (9.5 kB)\nDownloading mpmath-1.3.0-py3-none-any.whl (536 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 536.2/536.2 kB 1.7 MB/s eta 0:00:00\nDownloading murmurhash-1.0.15-cp311-cp311-manylinux1_x86_64.manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_5_x86_64.whl (128 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 128.4/128.4 kB 371.7 kB/s eta 0:00:00\nDownloading nbconvert-7.17.1-py3-none-any.whl (261 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 261.9/261.9 kB 775.4 kB/s eta 0:00:00\nDownloading nbformat-5.11.0-py3-none-any.whl (79 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 79.8/79.8 kB 239.4 kB/s eta 0:00:00\nDownloading nest_asyncio2-1.7.2-py3-none-any.whl (7.8 kB)\nDownloading overrides-7.7.0-py3-none-any.whl (17 kB)\nDownloading pexpect-4.9.0-py2.py3-none-any.whl (63 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 63.8/63.8 kB 205.8 kB/s eta 0:00:00\nDownloading preshed-3.0.13-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (823 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 823.1/823.1 kB 2.8 MB/s eta 0:00:00\nDownloading prometheus_client-0.26.0-py3-none-any.whl (64 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 64.5/64.5 kB 201.4 kB/s eta 0:00:00\nDownloading prompt_toolkit-3.0.53-py3-none-any.whl (392 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 392.3/392.3 kB 1.3 MB/s eta 0:00:00\nDownloading psutil-7.2.2-cp36-abi3-manylinux2010_x86_64.manylinux_2_12_x86_64.manylinux_2_28_x86_64.whl (155 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 155.6/155.6 kB 492.7 kB/s eta 0:00:00\nDownloading pygments-2.20.0-py3-none-any.whl (1.2 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 4.1 MB/s eta 0:00:00\nDownloading pyparsing-3.3.2-py3-none-any.whl (122 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 122.8/122.8 kB 428.1 kB/s eta 0:00:00\nDownloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 229.9/229.9 kB 827.9 kB/s eta 0:00:00\nDownloading python_fasthtml-0.14.11-py3-none-any.whl (80 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 80.4/80.4 kB 283.7 kB/s eta 0:00:00\nDownloading pyzmq-27.1.0-cp311-cp311-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl (857 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 857.0/857.0 kB 3.1 MB/s eta 0:00:00\nDownloading send2trash-2.1.0-py3-none-any.whl (17 kB)\nDownloading soupsieve-2.9.2-py3-none-any.whl (37 kB)\nDownloading spacy_legacy-3.0.12-py2.py3-none-any.whl (29 kB)\nDownloading spacy_loggers-1.0.5-py3-none-any.whl (22 kB)\nDownloading srsly-2.5.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (1.1 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.1/1.1 MB 3.7 MB/s eta 0:00:00\nDownloading stack_data-0.6.3-py3-none-any.whl (24 kB)\nDownloading terminado-0.18.1-py3-none-any.whl (14 kB)\nDownloading thinc-8.3.13-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (4.1 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.1/4.1 MB 10.7 MB/s eta 0:00:00\nDownloading tqdm-4.70.0-py3-none-any.whl (80 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 80.2/80.2 kB 288.1 kB/s eta 0:00:00\nDownloading typer-0.27.1-py3-none-any.whl (122 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 122.9/122.9 kB 410.8 kB/s eta 0:00:00\nDownloading typing_inspection-0.4.2-py3-none-any.whl (14 kB)\nDownloading urllib3-2.7.0-py3-none-any.whl (131 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 131.1/131.1 kB 479.5 kB/s eta 0:00:00\nDownloading wasabi-1.1.3-py3-none-any.whl (27 kB)\nDownloading weasel-1.0.0-py3-none-any.whl (50 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 50.7/50.7 kB 152.7 kB/s eta 0:00:00\nDownloading websocket_client-1.9.0-py3-none-any.whl (82 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 82.6/82.6 kB 257.4 kB/s eta 0:00:00\nDownloading annotated_doc-0.0.5-py3-none-any.whl (5.3 kB)\nDownloading asttokens-3.0.2-py3-none-any.whl (28 kB)\nDownloading attrs-26.1.0-py3-none-any.whl (67 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 67.5/67.5 kB 179.5 kB/s eta 0:00:00\nDownloading bleach-6.4.0-py3-none-any.whl (165 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 165.1/165.1 kB 597.4 kB/s eta 0:00:00\nDownloading blis-1.3.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (11.4 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 11.4/11.4 MB 15.9 MB/s eta 0:00:00\nDownloading cloudpathlib-0.24.0-py3-none-any.whl (63 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 63.2/63.2 kB 182.2 kB/s eta 0:00:00\nDownloading executing-2.2.1-py2.py3-none-any.whl (28 kB)\nDownloading fastjsonschema-2.22.1-py3-none-any.whl (26 kB)\nDownloading h11-0.16.0-py3-none-any.whl (37 kB)\nDownloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)\nDownloading mistune-3.3.4-py3-none-any.whl (66 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 66.9/66.9 kB 236.7 kB/s eta 0:00:00\nDownloading nbclient-0.11.0-py3-none-any.whl (25 kB)\nDownloading pandocfilters-1.5.1-py2.py3-none-any.whl (8.7 kB)\nDownloading parso-0.8.7-py2.py3-none-any.whl (107 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 107.0/107.0 kB 412.4 kB/s eta 0:00:00\nDownloading ptyprocess-0.7.0-py2.py3-none-any.whl (13 kB)\nDownloading python_json_logger-4.1.0-py3-none-any.whl (15 kB)\nDownloading referencing-0.37.0-py3-none-any.whl (26 kB)\nDownloading rfc3986_validator-0.1.1-py2.py3-none-any.whl (4.2 kB)\nDownloading rich-15.0.0-py3-none-any.whl (310 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 310.7/310.7 kB 1.1 MB/s eta 0:00:00\nDownloading rpds_py-2026.6.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (371 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 371.3/371.3 kB 1.2 MB/s eta 0:00:00\nDownloading shellingham-1.5.4-py2.py3-none-any.whl (9.8 kB)\nDownloading six-1.17.0-py2.py3-none-any.whl (11 kB)\nDownloading smart_open-8.0.1-py3-none-any.whl (73 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 73.5/73.5 kB 254.5 kB/s eta 0:00:00\nDownloading starlette-1.6.0-py3-none-any.whl (75 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 76.0/76.0 kB 224.9 kB/s eta 0:00:00\nDownloading uvicorn-0.52.1-py3-none-any.whl (79 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 79.9/79.9 kB 275.2 kB/s eta 0:00:00\nDownloading wcwidth-0.8.2-py3-none-any.whl (323 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 323.2/323.2 kB 1.1 MB/s eta 0:00:00\nDownloading argon2_cffi_bindings-25.1.0-cp39-abi3-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl (87 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 87.1/87.1 kB 249.1 kB/s eta 0:00:00\nDownloading defusedxml-0.7.1-py2.py3-none-any.whl (25 kB)\nDownloading httpx2-2.10.0-py3-none-any.whl (94 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 94.4/94.4 kB 338.3 kB/s eta 0:00:00\nDownloading httpcore2-2.10.0-py3-none-any.whl (83 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 83.0/83.0 kB 286.3 kB/s eta 0:00:00\nDownloading itsdangerous-2.2.0-py3-none-any.whl (16 kB)\nDownloading jupyterlab_pygments-0.3.0-py3-none-any.whl (15 kB)\nDownloading oauthlib-3.3.1-py3-none-any.whl (160 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 160.1/160.1 kB 497.7 kB/s eta 0:00:00\nDownloading pure_eval-0.2.3-py3-none-any.whl (11 kB)\nDownloading python_multipart-0.0.32-py3-none-any.whl (30 kB)\nDownloading rfc3339_validator-0.1.4-py2.py3-none-any.whl (3.5 kB)\nDownloading cffi-2.1.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (217 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 217.8/217.8 kB 729.4 kB/s eta 0:00:00\nDownloading httptools-0.8.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (464 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 464.7/464.7 kB 1.8 MB/s eta 0:00:00\nDownloading jsonpointer-3.1.1-py3-none-any.whl (7.7 kB)\nDownloading markdown_it_py-4.2.0-py3-none-any.whl (91 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 91.7/91.7 kB 305.3 kB/s eta 0:00:00\nDownloading python_dotenv-1.2.2-py3-none-any.whl (22 kB)\nDownloading rfc3987_syntax-1.1.0-py3-none-any.whl (8.0 kB)\nDownloading tinycss2-1.5.1-py3-none-any.whl (28 kB)\nDownloading truststore-0.10.4-py3-none-any.whl (18 kB)\nDownloading uvloop-0.22.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (3.8 MB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.8/3.8 MB 9.3 MB/s eta 0:00:00\nDownloading watchfiles-1.2.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (456 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 456.9/456.9 kB 1.6 MB/s eta 0:00:00\nDownloading webcolors-25.10.0-py3-none-any.whl (14 kB)\nDownloading webencodings-0.5.1-py2.py3-none-any.whl (11 kB)\nDownloading websockets-17.0.1-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (219 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 219.9/219.9 kB 770.4 kB/s eta 0:00:00\nDownloading fqdn-1.5.1-py3-none-any.whl (9.1 kB)\nDownloading isoduration-20.11.0-py3-none-any.whl (11 kB)\nDownloading uri_template-1.3.0-py3-none-any.whl (11 kB)\nDownloading wrapt-2.3.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (161 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 161.7/161.7 kB 554.4 kB/s eta 0:00:00\nDownloading arrow-1.4.0-py3-none-any.whl (68 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 68.8/68.8 kB 237.0 kB/s eta 0:00:00\nDownloading lark-1.3.1-py3-none-any.whl (113 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 113.2/113.2 kB 392.6 kB/s eta 0:00:00\nDownloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)\nDownloading pycparser-3.0-py3-none-any.whl (48 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 48.2/48.2 kB 148.5 kB/s eta 0:00:00\nDownloading tzdata-2026.3-py2.py3-none-any.whl (348 kB)\n   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 348.2/348.2 kB 1.3 MB/s eta 0:00:00\nBuilding wheels for collected packages: ffmpeg, nvidia-ml-py3\n  Building wheel for ffmpeg (pyproject.toml): started\n  Building wheel for ffmpeg (pyproject.toml): finished with status 'done'\n  Created wheel for ffmpeg: filename=ffmpeg-1.4-py3-none-any.whl size=6127 sha256=e64acefd51747d7c851fa4f0bb0ad572838909c5aac3e7d9503e2c5c5b19be17\n  Stored in directory: /root/.cache/pip/wheels/56/30/c5/576bdd729f3bc062d62a551be7fefd6ed2f761901568171e4e\n  Building wheel for nvidia-ml-py3 (pyproject.toml): started\n  Building wheel for nvidia-ml-py3 (pyproject.toml): finished with status 'done'\n  Created wheel for nvidia-ml-py3: filename=nvidia_ml_py3-7.352.0-py3-none-any.whl size=19207 sha256=1acc2093a8709c939ec4ca01e40445e19184c63580ba4d433669aeb5d65de36c\n  Stored in directory: /root/.cache/pip/wheels/47/50/9e/29dc79037d74c3c1bb4a8661fb608e8674b7e4260d6a3f8f51\nSuccessfully built ffmpeg nvidia-ml-py3\nInstalling collected packages: webencodings, pure-eval, ptyprocess, nvidia-ml-py3, mpmath, ffmpeg, yt-dlp, wrapt, widgetsnbextension, websockets, websocket-client, webcolors, wcwidth, wasabi, uvloop, urllib3, uri-template, tzdata, typing-extensions, truststore, traitlets, tqdm, tornado, tinycss2, sympy, spacy-loggers, spacy-legacy, soupsieve, six, shellingham, send2trash, rpds-py, rfc3986-validator, pyzmq, pyyaml, python-multipart, python-json-logger, python-dotenv, pyparsing, pygments, pycparser, psutil, protobuf, prometheus-client, platformdirs, Pillow, pexpect, parso, pandocfilters, packaging, overrides, oauthlib, numpy, networkx, nest-asyncio2, murmurhash, mistune, mdurl, MarkupSafe, lark, kiwisolver, jupyterlab_widgets, jupyterlab-pygments, jsonpointer, json5, itsdangerous, idna, httptools, h11, future, fsspec, fqdn, fonttools, filelock, fastjsonschema, fastcore, executing, defusedxml, debugpy, cymem, cycler, confection, comm, cloudpathlib, click, charset_normalizer, certifi, catalogue, bleach, babel, attrs, async-lru, asttokens, annotated-types, annotated-doc, uvicorn, typing-inspection, terminado, tensorboardX, stack_data, srsly, smart-open, sentry-sdk, scipy, rfc3987-syntax, rfc3339-validator, requests, referencing, python-dateutil, pydantic-core, prompt_toolkit, preshed, opencv-python, numexpr, matplotlib-inline, markdown-it-py, jupyter-core, jinja2, jedi, ipython-pygments-lexers, httpcore2, httpcore, ffmpeg-python, contourpy, cffi, bottleneck, blis, beautifulsoup4, anyio, watchfiles, torch, starlette, rich, pydantic, pandas, matplotlib, jupyter-server-terminals, jupyter-client, jupyter-builder, jsonschema-specifications, ipython, httpx2, httpx, arrow, argon2-cffi-bindings, wandb, typer, torchvision, thinc, jsonschema, isoduration, ipywidgets, ipykernel, argon2-cffi, weasel, python-fasthtml, nbformat, spacy, nbclient, jupyter-events, fastprogress, nbconvert, fastai, jupyter-server, notebook-shim, jupyterlab-server, jupyter-lsp, jupyterlab\nSuccessfully installed MarkupSafe-3.0.3 Pillow-9.3.0 annotated-doc-0.0.5 annotated-types-0.8.0 anyio-4.14.2 argon2-cffi-25.1.0 argon2-cffi-bindings-25.1.0 arrow-1.4.0 asttokens-3.0.2 async-lru-2.3.0 attrs-26.1.0 babel-2.18.0 beautifulsoup4-4.15.0 bleach-6.4.0 blis-1.3.3 bottleneck-1.6.0 catalogue-2.0.10 certifi-2026.7.22 cffi-2.1.1 charset_normalizer-3.4.9 click-8.4.2 cloudpathlib-0.24.0 comm-0.2.3 confection-1.3.3 contourpy-1.3.3 cycler-0.12.1 cymem-2.0.13 debugpy-1.8.21 defusedxml-0.7.1 executing-2.2.1 fastai-1.0.60 fastcore-2.2.6 fastjsonschema-2.22.1 fastprogress-1.1.6 ffmpeg-1.4 ffmpeg-python-0.2.0 filelock-3.32.2 fonttools-4.63.0 fqdn-1.5.1 fsspec-2026.7.0 future-1.0.0 h11-0.16.0 httpcore-1.0.9 httpcore2-2.10.0 httptools-0.8.0 httpx-0.28.1 httpx2-2.10.0 idna-3.18 ipykernel-7.3.0 ipython-9.16.1 ipython-pygments-lexers-1.1.1 ipywidgets-8.1.8 isoduration-20.11.0 itsdangerous-2.2.0 jedi-0.20.0 jinja2-3.1.6 json5-0.15.0 jsonpointer-3.1.1 jsonschema-4.26.0 jsonschema-specifications-2025.9.1 jupyter-builder-1.2.2 jupyter-client-8.9.1 jupyter-core-5.9.1 jupyter-events-0.12.1 jupyter-lsp-2.3.1 jupyter-server-2.20.0 jupyter-server-terminals-0.5.4 jupyterlab-4.6.2 jupyterlab-pygments-0.3.0 jupyterlab-server-2.28.0 jupyterlab_widgets-3.0.16 kiwisolver-1.5.0 lark-1.3.1 markdown-it-py-4.2.0 matplotlib-3.11.1 matplotlib-inline-0.2.2 mdurl-0.1.2 mistune-3.3.4 mpmath-1.3.0 murmurhash-1.0.15 nbclient-0.11.0 nbconvert-7.17.1 nbformat-5.11.0 nest-asyncio2-1.7.2 networkx-3.6.1 notebook-shim-0.2.4 numexpr-2.14.2 numpy-2.4.6 nvidia-ml-py3-7.352.0 oauthlib-3.3.1 opencv-python-5.0.0.93 overrides-7.7.0 packaging-26.3 pandas-3.0.5 pandocfilters-1.5.1 parso-0.8.7 pexpect-4.9.0 platformdirs-4.11.1 preshed-3.0.13 prometheus-client-0.26.0 prompt_toolkit-3.0.53 protobuf-7.35.1 psutil-7.2.2 ptyprocess-0.7.0 pure-eval-0.2.3 pycparser-3.0 pydantic-2.13.4 pydantic-core-2.46.4 pygments-2.20.0 pyparsing-3.3.2 python-dateutil-2.9.0.post0 python-dotenv-1.2.2 python-fasthtml-0.14.11 python-json-logger-4.1.0 python-multipart-0.0.32 pyyaml-6.0.3 pyzmq-27.1.0 referencing-0.37.0 requests-2.34.2 rfc3339-validator-0.1.4 rfc3986-validator-0.1.1 rfc3987-syntax-1.1.0 rich-15.0.0 rpds-py-2026.6.3 scipy-1.17.1 send2trash-2.1.0 sentry-sdk-2.66.1 shellingham-1.5.4 six-1.17.0 smart-open-8.0.1 soupsieve-2.9.2 spacy-3.8.15 spacy-legacy-3.0.12 spacy-loggers-1.0.5 srsly-2.5.3 stack_data-0.6.3 starlette-1.6.0 sympy-1.14.0 tensorboardX-2.6.5 terminado-0.18.1 thinc-8.3.13 tinycss2-1.5.1 torch-2.13.0+cpu torchvision-0.28.0+cpu tornado-6.5.8 tqdm-4.70.0 traitlets-5.16.1 truststore-0.10.4 typer-0.27.1 typing-extensions-4.16.0 typing-inspection-0.4.2 tzdata-2026.3 uri-template-1.3.0 urllib3-2.7.0 uvicorn-0.52.1 uvloop-0.22.1 wandb-0.28.1 wasabi-1.1.3 watchfiles-1.2.0 wcwidth-0.8.2 weasel-1.0.0 webcolors-25.10.0 webencodings-0.5.1 websocket-client-1.9.0 websockets-17.0.1 widgetsnbextension-4.0.15 wrapt-2.3.0 yt-dlp-2026.7.4",
+      "stderr": "",
+      "truncated": true,
+      "raw_logs": {
+        "stdout": "logs/attempt1_install.stdout.txt",
+        "stderr": "logs/attempt1_install.stderr.txt"
+      },
+      "note": "Found requirements.txt at the repo root."
+    },
+    {
+      "name": "attempt1_import_check",
+      "argv": [
+        "python",
+        "-c",
+        "import deoldify; print(deoldify.__file__)"
+      ],
+      "cwd": "/",
+      "exit_code": 1,
+      "duration_s": 0.309,
+      "timed_out": false,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nModuleNotFoundError: No module named 'deoldify'\n",
+      "truncated": false,
+      "raw_logs": {
+        "stdout": "logs/attempt1_import_check.stdout.txt",
+        "stderr": "logs/attempt1_import_check.stderr.txt"
+      },
+      "note": "Top-level package directory with __init__.py (candidates: deoldify, fastai)."
+    },
+    {
+      "name": "attempt2_edit_file",
+      "argv": [
+        "python",
+        "-c",
+        "import sys, base64, pathlib\npathlib.Path(sys.argv[1]).write_text(base64.b64decode(sys.argv[2]).decode('utf-8'), encoding='utf-8')\n",
+        "/work/repo/requirements.txt",
+        "d2FuZGIKZmFzdGFpPT0xLjAuNjAKdGVuc29yYm9hcmRYPj0xLjYKZmZtcGVnCmZmbXBlZy1weXRob24KeXQtZGxwCmp1cHl0ZXJsYWIKb3BlbmN2LXB5dGhvbj49NC4yLjAuMzIKUGlsbG93PT05LjMuMApkZW9sZGlmeQotLWV4dHJhLWluZGV4LXVybCBodHRwczovL2Rvd25sb2FkLnB5dG9yY2gub3JnL3dobC9jcHUKdG9yY2gKdG9yY2h2aXNpb24KaXB5d2lkZ2V0cw=="
+      ],
+      "cwd": "/work",
+      "exit_code": 0,
+      "duration_s": 0.275,
+      "timed_out": false,
+      "stdout": "",
+      "stderr": "",
+      "truncated": false,
+      "raw_logs": {
+        "stdout": "logs/attempt2_edit_file.stdout.txt",
+        "stderr": "logs/attempt2_edit_file.stderr.txt"
+      },
+      "note": "rewrote requirements.txt"
+    },
+    {
+      "name": "attempt2_install",
+      "argv": [
+        "pip",
+        "install",
+        "--no-input",
+        "--no-color",
+        "--disable-pip-version-check",
+        "-r",
+        "requirements.txt"
+      ],
+      "cwd": "/work/repo",
+      "exit_code": 1,
+      "duration_s": 6.052,
+      "timed_out": false,
+      "stdout": "Looking in indexes: https://pypi.org/simple, https://download.pytorch.org/whl/cpu\nRequirement already satisfied: wandb in /opt/venv/lib/python3.11/site-packages (from -r requirements.txt (line 1)) (0.28.1)\nRequirement already satisfied: fastai==1.0.60 in /opt/venv/lib/python3.11/site-packages (from -r requirements.txt (line 2)) (1.0.60)\nRequirement already satisfied: tensorboardX>=1.6 in /opt/venv/lib/python3.11/site-packages (from -r requirements.txt (line 3)) (2.6.5)\nRequirement already satisfied: ffmpeg in /opt/venv/lib/python3.11/site-packages (from -r requirements.txt (line 4)) (1.4)\nRequirement already satisfied: ffmpeg-python in /opt/venv/lib/python3.11/site-packages (from -r requirements.txt (line 5)) (0.2.0)\nRequirement already satisfied: yt-dlp in /opt/venv/lib/python3.11/site-packages (from -r requirements.txt (line 6)) (2026.7.4)\nRequirement already satisfied: jupyterlab in /opt/venv/lib/python3.11/site-packages (from -r requirements.txt (line 7)) (4.6.2)\nRequirement already satisfied: opencv-python>=4.2.0.32 in /opt/venv/lib/python3.11/site-packages (from -r requirements.txt (line 8)) (5.0.0.93)\nRequirement already satisfied: Pillow==9.3.0 in /opt/venv/lib/python3.11/site-packages (from -r requirements.txt (line 9)) (9.3.0)\nCollecting deoldify (from -r requirements.txt (line 10))\n  Downloading deoldify-0.0.1-py3-none-any.whl.metadata (28 kB)\nRequirement already satisfied: torch in /opt/venv/lib/python3.11/site-packages (from -r requirements.txt (line 12)) (2.13.0+cpu)\nRequirement already satisfied: torchvision in /opt/venv/lib/python3.11/site-packages (from -r requirements.txt (line 13)) (0.28.0+cpu)\nRequirement already satisfied: ipywidgets in /opt/venv/lib/python3.11/site-packages (from -r requirements.txt (line 14)) (8.1.8)\nRequirement already satisfied: bottleneck in /opt/venv/lib/python3.11/site-packages (from fastai==1.0.60->-r requirements.txt (line 2)) (1.6.0)\nRequirement already satisfied: fastprogress>=0.2.1 in /opt/venv/lib/python3.11/site-packages (from fastai==1.0.60->-r requirements.txt (line 2)) (1.1.6)\nRequirement already satisfied: beautifulsoup4 in /opt/venv/lib/python3.11/site-packages (from fastai==1.0.60->-r requirements.txt (line 2)) (4.15.0)\nRequirement already satisfied: matplotlib in /opt/venv/lib/python3.11/site-packages (from fastai==1.0.60->-r requirements.txt (line 2)) (3.11.1)\nRequirement already satisfied: numexpr in /opt/venv/lib/python3.11/site-packages (from fastai==1.0.60->-r requirements.txt (line 2)) (2.14.2)\nRequirement already satisfied: numpy>=1.15 in /opt/venv/lib/python3.11/site-packages (from fastai==1.0.60->-r requirements.txt (line 2)) (2.4.6)\nRequirement already satisfied: nvidia-ml-py3 in /opt/venv/lib/python3.11/site-packages (from fastai==1.0.60->-r requirements.txt (line 2)) (7.352.0)\nRequirement already satisfied: pandas in /opt/venv/lib/python3.11/site-packages (from fastai==1.0.60->-r requirements.txt (line 2)) (3.0.5)\nRequirement already satisfied: packaging in /opt/venv/lib/python3.11/site-packages (from fastai==1.0.60->-r requirements.txt (line 2)) (26.3)\nRequirement already satisfied: pyyaml in /opt/venv/lib/python3.11/site-packages (from fastai==1.0.60->-r requirements.txt (line 2)) (6.0.3)\nRequirement already satisfied: requests in /opt/venv/lib/python3.11/site-packages (from fastai==1.0.60->-r requirements.txt (line 2)) (2.34.2)\nRequirement already satisfied: scipy in /opt/venv/lib/python3.11/site-packages (from fastai==1.0.60->-r requirements.txt (line 2)) (1.17.1)\nRequirement already satisfied: spacy>=2.0.18 in /opt/venv/lib/python3.11/site-packages (from fastai==1.0.60->-r requirements.txt (line 2)) (3.8.15)\nRequirement already satisfied: click>=8.2.0 in /opt/venv/lib/python3.11/site-packages (from wandb->-r requirements.txt (line 1)) (8.4.2)\nRequirement already satisfied: platformdirs in /opt/venv/lib/python3.11/site-packages (from wandb->-r requirements.txt (line 1)) (4.11.1)\nRequirement already satisfied: protobuf!=5.28.0,!=5.29.0,<8,>=5 in /opt/venv/lib/python3.11/site-packages (from wandb->-r requirements.txt (line 1)) (7.35.1)\nRequirement already satisfied: pydantic<3,>=2.6 in /opt/venv/lib/python3.11/site-packages (from wandb->-r requirements.txt (line 1)) (2.13.4)\nRequirement already satisfied: sentry-sdk>=2.0.0 in /opt/venv/lib/python3.11/site-packages (from wandb->-r requirements.txt (line 1)) (2.66.1)\nRequirement already satisfied: typing-extensions<5,>=4.8 in /opt/venv/lib/python3.11/site-packages (from wandb->-r requirements.txt (line 1)) (4.16.0)\nRequirement already satisfied: future in /opt/venv/lib/python3.11/site-packages (from ffmpeg-python->-r requirements.txt (line 5)) (1.0.0)\nRequirement already satisfied: async-lru>=1.0.0 in /opt/venv/lib/python3.11/site-packages (from jupyterlab->-r requirements.txt (line 7)) (2.3.0)\nRequirement already satisfied: httpx<1,>=0.25.0 in /opt/venv/lib/python3.11/site-packages (from jupyterlab->-r requirements.txt (line 7)) (0.28.1)\nRequirement already satisfied: ipykernel!=6.30.0,>=6.5.0 in /opt/venv/lib/python3.11/site-packages (from jupyterlab->-r requirements.txt (line 7)) (7.3.0)\nRequirement already satisfied: jinja2>=3.0.3 in /opt/venv/lib/python3.11/site-packages (from jupyterlab->-r requirements.txt (line 7)) (3.1.6)\nRequirement already satisfied: jupyter-builder>=1.0.2 in /opt/venv/lib/python3.11/site-packages (from jupyterlab->-r requirements.txt (line 7)) (1.2.2)\nRequirement already satisfied: jupyter-core in /opt/venv/lib/python3.11/site-packages (from jupyterlab->-r requirements.txt (line 7)) (5.9.1)\nRequirement already satisfied: jupyter-lsp>=2.0.0 in /opt/venv/lib/python3.11/site-packages (from jupyterlab->-r requirements.txt (line 7)) (2.3.1)\nRequirement already satisfied: jupyter-server<3,>=2.19.0 in /opt/venv/lib/python3.11/site-packages (from jupyterlab->-r requirements.txt (line 7)) (2.20.0)\nRequirement already satisfied: jupyterlab-server<3,>=2.28.0 in /opt/venv/lib/python3.11/site-packages (from jupyterlab->-r requirements.txt (line 7)) (2.28.0)\nRequirement already satisfied: notebook-shim>=0.2 in /opt/venv/lib/python3.11/site-packages (from jupyterlab->-r requirements.txt (line 7)) (0.2.4)\nRequirement already satisfied: tornado>=6.2.0 in /opt/venv/lib/python3.11/site-packages (from jupyterlab->-r requirements.txt (line 7)) (6.5.8)\nRequirement already satisfied: traitlets in /opt/venv/lib/python3.11/site-packages (from jupyterlab->-r requirements.txt (line 7)) (5.16.1)\nINFO: pip is looking at multiple versions of deoldify to determine which version is compatible with other requirements. This could take a while.\nCollecting fastai==1.0.60 (from -r requirements.txt (line 2))\n  Using cached fastai-1.0.60-py3-none-any.whl.metadata (14 kB)\n\nThe conflict is caused by:\n    The user requested Pillow==9.3.0\n    fastai 1.0.60 depends on Pillow\n    deoldify 0.0.1 depends on Pillow>=9.5.0\n\nTo fix this you could try to:\n1. loosen the range of package versions you've specified\n2. remove package versions to allow pip attempt to solve the dependency conflict\n\n",
+      "stderr": "ERROR: Cannot install -r requirements.txt (line 10), -r requirements.txt (line 2) and Pillow==9.3.0 because these package versions have conflicting dependencies.\nERROR: ResolutionImpossible: for help visit https://pip.pypa.io/en/latest/topics/dependency-resolution/#dealing-with-dependency-conflicts\n",
+      "truncated": false,
+      "raw_logs": {
+        "stdout": "logs/attempt2_install.stdout.txt",
+        "stderr": "logs/attempt2_install.stderr.txt"
+      },
+      "note": "Found requirements.txt at the repo root."
+    },
+    {
+      "name": "attempt2_import_check",
+      "skipped": true,
+      "reason": "install failed"
+    }
+  ],
+  "fix_loop": {
+    "attempt_cap": 5,
+    "attempts": [
+      {
+        "index": 1,
+        "diagnosis": {
+          "category": "python_version_incompatible",
+          "what_failed": "The installation of torch==1.11.0",
+          "why": "The pinned version of torch exists, but not as a wheel/sdist usable on this Python 3.11 interpreter or platform, as indicated by the list of available versions being all newer than the pin",
+          "evidence": "ERROR: Could not find a version that satisfies the requirement torch==1.11.0 (from versions: 1.13.0, 1.13.1, 2.0.0, 2.0.1, 2.1.0, 2.1.1, 2.1.2, 2.2.0, 2.2.1, 2.2.2, 2.3.0, 2.3.1, 2.4.0, 2.4.1, 2.5.0, 2.5.1, 2.6.0, 2.7.0, 2.7.1, 2.8.0, 2.9.0, 2.9.1, 2.10.0, 2.11.0, 2.12.0, 2.12.1, 2.13.0)",
+          "fix_category": "pin to a compatible version",
+          "confidence": "high",
+          "human_note": "",
+          "secondary_issues": [
+            "cuda_cpu_mismatch due to the --extra-index-url https://download.pytorch.org/whl/cu113, which requests a CUDA build on a CPU-only sandbox"
+          ],
+          "schema_valid": true,
+          "validation_notes": [],
+          "llm": {
+            "provider": "groq",
+            "model": "llama-3.3-70b-versatile",
+            "prompt_tokens": 2294,
+            "completion_tokens": 358,
+            "total_tokens": 2652,
+            "latency_s": 1.042,
+            "attempts": [
+              {
+                "provider": "groq",
+                "status": 200,
+                "total_tokens": 2652
+              }
+            ]
+          }
+        },
+        "proposal": {
+          "action": "edit_dependency_file",
+          "packages": [],
+          "file_path": "requirements.txt",
+          "file_content": "wandb\nfastai==1.0.60\ntensorboardX>=1.6\nffmpeg\nffmpeg-python\nyt-dlp\njupyterlab\nopencv-python>=4.2.0.32\nPillow==9.3.0\n--extra-index-url https://download.pytorch.org/whl/cpu\ntorch\ntorchvision\nipywidgets",
+          "reason": "The pinned version of torch is not compatible with Python 3.11, so we need to remove the version pin to allow installation of a compatible version.",
+          "give_up_note": "",
+          "schema_valid": true,
+          "validation_notes": [],
+          "llm": {
+            "provider": "groq",
+            "model": "llama-3.3-70b-versatile",
+            "prompt_tokens": 1099,
+            "completion_tokens": 151,
+            "total_tokens": 1250,
+            "latency_s": 0.652,
+            "attempts": [
+              {
+                "provider": "groq",
+                "status": 200,
+                "total_tokens": 1250
+              }
+            ]
+          }
+        },
+        "applied": true,
+        "result_status": "import_failed"
+      },
+      {
+        "index": 2,
+        "diagnosis": {
+          "category": "missing_python_dependency",
+          "what_failed": "The import of the deoldify module failed.",
+          "why": "The deoldify package is not declared in the requirements.txt file, so it was not installed.",
+          "evidence": "ModuleNotFoundError: No module named 'deoldify'",
+          "fix_category": "add missing dependency to requirements.txt",
+          "confidence": "high",
+          "human_note": "",
+          "secondary_issues": [
+            "--extra-index-url https://download.pytorch.org/whl/cpu may indicate a potential CUDA/cpu mismatch if the repo is intended to use GPU acceleration"
+          ],
+          "schema_valid": true,
+          "validation_notes": [],
+          "llm": {
+            "provider": "groq",
+            "model": "llama-3.3-70b-versatile",
+            "prompt_tokens": 1677,
+            "completion_tokens": 132,
+            "total_tokens": 1809,
+            "latency_s": 0.747,
+            "attempts": [
+              {
+                "provider": "groq",
+                "status": 200,
+                "total_tokens": 1809
+              }
+            ]
+          }
+        },
+        "proposal": {
+          "action": "edit_dependency_file",
+          "packages": [],
+          "file_path": "requirements.txt",
+          "file_content": "wandb\nfastai==1.0.60\ntensorboardX>=1.6\nffmpeg\nffmpeg-python\nyt-dlp\njupyterlab\nopencv-python>=4.2.0.32\nPillow==9.3.0\ndeoldify\n--extra-index-url https://download.pytorch.org/whl/cpu\ntorch\ntorchvision\nipywidgets",
+          "reason": "Adding the missing deoldify package to the requirements.txt file will allow it to be installed and imported successfully.",
+          "give_up_note": "",
+          "schema_valid": true,
+          "validation_notes": [],
+          "llm": {
+            "provider": "groq",
+            "model": "llama-3.3-70b-versatile",
+            "prompt_tokens": 883,
+            "completion_tokens": 148,
+            "total_tokens": 1031,
+            "latency_s": 0.493,
+            "attempts": [
+              {
+                "provider": "groq",
+                "status": 200,
+                "total_tokens": 1031
+              }
+            ]
+          }
+        },
+        "applied": true,
+        "result_status": "install_failed"
+      },
+      {
+        "index": 3,
+        "diagnosis": {
+          "category": "version_conflict",
+          "what_failed": "The installation of the repository's dependencies failed due to a version conflict.",
+          "why": "The pinned version of Pillow (9.3.0) is incompatible with the version required by deoldify (>=9.5.0) and the version required by fastai (any version).",
+          "evidence": "The conflict is caused by: The user requested Pillow==9.3.0, fastai 1.0.60 depends on Pillow, deoldify 0.0.1 depends on Pillow>=9.5.0",
+          "fix_category": "loosen the range of package versions or remove package versions to allow pip to attempt to solve the dependency conflict",
+          "confidence": "high",
+          "human_note": "",
+          "secondary_issues": [
+            "cuda_cpu_mismatch due to the --extra-index-url https://download.pytorch.org/whl/cpu index, which may cause issues once the version conflict is resolved"
+          ],
+          "schema_valid": true,
+          "validation_notes": [],
+          "llm": {
+            "provider": "groq",
+            "model": "llama-3.3-70b-versatile",
+            "prompt_tokens": 2194,
+            "completion_tokens": 213,
+            "total_tokens": 2407,
+            "latency_s": 0.948,
+            "attempts": [
+              {
+                "provider": "groq",
+                "status": 200,
+                "total_tokens": 2407
+              }
+            ]
+          }
+        },
+        "proposal": {
+          "action": "give_up",
+          "packages": [],
+          "file_path": "requirements.txt",
+          "file_content": "",
+          "reason": "Loosening the version constraint of Pillow to 9.5.0 or higher resolves the version conflict with deoldify and allows pip to attempt to solve the dependency conflict.",
+          "give_up_note": "No file content was proposed.",
+          "schema_valid": false,
+          "validation_notes": [
+            "edit_dependency_file proposed with empty file_content; forcing give_up"
+          ],
+          "llm": {
+            "provider": "groq",
+            "model": "llama-3.3-70b-versatile",
+            "prompt_tokens": 985,
+            "completion_tokens": 160,
+            "total_tokens": 1145,
+            "latency_s": 0.83,
+            "attempts": [
+              {
+                "provider": "groq",
+                "status": 200,
+                "total_tokens": 1145
+              }
+            ]
+          }
+        },
+        "applied": false,
+        "result_status": "give_up"
+      }
+    ],
+    "stopped_reason": "give_up",
+    "final_status": "install_failed"
+  },
+  "outcome": {
+    "status": "install_failed",
+    "failing_step": "attempt2_install",
+    "exit_code": 1,
+    "summary_line": "ERROR: ResolutionImpossible: for help visit https://pip.pypa.io/en/latest/topics/dependency-resolution/#dealing-with-dependency-conflicts"
+  }
+}

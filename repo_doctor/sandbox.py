@@ -23,6 +23,7 @@ packages to persist.
 
 from __future__ import annotations
 
+import base64
 import json
 import subprocess
 import time
@@ -305,6 +306,39 @@ class Sandbox:
         if result.exit_code != 0:
             return None
         return result.stdout
+
+    def write_file(self, path: str, content: str, timeout: int | None = None) -> ExecResult:
+        """Overwrite a text file inside the container. Increment 2 (fix loop) only.
+
+        The content is base64-encoded and passed as an argv element, not piped
+        through a shell: this is what keeps an LLM-authored file (arbitrary
+        quotes, newlines, `$(...)`) from ever reaching a shell interpreter, the
+        same invariant `exec()` already enforces for argv itself.
+        """
+        encoded = base64.b64encode(content.encode("utf-8")).decode("ascii")
+        script = (
+            "import sys, base64, pathlib\n"
+            "pathlib.Path(sys.argv[1]).write_text("
+            "base64.b64decode(sys.argv[2]).decode('utf-8'), encoding='utf-8')\n"
+        )
+        return self.exec(
+            ["python", "-c", script, path, encoded],
+            timeout=timeout or self.config.timeouts.probe,
+        )
+
+    def apt_install(self, packages: list[str], timeout: int) -> tuple[ExecResult, ExecResult]:
+        """`apt-get update` then `apt-get install` a list of system packages.
+
+        Two separate argv-list execs, never `&&`'d through a shell. Callers must
+        validate package names before calling this — this method runs whatever
+        it is given.
+        """
+        update = self.exec(["apt-get", "update"], timeout=timeout)
+        install = self.exec(
+            ["apt-get", "install", "-y", "--no-install-recommends", *packages],
+            timeout=timeout,
+        )
+        return update, install
 
 
 def _as_text(value) -> str:
