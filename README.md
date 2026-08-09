@@ -4,12 +4,13 @@ An agent that takes a broken Python ML repository and gets it to **install and i
 successfully inside a Docker sandbox** — diagnosing dependency, version, and environment
 errors, applying fixes, verifying them, and reporting honestly on the repos it cannot fix.
 
-> **Status: increments 0-3 of 5 complete.** The harness clones, installs, imports, and captures
+> **Status: all 5 increments complete.** The harness clones, installs, imports, and captures
 > everything to a structured log; an LLM turns a captured failure into a structured diagnosis;
 > (opt-in, via `--fix`) a capped loop proposes a concrete fix, applies it inside the sandbox,
-> and re-runs install + import, retrying up to 5 times; and `telemetry.py` aggregates every
-> attempt, its time, and its LLM token cost across every run. Polished honest reporting is
-> increment 4. Everything below describes what actually runs today.
+> and re-runs install + import, retrying up to 5 times; `telemetry.py` aggregates every
+> attempt, its time, and its LLM token cost across every run; and `report.py` renders the
+> final, honest per-repo verdict — fixed or not, every fix tried, the cost, and, if it's still
+> broken, the specific blocker and what a human needs to do next.
 
 ## Why
 
@@ -162,11 +163,51 @@ from an unconfigured rate would be exactly the kind of unearned precision the ho
 (SPEC.md section 7) warns against. "Dashboard" means a CLI table here, not a web product — out of
 scope for v1, and every other tool in this project is a CLI for the same reason.
 
+## Report
+
+```bash
+python report.py results/<run_id>   # one run
+python report.py --all              # every run under results/
+python runner.py <url> --fix --report   # run, fix, then print the verdict in one pass
+```
+
+The final, honest verdict SPEC.md section 7 asks for. Real example — the DeOldify fix-loop run,
+which fixed a real CUDA/version-pin failure but ultimately couldn't finish (the repo genuinely
+ships no installable package for itself):
+
+```
+NOT FIXED — still install_failed after 3 attempt(s) (stopped: give_up).
+
+ATTEMPTS (3)
+  1. diagnosed: python_version_incompatible (confidence: high) — torch==1.11.0 pin predates cp311
+     tried: edit_dependency_file — remove the version pin
+     result: import_failed
+  2. diagnosed: missing_python_dependency (confidence: high) — deoldify itself was never installed
+     tried: edit_dependency_file — add deoldify to requirements.txt
+     result: install_failed
+  3. diagnosed: version_conflict (confidence: high) — Pillow pin conflicts with deoldify/fastai
+     tried: give_up — (malformed reply; see repo_doctor/fix.py's validate())
+     result: give_up
+
+WHY IT'S STILL BROKEN
+  category      version_conflict  (confidence: high)
+  why           Pillow==9.3.0 is incompatible with deoldify's Pillow>=9.5.0 requirement.
+
+COST
+  6 LLM call(s), 10294 token(s), 4.7s API latency, 528.4s wall clock total
+```
+
+Every fix attempted, in order, with what was diagnosed, what was tried, and what happened — not
+just a bare "failed." Strictly read-only: `report.py` never calls an LLM itself. If a run has no
+captured diagnosis (neither `--diagnose` nor `--fix` was ever passed), it says exactly that —
+"No diagnosis was captured for this run" — rather than quietly reaching for the API to fill the
+gap, the same opt-in discipline `--diagnose`/`--fix` established.
+
 ## Design
 
 ```
 sandbox/Dockerfile        base image the agent operates inside
-runner.py                 CLI: clone -> install/import (-> diagnose) (-> fix loop)
+runner.py                 CLI: clone -> install/import (-> diagnose) (-> fix loop) (-> report)
 repo_doctor/sandbox.py    container lifecycle + isolation + write_file/apt_install
 repo_doctor/detect.py     deterministic install-file and import-target detection
 repo_doctor/pipeline.py   install -> import, shared by the initial run and each fix attempt
@@ -176,6 +217,8 @@ repo_doctor/fix_loop.py   orchestrates diagnose -> propose -> apply -> re-run, c
 repo_doctor/logstore.py   structured run logs
 telemetry.py              CLI: aggregate every run's attempts/time/token cost into a table
 repo_doctor/telemetry.py  read-only aggregation over run.json — no Docker, no LLM
+report.py                 CLI: the final honest per-repo verdict
+repo_doctor/report.py     builds the verdict from run.json + telemetry — no Docker, no LLM
 results/<run_id>/         run.json, events.jsonl, raw logs
 ```
 
@@ -223,6 +266,6 @@ completely is what makes this shippable.
 - [x] **1 — Diagnosis.** LLM turns a captured error into structured JSON.
 - [x] **2 — Fix loop.** Propose → apply → re-run → retry, capped at 5 attempts.
 - [x] **3 — Telemetry.** Every attempt, time, and token cost.
-- [ ] **4 — Honest reporting.** Real diagnosis for repos it could not fix.
+- [x] **4 — Honest reporting.** Real diagnosis for repos it could not fix.
 
-See [SPEC.md](SPEC.md) for the full brief.
+All 5 increments from SPEC.md section 5 are shipped. See [SPEC.md](SPEC.md) for the full brief.

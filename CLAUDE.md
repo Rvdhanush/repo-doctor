@@ -45,8 +45,9 @@ them, and reports honestly — including on repos it cannot fix.
   - `--build` rebuild the image first; `--skip-import` stop after install;
     `--run-id X` name the run; `--config` point at a different settings.yaml;
     `--diagnose` explain a failure (increment 1); `--fix` diagnose -> propose ->
-    apply -> re-run, capped at 5 attempts (increment 2). Both are opt-in — the
-    base command never calls an LLM.
+    apply -> re-run, capped at 5 attempts (increment 2); `--report` print the
+    final honest verdict after the run (increment 4). All three are opt-in —
+    the base command never calls an LLM.
   - The image is built automatically if missing. Requires the Docker daemon running.
 - Read a log: `results/<run_id>/run.json` (structured, UTF-8 — open with
   `encoding="utf-8"`), `events.jsonl` (live stream), `logs/*.txt` (raw, untruncated)
@@ -64,6 +65,9 @@ never conflate the two.
       Propose -> apply -> re-run -> retry, capped at `limits.attempt_cap` (default 5).
 - [x] 3 — telemetry. `telemetry.py` + `repo_doctor/telemetry.py`. Read-only aggregation of
       every attempt/time/token cost across `results/` into a CLI table.
+- [x] 4 — honest reporting. `report.py` + `repo_doctor/report.py`, wired via `runner.py
+      --report`. Final per-repo verdict: fixed/not, every fix tried, cost, and — if still
+      broken — the specific diagnosis and human next step. All 5 increments now shipped.
 
 ## Diagnosis (increment 1)
 - `python diagnose.py results/<run_id>` — diagnose a run already captured (no re-install)
@@ -133,6 +137,21 @@ never conflate the two.
   invented, not measured — don't add one without a real per-provider rate table.
 - "Dashboard" means the CLI table above, not a web product — CLAUDE.md's scope
   discipline rules that out for v1.
+
+## Reporting (increment 4)
+- `python report.py results/<run_id>` / `--all` / `--json` — the final,
+  honest per-repo verdict: fixed or not, every fix attempted with what was
+  diagnosed and tried, the cost, and — if still broken — the specific
+  diagnosis and what a human needs to do. `runner.py <url> --fix --report`
+  runs the two in one pass.
+- Strictly read-only, same discipline as `telemetry.py`: makes no LLM call of
+  its own. A run with no captured diagnosis (`--diagnose`/`--fix` never
+  passed) gets an honest "No diagnosis was captured for this run" and names
+  the command that would, rather than silently spending a token to fill the
+  gap.
+- `clone_failed` shows a diagnosis section if one was captured (it's a real
+  verdict about the target repo); `harness_error` deliberately never does —
+  there is nothing about the repo to explain when the harness itself broke.
 
 ## Running in GitHub Codespaces (cloud-first)
 `.devcontainer/devcontainer.json` configures a Codespace with a real Docker daemon

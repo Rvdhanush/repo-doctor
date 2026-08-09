@@ -255,6 +255,10 @@ def main(argv: list[str] | None = None) -> int:
                         help="on an install/import failure, diagnose -> propose a fix -> "
                              "apply it in the sandbox -> re-run, up to the attempt cap "
                              "(increment 2). Opt-in: never runs unless passed.")
+    parser.add_argument("--report", action="store_true",
+                        help="print the final honest report after the run (fixed or not, "
+                             "cost, and — if still broken — why) (increment 4). Read-only: "
+                             "renders whatever --diagnose/--fix already captured.")
     args = parser.parse_args(argv)
 
     # Model output and captured logs routinely contain characters the Windows
@@ -277,6 +281,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.diagnose and status != logstore.STATUS_OK:
         _diagnose_after_run(cfg, run_id)
+
+    if args.report:
+        _print_report(cfg, run_id)
 
     return code
 
@@ -312,6 +319,25 @@ def _diagnose_after_run(cfg: Config, run_id: str) -> None:
     except (LLMError, OSError, ValueError) as exc:
         # A failed diagnosis must not change the harness's verdict about the repo.
         print(f"[repo-doctor] --diagnose failed: {exc}", file=sys.stderr)
+
+
+def _print_report(cfg: Config, run_id: str) -> None:
+    """Increment 4: print the final honest report. Strictly read-only.
+
+    Reads run.json back from disk rather than reusing an in-memory doc: by the
+    time this runs, --diagnose/--fix (if passed) have already written their
+    findings back to it, so this always reports the complete, final state.
+    """
+    from repo_doctor.report import build_report, render_human
+
+    run_dir = cfg.results_root / run_id
+    try:
+        run_doc = json.loads((run_dir / "run.json").read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        print(f"[repo-doctor] --report: could not read run.json: {exc}", file=sys.stderr)
+        return
+    print()
+    print(render_human(build_report(run_doc)))
 
 
 if __name__ == "__main__":
