@@ -51,6 +51,8 @@ production-isolation instinct FDE roles screen for.
         logstore.py              structured run logs (run.json / events.jsonl / logs/)
       configs/
         settings.yaml         # attempt cap, base image, model, cost limits
+      .devcontainer/          # Codespaces: docker-in-docker + Claude Code preinstalled
+      .github/workflows/      # CI: import/lint check + a real no-LLM harness smoke test
       results/                # per-run logs + reports (committed as evidence)
 
 (This is the as-built layout — thin CLI entry points at the root, all logic under `repo_doctor/`.
@@ -64,24 +66,66 @@ Rules:
   configurable ceiling.
 - Config-driven and reproducible.
 - Stack: Python 3.11+, Docker, an LLM via API (start with a free/cheap tier), structured JSON logs.
+- Host dependencies stay minimal (PyYAML only). A project about fragile installs should
+  not itself be fragile to install, so the LLM client is plain urllib rather than an SDK.
+- Providers are any OpenAI-compatible endpoint, tried in order with fallback. Currently
+  Groq (`llama-3.3-70b-versatile`) primary, Cerebras configured as backup. Keys live in
+  `.env` locally and as Codespaces secrets in the cloud — never in the repo.
 
 ## 5. Build order — one shippable increment at a time
-- **Increment 0 — harness, NO LLM.** Clone a repo into the sandbox, attempt install, capture the
-  raw failure output to a structured log. Prove isolation + capture work.
-- **Increment 1 — diagnosis only.** Feed the captured error to an LLM; return a structured
+- **[DONE] Increment 0 — harness, NO LLM.** Clone a repo into the sandbox, attempt install, capture
+  the raw failure output to a structured log. Prove isolation + capture work.
+- **[DONE] Increment 1 — diagnosis only.** Feed the captured error to an LLM; return a structured
   diagnosis (what failed, why, fix category). No fixing yet.
-- **Increment 2 — the fix loop (core).** Propose fix -> apply in sandbox -> re-run -> read result
-  -> retry up to the cap. Stop on install+import success or cap.
-- **Increment 3 — telemetry.** Surface every attempt, time, and token/API cost as a dashboard.
-- **Increment 4 — honest reporting.** Final report per repo, including a real diagnosis for repos
-  it could not fix.
+- **[DONE] Increment 2 — the fix loop (core).** Propose fix -> apply in sandbox -> re-run -> read
+  result -> retry up to the cap. Stop on install+import success or cap.
+- **[DONE] Increment 3 — telemetry.** Surface every attempt, time, and token/API cost as a dashboard.
+- **[DONE] Increment 4 — honest reporting.** Final report per repo, including a real diagnosis for
+  repos it could not fix.
 
 Ship 0-2 and you have a real agent. 3-4 are what make it stand out.
 
-**Status: all 5 increments shipped.** See README.md's roadmap for the checklist and
-CLAUDE.md's "Increment status" for what file implements which; `results/` holds every
-run committed as evidence, including live `--fix` runs against real repos for section 6's
+**Status: all 5 increments shipped and their gates cleared.** See README.md's roadmap for the
+checklist and CLAUDE.md's "Increment status" for what file implements which; `results/` holds
+every run committed as evidence, including live `--fix` runs against real repos for section 6's
 scenarios below.
+
+### Gate checks — each increment had to clear one before the next began
+These were judged by a human, not by tests passing:
+- **0:** point it at a broken repo and see the raw failure captured in a log. That's it.
+- **1:** read the diagnoses against repos you already understand. Are they *right*? This is the
+  calibration bar — the difference between a real diagnosis and a plausible-sounding wrong one is
+  something only someone who knows these failure modes can judge. Bad diagnoses here are signal to
+  refine before building the fix loop, not a reason to push on.
+- **2:** watch it fix a repo you couldn't — *and* watch it fail one. The failure is data for
+  increment 4, not a bug. Cleared live against real repos: `results/e2e-deoldify-fix` (CUDA/pin
+  fix, then an honest give-up on a real second problem) and `results/e2e-mimo-version-conflict`
+  (version conflict fixed outright, then the same honest-give-up pattern on an unrelated issue).
+- **3:** the dashboard should let someone watch the agent think: try, fail, adjust, cost accruing.
+  `telemetry.py` does this as a CLI table, deliberately not a web product (out of scope for v1).
+- **4:** the "could not fix" report must be as informative as the success report. `report.py`
+  renders exactly that from whatever `--diagnose`/`--fix` already captured, never calling an LLM
+  of its own to fill a gap.
+
+### Where increment 1 actually landed
+Its first attempt scored 2 of 4 on real repos, and both failures were prompt-design faults rather
+than model limitations. Recording them because they are easy to reintroduce:
+- A **free-text category** produced `"Python Installation"` — the symptom restated. Categories must
+  stay a closed enum.
+- The prompt must carry **sandbox facts** (no compiler, CPU-only); no model infers them from a
+  traceback.
+- But facts about what the image *lacks* are not evidence of cause. Without explicit grounding
+  rules the model invented a compiler failure for a repo where no install ever ran, and a CUDA
+  index for a repo that has none. Categories `no_install_file` and `repo_unavailable` exist so
+  non-install failures have somewhere correct to go.
+- Diagnoses run against **stored** logs, so prompt iteration costs seconds instead of minutes of
+  re-installing. This is what made three rounds of calibration affordable.
+
+The fix loop (increment 2) had its own version of this: the fix-proposal prompt reliably produced
+`edit_dependency_file` with an *empty* `file_content` whenever a fix touched more than one pin at
+once — reproduced twice in a row against a real conflict before a worked few-shot example in the
+prompt fixed it. Same lesson as increment 1's, one layer over: a closed schema stops the model from
+answering the wrong question, but it does not by itself make the model fill every required field.
 
 ## 6. Worked example scenarios (the failure modes to design against)
 These are representative of what the agent must handle. Use them as test cases.

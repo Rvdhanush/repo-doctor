@@ -69,6 +69,16 @@ never conflate the two.
       --report`. Final per-repo verdict: fixed/not, every fix tried, cost, and — if still
       broken — the specific diagnosis and human next step. All 5 increments now shipped.
 
+**Gate checks were human-judged** (see SPEC.md §5's "Gate checks" and "Where increment 1
+actually landed"). Increment 2's gate — watch it fix a repo, and watch it fail one honestly —
+cleared against `results/e2e-deoldify-fix` and `results/e2e-mimo-version-conflict`.
+
+Known gap carried forward from the increment-2 design notes: `Diagnosis.secondary_issues`
+(problems the primary failure is currently masking, e.g. DeOldify's CUDA index waiting behind
+its stale torch pin) is captured but not specially prioritized by `fix_loop.py` — each attempt
+just re-diagnoses fresh, so a masked issue surfaces one attempt later rather than being
+anticipated. Works fine within the attempt cap; would matter more with a tighter cap.
+
 ## Diagnosis (increment 1)
 - `python diagnose.py results/<run_id>` — diagnose a run already captured (no re-install)
 - `python diagnose.py --all --save` — every failed run, written back into run.json
@@ -167,6 +177,40 @@ never conflate the two.
   Stopping alone still consumes the storage allowance.
 - Disk (32 GB default), not CPU, is the binding constraint: ML installs land in the
   sandbox container layer. `docker builder prune` reclaims space.
+
+## Evidence on disk (`results/`, committed deliberately)
+| run | repo | outcome | diagnosis / fix loop |
+|---|---|---|---|
+| `20260808T164042Z` | ageitgey/face_recognition | `install_failed` | `missing_system_package` (dlib needs cmake/g++) |
+| `20260808T164211Z` | bojone/bert4keras | `ok` | — |
+| `deoldify` | jantic/DeOldify | `install_failed` | `python_version_incompatible` + masked `cu113` CUDA index |
+| `e2e-deoldify-fix` | jantic/DeOldify `--fix` | `install_failed` | attempt 1 fixed the CUDA/pin failure (scenario A); honest give-up on a real second problem (no `setup.py`) |
+| `e2e-mimo-version-conflict` | menyifang/MIMO `--fix` | `install_failed` | attempt 1 fully resolved a real `version_conflict` (scenario B, 711.6s reinstall, exit 0); honest give-up on an unrelated real problem (no installable package) |
+| `neg-unsupported` | karpathy/nanoGPT | `unsupported` | `no_install_file` |
+| `neg-clonefail` | (nonexistent) | `clone_failed` | `repo_unavailable` |
+| `test-docker-down` | — | `harness_error` | — |
+
+Fast repos for iterating: **bert4keras** (~20s, passes), **DeOldify** (~15s, fails at
+resolution), **face_recognition** (~50s, fails at build). Avoid stable-diffusion —
+it downloads torch for 14 minutes. A live `--fix` run that actually reinstalls a heavy ML
+stack (torch/transformers) after a successful edit can run 10-15 minutes on its own — run
+those in the background, not inline.
+
+## Gotchas already paid for (do not rediscover these)
+- **`docker info --format` exits 0 when the daemon is down.** The template renders empty
+  and the error goes to stderr. Check for actual output, not the return code.
+- **Cloudflare rejects the default `Python-urllib` User-Agent** with error 1010 — a 403
+  that looks exactly like an auth failure. `llm.py` sets its own UA.
+- **Credentials collect invisible whitespace.** A Codespaces secret uploaded through a
+  shell pipeline kept a trailing `\r`; `http.client` then raised "Invalid header value",
+  naming neither the key nor the whitespace. `Provider.__post_init__` strips it now.
+- **`run.json` is UTF-8; the Windows console is cp1252.** Read logs with
+  `encoding="utf-8"`, and reconfigure stdout before printing model output.
+- **No TTY on `docker exec`.** A TTY merges stdout into stderr and injects ANSI codes.
+- **Import checks run from `cwd=/`**, never the repo dir — otherwise a source folder on
+  `sys.path` lets an import "pass" for a package that never installed.
+- **Cerebras currently returns 402** (no free quota on this account). Fallback path is
+  wired and correct; everything runs on Groq today.
 
 ## Sandbox notes (do not undo casually)
 - The base image is **deliberately lean** (git + ca-certificates + curl, no compilers).
