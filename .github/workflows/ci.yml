@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+
+      - name: Import every entrypoint and repo_doctor module
+        run: |
+          python -c "
+          import runner, diagnose, telemetry, report
+          import repo_doctor.config, repo_doctor.sandbox, repo_doctor.detect
+          import repo_doctor.pipeline, repo_doctor.llm, repo_doctor.diagnosis
+          import repo_doctor.fix, repo_doctor.fix_loop, repo_doctor.logstore
+          import repo_doctor.telemetry, repo_doctor.report
+          print('all modules import cleanly')
+          "
+
+      - name: --help smoke test for every CLI
+        run: |
+          python runner.py --help
+          python diagnose.py --help
+          python telemetry.py --help
+          python report.py --help
+
+  # No LLM calls in CI: --diagnose/--fix need a provider key and are opt-in by
+  # design (see CLAUDE.md), so this only exercises the no-LLM harness paths
+  # (increment 0). That's still real coverage of the one load-bearing
+  # decision -- the Docker sandbox actually starting, installing, and
+  # importing -- without depending on an external API's availability.
+  harness-smoke:
+    runs-on: ubuntu-latest
+    needs: lint-and-import
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+
+      - name: Build the sandbox image
+        run: docker build -t repo-doctor-sandbox:0.1 ./sandbox
+
+      - name: Known-good repo installs and imports (positive path)
+        run: python runner.py https://github.com/bojone/bert4keras --run-id ci-ok-${{ github.run_id }}
+
+      - name: No install file (negative path, expects exit 1)
+        run: |
+          set +e
+          python runner.py https://github.com/karpathy/nanoGPT --run-id ci-unsupported-${{ github.run_id }}
+          code=$?
+          set -e
+          if [ "$code" -ne 1 ]; then
+            echo "expected exit 1 (unsupported target repo), got $code"
+            exit 1
+          fi

@@ -1,5 +1,7 @@
 # repo-doctor
 
+[![CI](https://github.com/Rvdhanush/repo-doctor/actions/workflows/ci.yml/badge.svg)](https://github.com/Rvdhanush/repo-doctor/actions/workflows/ci.yml)
+
 An agent that takes a broken Python ML repository and gets it to **install and import
 successfully inside a Docker sandbox** — diagnosing dependency, version, and environment
 errors, applying fixes, verifying them, and reporting honestly on the repos it cannot fix.
@@ -269,3 +271,7 @@ completely is what makes this shippable.
 - [x] **4 — Honest reporting.** Real diagnosis for repos it could not fix.
 
 All 5 increments from SPEC.md section 5 are shipped. See [SPEC.md](SPEC.md) for the full brief.
+
+## License
+
+[MIT](LICENSE)
