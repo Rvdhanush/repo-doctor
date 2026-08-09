@@ -4,11 +4,12 @@ An agent that takes a broken Python ML repository and gets it to **install and i
 successfully inside a Docker sandbox** — diagnosing dependency, version, and environment
 errors, applying fixes, verifying them, and reporting honestly on the repos it cannot fix.
 
-> **Status: increments 0-2 of 5 complete.** The harness clones, installs, imports, and captures
+> **Status: increments 0-3 of 5 complete.** The harness clones, installs, imports, and captures
 > everything to a structured log; an LLM turns a captured failure into a structured diagnosis;
-> and (opt-in, via `--fix`) a capped loop proposes a concrete fix, applies it inside the
-> sandbox, and re-runs install + import, retrying up to 5 times. Telemetry and polished honest
-> reporting are increments 3-4. Everything below describes what actually runs today.
+> (opt-in, via `--fix`) a capped loop proposes a concrete fix, applies it inside the sandbox,
+> and re-runs install + import, retrying up to 5 times; and `telemetry.py` aggregates every
+> attempt, its time, and its LLM token cost across every run. Polished honest reporting is
+> increment 4. Everything below describes what actually runs today.
 
 ## Why
 
@@ -134,6 +135,33 @@ never a path other than the one it was given), or `give_up`. Every attempt — d
 whether it applied, and the result — is recorded under `run.json`'s `fix_loop` key, so a run that
 exhausts the cap still leaves a full, honest trail of what was tried.
 
+## Telemetry
+
+```bash
+python telemetry.py                 # a table across every run under results/
+python telemetry.py <run_id>        # just one run
+python telemetry.py --json          # machine-readable
+```
+
+```
+RUN ID            STATUS          DURATION  ATTEMPTS  LLM CALLS  TOKENS  STOPPED REASON
+----------------  --------------  --------  --------  ---------  ------  --------------
+20260808T164042Z  install_failed  58.9s     1         1          3845
+20260808T164211Z  ok              25.0s     1         0          0
+e2e-deoldify-fix  install_failed  528.4s    4         6          10294   give_up
+
+7 run(s) — 1 clone_failed, 1 harness_error, 3 install_failed, 1 ok, 1 unsupported —
+10 LLM call(s), 20066 token(s) total
+```
+
+Purely a read-only aggregator over `run.json` files already on disk — it never touches Docker or
+an LLM, it just adds up what `runner.py`, `diagnose.py`, and the fix loop already recorded (one
+LLM call per diagnosis and per fix proposal, each carrying its own token count and latency). Cost
+is reported in tokens, not dollars: `repo_doctor/llm.py` never records a price, and inventing one
+from an unconfigured rate would be exactly the kind of unearned precision the honesty requirement
+(SPEC.md section 7) warns against. "Dashboard" means a CLI table here, not a web product — out of
+scope for v1, and every other tool in this project is a CLI for the same reason.
+
 ## Design
 
 ```
@@ -146,6 +174,8 @@ repo_doctor/diagnosis.py  LLM: captured failure -> structured diagnosis (closed 
 repo_doctor/fix.py        LLM: diagnosis -> one concrete action (closed action enum)
 repo_doctor/fix_loop.py   orchestrates diagnose -> propose -> apply -> re-run, capped at 5
 repo_doctor/logstore.py   structured run logs
+telemetry.py              CLI: aggregate every run's attempts/time/token cost into a table
+repo_doctor/telemetry.py  read-only aggregation over run.json — no Docker, no LLM
 results/<run_id>/         run.json, events.jsonl, raw logs
 ```
 
@@ -192,7 +222,7 @@ completely is what makes this shippable.
 - [x] **0 — Harness, no LLM.** Clone, install, import, structured logs.
 - [x] **1 — Diagnosis.** LLM turns a captured error into structured JSON.
 - [x] **2 — Fix loop.** Propose → apply → re-run → retry, capped at 5 attempts.
-- [ ] **3 — Telemetry.** Every attempt, time, and token cost.
+- [x] **3 — Telemetry.** Every attempt, time, and token cost.
 - [ ] **4 — Honest reporting.** Real diagnosis for repos it could not fix.
 
 See [SPEC.md](SPEC.md) for the full brief.

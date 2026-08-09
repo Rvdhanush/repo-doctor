@@ -50,6 +50,7 @@ them, and reports honestly — including on repos it cannot fix.
   - The image is built automatically if missing. Requires the Docker daemon running.
 - Read a log: `results/<run_id>/run.json` (structured, UTF-8 — open with
   `encoding="utf-8"`), `events.jsonl` (live stream), `logs/*.txt` (raw, untruncated)
+- Telemetry across all runs: `python telemetry.py` (table) / `--json`
 
 ## Exit codes
 `0` repo installed + imported · `1` repo failed (clone/unsupported/install/import) ·
@@ -61,6 +62,8 @@ never conflate the two.
 - [x] 1 — diagnosis. `diagnose.py` + `repo_doctor/{llm,diagnosis}.py`. Diagnose only.
 - [x] 2 — fix loop. `repo_doctor/{fix,fix_loop,pipeline}.py`, wired via `runner.py --fix`.
       Propose -> apply -> re-run -> retry, capped at `limits.attempt_cap` (default 5).
+- [x] 3 — telemetry. `telemetry.py` + `repo_doctor/telemetry.py`. Read-only aggregation of
+      every attempt/time/token cost across `results/` into a CLI table.
 
 ## Diagnosis (increment 1)
 - `python diagnose.py results/<run_id>` — diagnose a run already captured (no re-install)
@@ -119,6 +122,17 @@ never conflate the two.
   base64-encodes the content and decodes it with `python -c`, passed as argv —
   the same "argv is a list, never a shell string" rule `Sandbox.exec` already
   enforces, extended to LLM-authored file content.
+
+## Telemetry (increment 3)
+- `python telemetry.py` — table across every run under `results/`: status,
+  duration, install attempts used, LLM calls, total tokens, fix-loop stop
+  reason. `python telemetry.py <run_id>` for one run; `--json` for machine use.
+- Strictly read-only aggregation over `run.json` files already on disk — no
+  Docker, no LLM call, no re-diagnosis. Cost is reported in **tokens**, not
+  dollars: `repo_doctor/llm.py` never records a price, so a $ figure would be
+  invented, not measured — don't add one without a real per-provider rate table.
+- "Dashboard" means the CLI table above, not a web product — CLAUDE.md's scope
+  discipline rules that out for v1.
 
 ## Running in GitHub Codespaces (cloud-first)
 `.devcontainer/devcontainer.json` configures a Codespace with a real Docker daemon
