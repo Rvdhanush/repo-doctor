@@ -33,14 +33,30 @@ production-isolation instinct FDE roles screen for.
     repo-doctor/
       sandbox/
         Dockerfile            # base python image the agent operates inside
-      runner.py               # clone a repo into the sandbox, attempt install, capture stdout/stderr/exit
-      diagnose.py             # pass captured failure to an LLM -> structured diagnosis (JSON)
-      fix_loop.py             # propose fix -> apply in sandbox -> re-run -> read result -> retry (capped)
-      telemetry.py            # per-attempt: fix tried, result, time, token/API cost -> dashboard data
-      report.py               # final per-repo report: fixed/not, fixes applied, cost, why-if-not
+      runner.py               # CLI: clone -> install/import (-> diagnose) (-> fix loop) (-> report)
+      diagnose.py             # CLI: diagnose a captured run — no re-install
+      telemetry.py            # CLI: aggregate every run's attempts/time/token cost into a table
+      report.py               # CLI: the final honest per-repo verdict
+      repo_doctor/            # logic, thin CLIs above import from here
+        sandbox.py              container lifecycle, isolation, write_file/apt_install
+        detect.py                deterministic install-file and import-target detection
+        pipeline.py              install -> import, shared by the initial run and each fix attempt
+        diagnosis.py             LLM: captured failure -> structured diagnosis (closed category enum)
+        fix.py                   LLM: diagnosis -> one concrete action (closed action enum)
+        fix_loop.py              orchestrates diagnose -> propose -> apply -> re-run, capped
+        telemetry.py             read-only aggregation over run.json — no Docker, no LLM
+        report.py                builds the verdict from run.json + telemetry — no Docker, no LLM
+        llm.py                   minimal OpenAI-compatible client, provider fallback
+        config.py                settings.yaml + env loading
+        logstore.py              structured run logs (run.json / events.jsonl / logs/)
       configs/
         settings.yaml         # attempt cap, base image, model, cost limits
       results/                # per-run logs + reports (committed as evidence)
+
+(This is the as-built layout — thin CLI entry points at the root, all logic under `repo_doctor/`.
+The original sketch above listed `fix_loop.py`/`telemetry.py`/`report.py` as flat root files; the
+`repo_doctor/` package split emerged in increment 1 to keep each CLI script small and its logic
+independently importable/testable, and every later increment followed the same pattern.)
 
 Rules:
 - Everything runs in the sandbox; the host is never modified.
@@ -61,6 +77,11 @@ Rules:
   it could not fix.
 
 Ship 0-2 and you have a real agent. 3-4 are what make it stand out.
+
+**Status: all 5 increments shipped.** See README.md's roadmap for the checklist and
+CLAUDE.md's "Increment status" for what file implements which; `results/` holds every
+run committed as evidence, including live `--fix` runs against real repos for section 6's
+scenarios below.
 
 ## 6. Worked example scenarios (the failure modes to design against)
 These are representative of what the agent must handle. Use them as test cases.

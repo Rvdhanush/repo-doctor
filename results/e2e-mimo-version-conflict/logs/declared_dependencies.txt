@@ -1,0 +1,11 @@
+omegaconf
+accelerate
+mlflow
+controlnet-aux
+av
+transformers
+numpy
+imageio[ffmpeg]
+gradio
+huggingface-hub
+-e /work/repo

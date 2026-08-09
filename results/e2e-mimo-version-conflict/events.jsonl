@@ -1,0 +1,20 @@
+{"ts": "2026-08-09T18:19:14+00:00", "run_id": "e2e-mimo-version-conflict", "kind": "run_started", "url": "https://github.com/menyifang/MIMO", "owner": "menyifang", "repo": "MIMO"}
+{"ts": "2026-08-09T18:19:21+00:00", "run_id": "e2e-mimo-version-conflict", "kind": "sandbox_started", "container": "2048a7488a28"}
+{"ts": "2026-08-09T18:19:24+00:00", "run_id": "e2e-mimo-version-conflict", "kind": "step", "name": "clone", "exit_code": 0, "duration_s": 3.172, "timed_out": false}
+{"ts": "2026-08-09T18:19:25+00:00", "run_id": "e2e-mimo-version-conflict", "kind": "install_detected", "strategy": "requirements.txt", "chosen": "requirements.txt"}
+{"ts": "2026-08-09T18:20:11+00:00", "run_id": "e2e-mimo-version-conflict", "kind": "step", "name": "install", "exit_code": 1, "duration_s": 45.975, "timed_out": false}
+{"ts": "2026-08-09T18:20:11+00:00", "run_id": "e2e-mimo-version-conflict", "kind": "step_skipped", "name": "import_check", "reason": "install failed"}
+{"ts": "2026-08-09T18:20:11+00:00", "run_id": "e2e-mimo-version-conflict", "kind": "fix_loop_started", "attempt_cap": 5}
+{"ts": "2026-08-09T18:20:13+00:00", "run_id": "e2e-mimo-version-conflict", "kind": "step", "name": "attempt1_edit_file", "exit_code": 0, "duration_s": 0.215, "timed_out": false}
+{"ts": "2026-08-09T18:20:13+00:00", "run_id": "e2e-mimo-version-conflict", "kind": "install_detected", "strategy": "requirements.txt", "chosen": "requirements.txt"}
+{"ts": "2026-08-09T18:32:05+00:00", "run_id": "e2e-mimo-version-conflict", "kind": "step", "name": "attempt1_install", "exit_code": 0, "duration_s": 711.571, "timed_out": false}
+{"ts": "2026-08-09T18:32:08+00:00", "run_id": "e2e-mimo-version-conflict", "kind": "step", "name": "attempt1_import_check", "exit_code": 1, "duration_s": 0.247, "timed_out": false}
+{"ts": "2026-08-09T18:32:08+00:00", "run_id": "e2e-mimo-version-conflict", "kind": "fix_attempt", "index": 1, "action": "edit_dependency_file", "applied": true, "result_status": "import_failed"}
+{"ts": "2026-08-09T18:32:09+00:00", "run_id": "e2e-mimo-version-conflict", "kind": "step", "name": "attempt2_edit_file", "exit_code": 0, "duration_s": 0.234, "timed_out": false}
+{"ts": "2026-08-09T18:32:09+00:00", "run_id": "e2e-mimo-version-conflict", "kind": "install_detected", "strategy": "requirements.txt", "chosen": "requirements.txt"}
+{"ts": "2026-08-09T18:32:10+00:00", "run_id": "e2e-mimo-version-conflict", "kind": "step", "name": "attempt2_install", "exit_code": 1, "duration_s": 1.053, "timed_out": false}
+{"ts": "2026-08-09T18:32:10+00:00", "run_id": "e2e-mimo-version-conflict", "kind": "step_skipped", "name": "attempt2_import_check", "reason": "install failed"}
+{"ts": "2026-08-09T18:32:10+00:00", "run_id": "e2e-mimo-version-conflict", "kind": "fix_attempt", "index": 2, "action": "edit_dependency_file", "applied": true, "result_status": "install_failed"}
+{"ts": "2026-08-09T18:32:11+00:00", "run_id": "e2e-mimo-version-conflict", "kind": "fix_attempt", "index": 3, "action": "give_up", "applied": false, "result_status": "give_up"}
+{"ts": "2026-08-09T18:32:11+00:00", "run_id": "e2e-mimo-version-conflict", "kind": "fix_loop_finished", "final_status": "install_failed", "stopped_reason": "give_up"}
+{"ts": "2026-08-09T18:32:19+00:00", "run_id": "e2e-mimo-version-conflict", "kind": "run_finished", "status": "install_failed", "duration_s": 784.384}

@@ -1,0 +1,149 @@
+Collecting omegaconf==2.3.0 (from -r requirements.txt (line 1))
+  Downloading omegaconf-2.3.0-py3-none-any.whl.metadata (3.9 kB)
+Collecting accelerate==0.33.0 (from -r requirements.txt (line 2))
+  Downloading accelerate-0.33.0-py3-none-any.whl.metadata (18 kB)
+Collecting mlflow==2.9.2 (from -r requirements.txt (line 3))
+  Downloading mlflow-2.9.2-py3-none-any.whl.metadata (13 kB)
+Collecting controlnet-aux==0.0.7 (from -r requirements.txt (line 4))
+  Downloading controlnet_aux-0.0.7.tar.gz (202 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 202.4/202.4 kB 652.1 kB/s eta 0:00:00
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Collecting av==12.3.0 (from -r requirements.txt (line 5))
+  Downloading av-12.3.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.6 kB)
+Collecting transformers==4.42.4 (from -r requirements.txt (line 6))
+  Downloading transformers-4.42.4-py3-none-any.whl.metadata (43 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 43.6/43.6 kB 120.3 kB/s eta 0:00:00
+Collecting numpy==1.26.3 (from -r requirements.txt (line 7))
+  Downloading numpy-1.26.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (61 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 61.2/61.2 kB 167.7 kB/s eta 0:00:00
+Collecting gradio==5.33.0 (from -r requirements.txt (line 9))
+  Downloading gradio-5.33.0-py3-none-any.whl.metadata (16 kB)
+Collecting huggingface-hub==0.25.0 (from -r requirements.txt (line 10))
+  Downloading huggingface_hub-0.25.0-py3-none-any.whl.metadata (13 kB)
+Collecting imageio[ffmpeg] (from -r requirements.txt (line 8))
+  Downloading imageio-2.37.4-py3-none-any.whl.metadata (9.6 kB)
+Collecting antlr4-python3-runtime==4.9.* (from omegaconf==2.3.0->-r requirements.txt (line 1))
+  Downloading antlr4-python3-runtime-4.9.3.tar.gz (117 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 117.0/117.0 kB 410.6 kB/s eta 0:00:00
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Collecting PyYAML>=5.1.0 (from omegaconf==2.3.0->-r requirements.txt (line 1))
+  Downloading pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+Collecting packaging>=20.0 (from accelerate==0.33.0->-r requirements.txt (line 2))
+  Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+Collecting psutil (from accelerate==0.33.0->-r requirements.txt (line 2))
+  Downloading psutil-7.2.2-cp36-abi3-manylinux2010_x86_64.manylinux_2_12_x86_64.manylinux_2_28_x86_64.whl.metadata (22 kB)
+Collecting torch>=1.10.0 (from accelerate==0.33.0->-r requirements.txt (line 2))
+  Downloading torch-2.13.0-cp311-cp311-manylinux_2_28_x86_64.whl.metadata (38 kB)
+Collecting safetensors>=0.3.1 (from accelerate==0.33.0->-r requirements.txt (line 2))
+  Downloading safetensors-0.8.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.2 kB)
+Collecting click<9,>=7.0 (from mlflow==2.9.2->-r requirements.txt (line 3))
+  Downloading click-8.4.2-py3-none-any.whl.metadata (2.6 kB)
+Collecting cloudpickle<4 (from mlflow==2.9.2->-r requirements.txt (line 3))
+  Downloading cloudpickle-3.1.2-py3-none-any.whl.metadata (7.1 kB)
+Collecting databricks-cli<1,>=0.8.7 (from mlflow==2.9.2->-r requirements.txt (line 3))
+  Downloading databricks_cli-0.18.0-py2.py3-none-any.whl.metadata (4.0 kB)
+Collecting entrypoints<1 (from mlflow==2.9.2->-r requirements.txt (line 3))
+  Downloading entrypoints-0.4-py3-none-any.whl.metadata (2.6 kB)
+Collecting gitpython<4,>=2.1.0 (from mlflow==2.9.2->-r requirements.txt (line 3))
+  Downloading gitpython-3.1.58-py3-none-any.whl.metadata (13 kB)
+Collecting protobuf<5,>=3.12.0 (from mlflow==2.9.2->-r requirements.txt (line 3))
+  Downloading protobuf-4.25.9-cp37-abi3-manylinux2014_x86_64.whl.metadata (541 bytes)
+Collecting pytz<2024 (from mlflow==2.9.2->-r requirements.txt (line 3))
+  Downloading pytz-2023.4-py2.py3-none-any.whl.metadata (22 kB)
+Collecting requests<3,>=2.17.3 (from mlflow==2.9.2->-r requirements.txt (line 3))
+  Downloading requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)
+Collecting packaging>=20.0 (from accelerate==0.33.0->-r requirements.txt (line 2))
+  Downloading packaging-23.2-py3-none-any.whl.metadata (3.2 kB)
+Collecting importlib-metadata!=4.7.0,<8,>=3.7.0 (from mlflow==2.9.2->-r requirements.txt (line 3))
+  Downloading importlib_metadata-7.2.1-py3-none-any.whl.metadata (4.6 kB)
+Collecting sqlparse<1,>=0.4.0 (from mlflow==2.9.2->-r requirements.txt (line 3))
+  Downloading sqlparse-0.5.5-py3-none-any.whl.metadata (4.7 kB)
+Collecting alembic!=1.10.0,<2 (from mlflow==2.9.2->-r requirements.txt (line 3))
+  Downloading alembic-1.19.1-py3-none-any.whl.metadata (7.3 kB)
+Collecting docker<7,>=4.0.0 (from mlflow==2.9.2->-r requirements.txt (line 3))
+  Downloading docker-6.1.3-py3-none-any.whl.metadata (3.5 kB)
+Collecting Flask<4 (from mlflow==2.9.2->-r requirements.txt (line 3))
+  Downloading flask-3.1.3-py3-none-any.whl.metadata (3.2 kB)
+Collecting scipy<2 (from mlflow==2.9.2->-r requirements.txt (line 3))
+  Downloading scipy-1.17.1-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (62 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 62.1/62.1 kB 182.5 kB/s eta 0:00:00
+Collecting pandas<3 (from mlflow==2.9.2->-r requirements.txt (line 3))
+  Downloading pandas-2.3.3-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (91 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 91.2/91.2 kB 314.7 kB/s eta 0:00:00
+Collecting querystring-parser<2 (from mlflow==2.9.2->-r requirements.txt (line 3))
+  Downloading querystring_parser-1.2.4-py2.py3-none-any.whl.metadata (559 bytes)
+Collecting sqlalchemy<3,>=1.4.0 (from mlflow==2.9.2->-r requirements.txt (line 3))
+  Downloading sqlalchemy-2.0.51-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (9.5 kB)
+Collecting scikit-learn<2 (from mlflow==2.9.2->-r requirements.txt (line 3))
+  Downloading scikit_learn-1.9.0-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (11 kB)
+Collecting pyarrow<15,>=4.0.0 (from mlflow==2.9.2->-r requirements.txt (line 3))
+  Downloading pyarrow-14.0.2-cp311-cp311-manylinux_2_28_x86_64.whl.metadata (3.0 kB)
+Collecting markdown<4,>=3.3 (from mlflow==2.9.2->-r requirements.txt (line 3))
+  Downloading markdown-3.10.3-py3-none-any.whl.metadata (5.1 kB)
+Collecting matplotlib<4 (from mlflow==2.9.2->-r requirements.txt (line 3))
+  Downloading matplotlib-3.11.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (80 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 80.3/80.3 kB 252.9 kB/s eta 0:00:00
+Collecting gunicorn<22 (from mlflow==2.9.2->-r requirements.txt (line 3))
+  Downloading gunicorn-21.2.0-py3-none-any.whl.metadata (4.1 kB)
+Collecting Jinja2<4,>=2.11 (from mlflow==2.9.2->-r requirements.txt (line 3))
+  Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+Collecting opencv-python (from controlnet-aux==0.0.7->-r requirements.txt (line 4))
+  Downloading opencv_python-5.0.0.93-cp37-abi3-manylinux_2_28_x86_64.whl.metadata (19 kB)
+Collecting filelock (from controlnet-aux==0.0.7->-r requirements.txt (line 4))
+  Downloading filelock-3.32.2-py3-none-any.whl.metadata (2.0 kB)
+Collecting Pillow (from controlnet-aux==0.0.7->-r requirements.txt (line 4))
+  Downloading pillow-12.3.0-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (9.1 kB)
+Collecting einops (from controlnet-aux==0.0.7->-r requirements.txt (line 4))
+  Downloading einops-0.8.2-py3-none-any.whl.metadata (13 kB)
+Collecting torchvision (from controlnet-aux==0.0.7->-r requirements.txt (line 4))
+  Downloading torchvision-0.28.0-cp311-cp311-manylinux_2_28_x86_64.whl.metadata (5.6 kB)
+Collecting timm (from controlnet-aux==0.0.7->-r requirements.txt (line 4))
+  Downloading timm-1.0.28-py3-none-any.whl.metadata (40 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 40.8/40.8 kB 123.6 kB/s eta 0:00:00
+Collecting scikit-image (from controlnet-aux==0.0.7->-r requirements.txt (line 4))
+  Downloading scikit_image-0.26.0-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (15 kB)
+Collecting regex!=2019.12.17 (from transformers==4.42.4->-r requirements.txt (line 6))
+  Downloading regex-2026.7.19-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (40 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 40.5/40.5 kB 114.7 kB/s eta 0:00:00
+Collecting tokenizers<0.20,>=0.19 (from transformers==4.42.4->-r requirements.txt (line 6))
+  Downloading tokenizers-0.19.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.7 kB)
+Collecting tqdm>=4.27 (from transformers==4.42.4->-r requirements.txt (line 6))
+  Downloading tqdm-4.70.0-py3-none-any.whl.metadata (57 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 57.3/57.3 kB 183.6 kB/s eta 0:00:00
+Collecting aiofiles<25.0,>=22.0 (from gradio==5.33.0->-r requirements.txt (line 9))
+  Downloading aiofiles-24.1.0-py3-none-any.whl.metadata (10 kB)
+Collecting anyio<5.0,>=3.0 (from gradio==5.33.0->-r requirements.txt (line 9))
+  Downloading anyio-4.14.2-py3-none-any.whl.metadata (4.6 kB)
+Collecting fastapi<1.0,>=0.115.2 (from gradio==5.33.0->-r requirements.txt (line 9))
+  Downloading fastapi-0.141.1-py3-none-any.whl.metadata (27 kB)
+Collecting ffmpy (from gradio==5.33.0->-r requirements.txt (line 9))
+  Downloading ffmpy-1.0.0-py3-none-any.whl.metadata (3.0 kB)
+Collecting gradio-client==1.10.2 (from gradio==5.33.0->-r requirements.txt (line 9))
+  Downloading gradio_client-1.10.2-py3-none-any.whl.metadata (7.1 kB)
+Collecting groovy~=0.1 (from gradio==5.33.0->-r requirements.txt (line 9))
+  Downloading groovy-0.1.2-py3-none-any.whl.metadata (6.1 kB)
+Collecting httpx>=0.24.1 (from gradio==5.33.0->-r requirements.txt (line 9))
+  Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+INFO: pip is looking at multiple versions of gradio to determine which version is compatible with other requirements. This could take a while.
+
+The conflict is caused by:
+    The user requested huggingface-hub==0.25.0
+    accelerate 0.33.0 depends on huggingface-hub>=0.21.0
+    controlnet-aux 0.0.7 depends on huggingface_hub
+    transformers 4.42.4 depends on huggingface-hub<1.0 and >=0.23.2
+    gradio 5.33.0 depends on huggingface-hub>=0.28.1
+
+To fix this you could try to:
+1. loosen the range of package versions you've specified
+2. remove package versions to allow pip attempt to solve the dependency conflict
+

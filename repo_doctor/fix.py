@@ -63,7 +63,35 @@ either try something different or give up.
 - apt_install package names must be real Debian bookworm package names you are \
 confident exist (e.g. "build-essential", "cmake", "libgl1", "libglib2.0-0", \
 "pkg-config", "g++"). Do not guess an unfamiliar name.
-- Reply with a single JSON object and nothing else."""
+- If action is "edit_dependency_file", file_content is REQUIRED and must never \
+be empty -- an edit_dependency_file reply with no file_content is treated as a \
+malformed reply and discarded, wasting the attempt. Write out the ENTIRE file \
+exactly as it should look afterward, including every unchanged line, even when \
+the fix is as small as removing one version pin. Do not describe the edit in \
+prose instead of making it, and do not omit file_content because the change \
+feels small.
+- Reply with a single JSON object and nothing else.
+
+Worked example -- same shape of problem, a smaller file:
+
+Given the file is requirements.txt with content:
+    flask==2.0.1
+    werkzeug==3.0.0
+    requests==2.31.0
+and the diagnosis says werkzeug==3.0.0 conflicts with flask==2.0.1 (flask 2.0.1
+requires werkzeug<2.1), the correct reply unpins ONLY the conflicting package
+and reproduces every other line unchanged:
+{
+  "action": "edit_dependency_file",
+  "packages": [],
+  "file_path": "requirements.txt",
+  "file_content": "flask==2.0.1\\nwerkzeug\\nrequests==2.31.0",
+  "reason": "Unpinned werkzeug so pip can select a version flask 2.0.1 accepts.",
+  "give_up_note": ""
+}
+Note file_content is the FULL file as one string with embedded newlines, not a
+description of the change -- reproduce this shape exactly, adapted to the real
+file you were given."""
 
 
 @dataclass
