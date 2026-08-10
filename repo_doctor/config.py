@@ -52,6 +52,13 @@ class LimitsConfig:
     # 0 disables the guard. Tokens only, never a $ figure (see telemetry.py's
     # docstring for why this project never invents a price).
     token_budget: int = 20000
+    # How many runs may hold Docker resources (image build, a live container)
+    # at once (repo_doctor/concurrency.py). Each container already has its own
+    # memory/cpu ceiling (SandboxConfig) -- this bounds the OTHER risk: several
+    # individually-well-behaved concurrent runs collectively exhausting host
+    # disk/memory. 3 * 4g (SandboxConfig.memory default) fits comfortably on a
+    # typical 16GB demo host with room for the OS. 0 disables the guard.
+    max_concurrent_runs: int = 3
 
 
 @dataclass

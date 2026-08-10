@@ -28,6 +28,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from repo_doctor import logstore
+from repo_doctor.concurrency import acquire_slot
 from repo_doctor.config import Config, load_config
 from repo_doctor.logstore import RunLog
 from repo_doctor.pipeline import first_error_line, install_and_import
@@ -106,29 +107,36 @@ def run(url: str, cfg: Config, run_id: str, force_build: bool,
     print(f"[repo-doctor] run {run_id} -> {url}")
     print(f"[repo-doctor] logs: {log.dir}")
 
+    def _announce_wait(max_concurrent: int) -> None:
+        print(f"[repo-doctor] waiting for a free slot "
+              f"({max_concurrent} concurrent run(s) already in progress) ...", flush=True)
+        log.event("waiting_for_slot", max_concurrent=max_concurrent)
+
     sandbox: Sandbox | None = None
     try:
         check_docker()
-        ensure_image(cfg, log, force_build)
 
-        sandbox = Sandbox(cfg, run_id=run_id)
-        sandbox.start()
-        log.set_sandbox(sandbox.info)
-        log.event("sandbox_started", container=sandbox.info.container_id)
-        print(f"[repo-doctor] sandbox up: {sandbox.info.container_name} "
-              f"({sandbox.info.python_version})")
+        with acquire_slot(cfg.limits.max_concurrent_runs, run_id, on_wait=_announce_wait):
+            ensure_image(cfg, log, force_build)
 
-        status, exit_code = _pipeline(sandbox, cfg, log, url, repo, skip_import)
+            sandbox = Sandbox(cfg, run_id=run_id)
+            sandbox.start()
+            log.set_sandbox(sandbox.info)
+            log.event("sandbox_started", container=sandbox.info.container_id)
+            print(f"[repo-doctor] sandbox up: {sandbox.info.container_name} "
+                  f"({sandbox.info.python_version})")
 
-        # clone_failed/unsupported are not install-or-import problems this loop
-        # can act on — the same reasoning fix_loop.py applies to its own
-        # unfixable diagnosis categories, checked here first to skip an LLM call
-        # entirely rather than spend one reaching the same conclusion.
-        if fix and status in _FIXABLE_STATUSES:
-            status, exit_code = _run_fix_loop(cfg, log, sandbox, repo, skip_import,
-                                              status, exit_code)
+            status, exit_code = _pipeline(sandbox, cfg, log, url, repo, skip_import)
 
-        return status, exit_code
+            # clone_failed/unsupported are not install-or-import problems this loop
+            # can act on — the same reasoning fix_loop.py applies to its own
+            # unfixable diagnosis categories, checked here first to skip an LLM call
+            # entirely rather than spend one reaching the same conclusion.
+            if fix and status in _FIXABLE_STATUSES:
+                status, exit_code = _run_fix_loop(cfg, log, sandbox, repo, skip_import,
+                                                  status, exit_code)
+
+            return status, exit_code
 
     except (DockerNotAvailable, SandboxError) as exc:
         # The harness broke, not the repo. Record it as such — never let a

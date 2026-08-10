@@ -254,6 +254,7 @@ repo_doctor/pipeline.py   install -> import, shared by the initial run and each 
 repo_doctor/diagnosis.py  LLM: captured failure -> structured diagnosis (closed category enum)
 repo_doctor/fix.py        LLM: diagnosis -> one concrete action (closed action enum)
 repo_doctor/fix_loop.py   orchestrates diagnose -> propose -> apply -> re-run, capped at 5
+repo_doctor/concurrency.py  bounds concurrent runs holding Docker resources; extras queue
 repo_doctor/logstore.py   structured run logs
 telemetry.py              CLI: aggregate every run's attempts/time/token cost into a table
 repo_doctor/telemetry.py  read-only aggregation over run.json — no Docker, no LLM
@@ -280,6 +281,12 @@ fix loop closes that gap at runtime instead of the image shipping it upfront.
 **The container is long-lived and `exec`'d against**, so state survives between commands —
 which is what the fix loop needs: each attempt's `pip install` builds on whatever the previous
 attempt already changed, in the same filesystem, without re-cloning.
+
+**Concurrent runs queue instead of piling on.** Each container's own resource ceiling stops
+one run from taking the host down, but says nothing about several well-behaved runs at once
+exhausting host disk/memory before any single ceiling is hit. `limits.max_concurrent_runs`
+(default 3) bounds that: a run past the cap prints `waiting for a free slot ...` and blocks
+until one frees up, rather than starting anyway.
 
 ### The log is the product
 

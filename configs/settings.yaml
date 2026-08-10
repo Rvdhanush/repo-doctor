@@ -44,3 +44,7 @@ limits:
   # 0 disables the guard. This is the real cost ceiling: attempt_cap only
   # bounds how many cycles run, not how much each one costs.
   token_budget: 20000
+  # How many runs may hold Docker resources (image build, a live container) at
+  # once. Extra runs wait (queue) rather than piling on and exhausting host
+  # disk/memory. 0 disables the guard.
+  max_concurrent_runs: 3

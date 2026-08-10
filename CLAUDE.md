@@ -240,3 +240,17 @@ those in the background, not inline.
 - The container is long-lived (`sleep infinity`) and `exec`'d against, so state
   survives between commands — the fix loop (increment 2) depends on that: each
   attempt's install builds on whatever the previous attempt already changed.
+- **`limits.max_concurrent_runs` (default 3, `repo_doctor/concurrency.py`) bounds how
+  many runs may hold Docker resources at once.** Each container's own memory/cpu/pids
+  ceiling (above) stops one run from taking the host down; it does nothing to stop N
+  well-behaved concurrent runs collectively exhausting host disk/memory before any
+  single ceiling is hit — that's what this guards. An extra run past the cap **waits**
+  (`[repo-doctor] waiting for a free slot ...`), it is not turned away — that queueing
+  is deliberately visible in the CLI output, not silent. Implemented as numbered slot
+  directories under the system temp dir, `Path.mkdir()` as the mutex (atomic on POSIX
+  *and* Windows, unlike `fcntl`/`msvcrt`, keeping this dependency-free); a slot older
+  than 2h is treated as an abandoned lock from a crashed run and reclaimed, since there
+  is no shared process to hold an in-memory semaphore across separate CLI invocations
+  and thus no OS-portable way to check "is the process that held this still alive."
+  `runner.py` acquires the slot around image-build-through-sandbox-teardown, so `--fix`'s
+  entire retry loop for one run holds a single slot rather than one per attempt.
