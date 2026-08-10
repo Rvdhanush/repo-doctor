@@ -86,6 +86,26 @@ its stale torch pin) is captured but not specially prioritized by `fix_loop.py` 
 just re-diagnoses fresh, so a masked issue surfaces one attempt later rather than being
 anticipated. Works fine within the attempt cap; would matter more with a tighter cap.
 
+### Hardening pass, post-v1 (2026-08-10)
+All 5 increments were already shipped; this pass answered "is this ready to put in front of
+real users, even a handful at once, before building a web layer on top" — see the relevant
+sections below for detail on each:
+- **Real cost ceiling.** `limits.token_budget` (default 20000) — `attempt_cap` only bounded
+  fix-loop *cycles*, not *cost*. See "Fixing (increment 2)" calibration notes.
+- **A genuine second LLM provider.** Gemini, alongside Groq/Cerebras — Cerebras alone left
+  Groq as a single point of failure once its free-tier rate limit is hit. See "Gotchas".
+- **Concurrency guard.** `limits.max_concurrent_runs` (default 3, `repo_doctor/concurrency.py`)
+  — extra runs queue instead of collectively exhausting host disk/memory. See "Sandbox notes".
+- **`check_providers.py`.** Ops utility: probes every configured provider individually
+  (no fallback hiding a broken one) through the real `build_llm_client` path.
+
+Still open, not started: deciding how much container-isolation hardening (beyond Docker's
+default isolation) is worth doing before hosting this as a multi-tenant service that runs
+arbitrary user-submitted repo code — flagged as a real, if low-probability, risk and
+deliberately left as a decision for a future session rather than guessed at here. The web
+layer itself (API, queueing beyond the current single-host guard, per-user auth/isolation,
+a real datastore instead of `results/` as flat files) has not been started at all.
+
 ## Diagnosis (increment 1)
 - `python diagnose.py results/<run_id>` — diagnose a run already captured (no re-install)
 - `python diagnose.py --all --save` — every failed run, written back into run.json
