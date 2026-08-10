@@ -30,10 +30,6 @@ from pathlib import Path
 
 USER_AGENT = "repo-doctor/0.1"
 
-# Status codes worth trying the next provider for. 402 is quota exhausted,
-# 429 is rate limited, 5xx is the provider having a bad day.
-_FALLBACK_STATUS = {402, 408, 429, 500, 502, 503, 504}
-
 
 class LLMError(RuntimeError):
     """No provider could complete the request."""
@@ -150,10 +146,9 @@ class LLMClient:
                 body = exc.read()[:300].decode("utf-8", errors="replace")
                 attempts.append({"provider": provider.name, "status": exc.code,
                                  "error": body.strip()})
-                if exc.code in _FALLBACK_STATUS:
-                    continue  # try the next provider
-                # 401/403/404 are configuration problems: the next provider has
-                # its own key and may well work, so keep going either way.
+                # Whether this is a fallback-worthy status (quota/rate-limit/5xx)
+                # or a configuration problem (401/403/404), the next provider has
+                # its own key and may well work — always move on to it.
                 continue
             except Exception as exc:  # noqa: BLE001 - network layer
                 attempts.append({"provider": provider.name, "status": None,
