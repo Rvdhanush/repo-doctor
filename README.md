@@ -260,6 +260,7 @@ telemetry.py              CLI: aggregate every run's attempts/time/token cost in
 repo_doctor/telemetry.py  read-only aggregation over run.json — no Docker, no LLM
 report.py                 CLI: the final honest per-repo verdict
 repo_doctor/report.py     builds the verdict from run.json + telemetry — no Docker, no LLM
+check_providers.py        CLI: probes each configured LLM provider individually, no fallback
 results/<run_id>/         run.json, events.jsonl, raw logs
 ```
 

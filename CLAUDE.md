@@ -52,6 +52,11 @@ them, and reports honestly — including on repos it cannot fix.
 - Read a log: `results/<run_id>/run.json` (structured, UTF-8 — open with
   `encoding="utf-8"`), `events.jsonl` (live stream), `logs/*.txt` (raw, untruncated)
 - Telemetry across all runs: `python telemetry.py` (table) / `--json`
+- Check every configured LLM provider actually answers: `python check_providers.py`
+  (table) / `--json` — probes each individually (no fallback-hides-a-broken-provider
+  effect), reuses `build_llm_client` so a pass here means diagnosis/`--fix` really can
+  reach that provider. No Docker, opt-in like `--diagnose`/`--fix` (spends a few tokens
+  per configured provider deliberately, only when run).
 
 ## Exit codes
 `0` repo installed + imported · `1` repo failed (clone/unsupported/install/import) ·
@@ -229,8 +234,13 @@ those in the background, not inline.
   Cerebras alone left Groq as the only actually-working provider — a single point of
   failure once Groq's free-tier per-minute limit is hit under more than one concurrent
   user. Wired via the same OpenAI-compatible path everything else uses (`GEMINI_API_KEY`
-  in `.env`); untested end-to-end until a key is added — use a project-specific Google
-  account/key, not a personal one, so its quota isn't shared with anything else.
+  in `.env`); code path confirmed correct (`check_providers.py` gets a real structured
+  429 back, not a connection/auth failure), but every project-specific Google account
+  tried so far returns `limit: 0` on every free-tier metric, and `gemini-2.5-flash`
+  outright 404s as "no longer available to new users" — this reads as Google's new-
+  account gating, not a config problem on our end. Re-run `check_providers.py` after
+  a key's account clears whatever verification/cooldown Google applies; no code change
+  is expected to be needed when it does.
 
 ## Sandbox notes (do not undo casually)
 - The base image is **deliberately lean** (git + ca-certificates + curl, no compilers).
