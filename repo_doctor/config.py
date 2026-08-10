@@ -75,7 +75,12 @@ class LLMConfig:
         {"name": "gemini",
          "base_url": "https://generativelanguage.googleapis.com/v1beta/openai",
          "api_key_env": "GEMINI_API_KEY",
-         "model": "gemini-2.0-flash"},
+         # A "-latest" alias, not a pinned version: dated Gemini model names
+         # age out (confirmed live -- gemini-2.0-flash, -2.0-flash-lite,
+         # -2.5-flash, and -2.5-flash-lite all 404 as "no longer available to
+         # new users" on current accounts), while the alias keeps resolving
+         # to whatever Google currently serves under it.
+         "model": "gemini-flash-lite-latest"},
         {"name": "cerebras",
          "base_url": "https://api.cerebras.ai/v1",
          "api_key_env": "CEREBRAS_API_KEY",

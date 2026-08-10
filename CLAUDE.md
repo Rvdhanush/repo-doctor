@@ -234,13 +234,18 @@ those in the background, not inline.
   Cerebras alone left Groq as the only actually-working provider — a single point of
   failure once Groq's free-tier per-minute limit is hit under more than one concurrent
   user. Wired via the same OpenAI-compatible path everything else uses (`GEMINI_API_KEY`
-  in `.env`); code path confirmed correct (`check_providers.py` gets a real structured
-  429 back, not a connection/auth failure), but every project-specific Google account
-  tried so far returns `limit: 0` on every free-tier metric, and `gemini-2.5-flash`
-  outright 404s as "no longer available to new users" — this reads as Google's new-
-  account gating, not a config problem on our end. Re-run `check_providers.py` after
-  a key's account clears whatever verification/cooldown Google applies; no code change
-  is expected to be needed when it does.
+  in `.env`) and confirmed genuinely working via `check_providers.py`.
+- **Gemini model names age out fast — pin a `-latest` alias, not a dated version.** First
+  attempt used `gemini-2.0-flash` and got a 429 with `limit: 0` on every free-tier metric,
+  which read like account-level gating (new-account cooldown, phone verification, etc.) and
+  was documented here as such. That diagnosis was wrong. Calling `models?key=...` (ListModels)
+  showed the real cause: the account's actual catalog had moved past `2.0-flash` entirely —
+  `2.0-flash`, `2.0-flash-lite`, `2.5-flash`, and `2.5-flash-lite` all 404 as "no longer
+  available to new users" — while `gemini-flash-lite-latest` (an alias) worked immediately,
+  on the SAME key that "failed" with `2.0-flash`. `limit: 0` on a dated model name is Google's
+  error surface for "this model doesn't really exist for you anymore", not a real quota gate.
+  Lesson: when a provider integration fails, check whether the model name itself is still
+  valid (`ListModels` or equivalent) before concluding it's a quota/account/billing problem.
 
 ## Sandbox notes (do not undo casually)
 - The base image is **deliberately lean** (git + ca-certificates + curl, no compilers).
