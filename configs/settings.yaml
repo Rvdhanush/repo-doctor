@@ -39,3 +39,8 @@ logging:
 # cycles (increment 2). Never loop unbounded.
 limits:
   attempt_cap: 5
+  # Total tokens the fix loop may spend across all its diagnosis + proposal
+  # calls in one run before it stops honestly, independent of attempt_cap.
+  # 0 disables the guard. This is the real cost ceiling: attempt_cap only
+  # bounds how many cycles run, not how much each one costs.
+  token_budget: 20000

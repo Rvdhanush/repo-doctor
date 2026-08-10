@@ -188,14 +188,22 @@ class RunLog:
 
     # -- fix loop (increment 2) ---------------------------------------------
 
-    def start_fix_loop(self, attempt_cap: int) -> None:
+    def start_fix_loop(self, attempt_cap: int, token_budget: int = 0) -> None:
         self.doc["fix_loop"] = {
             "attempt_cap": attempt_cap,
+            "token_budget": token_budget,
+            "tokens_used": 0,
             "attempts": [],
-            "stopped_reason": None,   # "success" | "give_up" | "cap_reached" | "unfixable_category"
+            # "success" | "give_up" | "cap_reached" | "unfixable_category" |
+            # "token_budget_exceeded" | "diagnosis_failed" | "proposal_failed"
+            "stopped_reason": None,
             "final_status": None,
         }
-        self.event("fix_loop_started", attempt_cap=attempt_cap)
+        self.event("fix_loop_started", attempt_cap=attempt_cap, token_budget=token_budget)
+
+    def add_fix_loop_tokens(self, tokens: int) -> None:
+        """Accumulate one LLM call's cost against the run's token budget."""
+        self.doc["fix_loop"]["tokens_used"] += tokens
 
     def add_fix_attempt(self, index: int, *, diagnosis: dict | None,
                         proposal: dict | None, applied: bool,

@@ -45,6 +45,13 @@ class LimitsConfig:
     # Consumed by repo_doctor/fix_loop.py (increment 2): the fix loop stops
     # after this many propose/apply/re-run cycles even if still failing.
     attempt_cap: int = 5
+    # Total tokens (diagnosis + proposal calls combined) the fix loop may
+    # spend in one run before it stops honestly, regardless of attempt_cap.
+    # attempt_cap bounds *cycles*, not *cost* -- a free tier's per-minute
+    # ceiling is what actually gets hit under concurrent/multi-user load.
+    # 0 disables the guard. Tokens only, never a $ figure (see telemetry.py's
+    # docstring for why this project never invents a price).
+    token_budget: int = 20000
 
 
 @dataclass
@@ -58,6 +65,10 @@ class LLMConfig:
          "base_url": "https://api.groq.com/openai/v1",
          "api_key_env": "GROQ_API_KEY",
          "model": "llama-3.3-70b-versatile"},
+        {"name": "gemini",
+         "base_url": "https://generativelanguage.googleapis.com/v1beta/openai",
+         "api_key_env": "GEMINI_API_KEY",
+         "model": "gemini-2.0-flash"},
         {"name": "cerebras",
          "base_url": "https://api.cerebras.ai/v1",
          "api_key_env": "CEREBRAS_API_KEY",

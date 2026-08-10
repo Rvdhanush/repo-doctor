@@ -85,8 +85,9 @@ anticipated. Works fine within the attempt cap; would matter more with a tighter
 - `python diagnose.py results/<run_id>` — diagnose a run already captured (no re-install)
 - `python diagnose.py --all --save` — every failed run, written back into run.json
 - `python runner.py <url> --diagnose` — run and diagnose in one pass
-- Keys live in `.env` (gitignored); `.env.example` is the template. Providers are
-  tried in order and fall through on 402/429/5xx — all OpenAI-compatible, so only
+- Keys live in `.env` (gitignored); `.env.example` is the template. Three
+  providers are configured — Groq, Gemini, Cerebras, in that order — tried in
+  order and fall through on 402/429/5xx — all OpenAI-compatible, so only
   `base_url`/`model`/key differ.
 
 ### Calibration notes (learned the hard way — do not regress these)
@@ -105,7 +106,8 @@ anticipated. Works fine within the attempt cap; would matter more with a tighter
 ## Fixing (increment 2)
 - `python runner.py <url> --fix` — on an install/import failure: diagnose ->
   propose one action -> apply it in the sandbox -> re-run install + import ->
-  retry, up to `limits.attempt_cap` (default 5). Opt-in, like `--diagnose`.
+  retry, up to `limits.attempt_cap` (default 5) OR `limits.token_budget`
+  (default 20000, whichever is hit first). Opt-in, like `--diagnose`.
 - The action space is a closed 3-way enum (`repo_doctor/fix.py`), same
   discipline as diagnosis's category enum: `apt_install` (system packages),
   `edit_dependency_file` (the model rewrites the COMPLETE content of the one
@@ -134,6 +136,15 @@ anticipated. Works fine within the attempt cap; would matter more with a tighter
 - **`apt_install` package names are shape-checked, not trusted.** Anything
   that doesn't look like a real Debian package name is dropped before
   `apt-get` ever sees it, not executed and hoped for the best.
+- **`attempt_cap` bounds cycles, not cost.** A repo whose prompts run long can
+  burn a real budget well before hitting the cap, and under concurrent/multi-
+  user use the free-tier per-minute ceiling is what actually gets hit first.
+  `limits.token_budget` (`repo_doctor/fix_loop.py`) sums `total_tokens` across
+  every diagnosis + proposal call in the loop and stops honestly —
+  `stopped_reason: "token_budget_exceeded"`, same as any other stop — the
+  moment the running total meets or exceeds it, checked before spending the
+  next call rather than after. `report.py`/`telemetry.py` needed no changes:
+  both already read `stopped_reason` generically.
 - **File writes into the sandbox never go through a shell.** `Sandbox.write_file`
   base64-encodes the content and decodes it with `python -c`, passed as argv —
   the same "argv is a list, never a shell string" rule `Sandbox.exec` already
@@ -213,7 +224,13 @@ those in the background, not inline.
 - **Import checks run from `cwd=/`**, never the repo dir — otherwise a source folder on
   `sys.path` lets an import "pass" for a package that never installed.
 - **Cerebras currently returns 402** (no free quota on this account). Fallback path is
-  wired and correct; everything runs on Groq today.
+  wired and correct; everything runs on Groq today. **Gemini was added as a real second
+  fallback** (`repo_doctor/config.py`'s provider list, between Groq and Cerebras) because
+  Cerebras alone left Groq as the only actually-working provider — a single point of
+  failure once Groq's free-tier per-minute limit is hit under more than one concurrent
+  user. Wired via the same OpenAI-compatible path everything else uses (`GEMINI_API_KEY`
+  in `.env`); untested end-to-end until a key is added — use a project-specific Google
+  account/key, not a personal one, so its quota isn't shared with anything else.
 
 ## Sandbox notes (do not undo casually)
 - The base image is **deliberately lean** (git + ca-certificates + curl, no compilers).

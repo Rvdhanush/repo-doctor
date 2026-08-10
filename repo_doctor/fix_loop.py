@@ -4,8 +4,11 @@ This is the orchestrator that ties diagnosis.py (what's wrong) and fix.py (what
 to try next) to the sandbox and the install/import pipeline (pipeline.py). It
 never runs unless the initial attempt already failed, and it stops on the first
 of: install+import succeeding, the model choosing to give up, the diagnosis
-landing in a category nothing in this sandbox can fix, or the attempt cap
-(SPEC.md section 4: "cap fix attempts, never loop unbounded").
+landing in a category nothing in this sandbox can fix, the attempt cap
+(SPEC.md section 4: "cap fix attempts, never loop unbounded"), or the token
+budget (cfg.limits.token_budget) -- attempt_cap bounds cycles, the token
+budget bounds cost, and a real repo can exhaust the latter well before the
+former.
 
 Every attempt is recorded via RunLog.add_fix_attempt before the loop moves on,
 so a run that exhausts the cap still leaves a complete, honest history of what
@@ -58,11 +61,21 @@ def run_fix_loop(sandbox: Sandbox, cfg: Config, log: RunLog, repo_dir: str, repo
     be written, so there is no need to serialize and reload mid-run.
     """
     cap = cfg.limits.attempt_cap
-    log.start_fix_loop(cap)
+    token_budget = cfg.limits.token_budget
+    log.start_fix_loop(cap, token_budget)
     status, exit_code = initial_status, initial_exit_code
     prior_attempts: list[dict] = []
 
     for index in range(1, cap + 1):
+        tokens_used = log.doc["fix_loop"]["tokens_used"]
+        if token_budget and tokens_used >= token_budget:
+            log.add_fix_attempt(index, diagnosis=None, proposal=None,
+                                applied=False, result_status="token_budget_exceeded")
+            log.finish_fix_loop(status, "token_budget_exceeded")
+            print(f"[repo-doctor] fix loop stopping: token budget "
+                  f"({tokens_used}/{token_budget}) exhausted after {index - 1} attempt(s).")
+            return status, exit_code
+
         print(f"[repo-doctor] fix attempt {index}/{cap}: diagnosing ...", flush=True)
         try:
             diagnosis = diagnose_run(
@@ -77,6 +90,7 @@ def run_fix_loop(sandbox: Sandbox, cfg: Config, log: RunLog, repo_dir: str, repo
                                 applied=False, result_status="diagnosis_failed")
             log.finish_fix_loop(status, "diagnosis_failed")
             return status, exit_code
+        log.add_fix_loop_tokens(diagnosis.llm.get("total_tokens", 0))
 
         print(f"[repo-doctor] fix attempt {index}: category={diagnosis.category} "
               f"(confidence: {diagnosis.confidence})")
@@ -105,6 +119,7 @@ def run_fix_loop(sandbox: Sandbox, cfg: Config, log: RunLog, repo_dir: str, repo
                                 applied=False, result_status="proposal_failed")
             log.finish_fix_loop(status, "proposal_failed")
             return status, exit_code
+        log.add_fix_loop_tokens(proposal.llm.get("total_tokens", 0))
 
         print(f"[repo-doctor] fix attempt {index}: proposing {proposal.action} "
               f"— {proposal.reason or proposal.give_up_note}")

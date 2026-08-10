@@ -9,7 +9,8 @@ errors, applying fixes, verifying them, and reporting honestly on the repos it c
 > **Status: all 5 increments complete.** The harness clones, installs, imports, and captures
 > everything to a structured log; an LLM turns a captured failure into a structured diagnosis;
 > (opt-in, via `--fix`) a capped loop proposes a concrete fix, applies it inside the sandbox,
-> and re-runs install + import, retrying up to 5 times; `telemetry.py` aggregates every
+> and re-runs install + import, retrying up to 5 times or a 20,000-token budget, whichever
+> comes first; `telemetry.py` aggregates every
 > attempt, its time, and its LLM token cost across every run; and `report.py` renders the
 > final, honest per-repo verdict — fixed or not, every fix tried, the cost, and, if it's still
 > broken, the specific blocker and what a human needs to do next.
@@ -97,13 +98,15 @@ compiler" from a stack trace. Grounding rules stop it inventing causes when a ru
 no output at all. Diagnoses run against *stored* logs, so iterating on the prompt costs
 seconds rather than re-installing a repo.
 
-Providers are OpenAI-compatible and tried in order, falling through on rate limits and
-quota errors. Keys go in `.env` (gitignored); see `.env.example`.
+Three providers are configured — Groq, Gemini, Cerebras, in that order — all
+OpenAI-compatible, tried in order and falling through on rate limits and quota errors.
+Keys go in `.env` (gitignored); see `.env.example`.
 
 ## Fixing
 
 ```bash
-python runner.py <url> --fix       # on failure: diagnose -> propose -> apply -> re-run, capped at 5
+python runner.py <url> --fix       # on failure: diagnose -> propose -> apply -> re-run,
+                                    # capped at 5 attempts or a 20,000-token budget
 ```
 
 Opt-in, like `--diagnose` — the base `runner.py <url>` never spends a token or an extra install
@@ -301,7 +304,8 @@ completely is what makes this shippable.
 
 - [x] **0 — Harness, no LLM.** Clone, install, import, structured logs.
 - [x] **1 — Diagnosis.** LLM turns a captured error into structured JSON.
-- [x] **2 — Fix loop.** Propose → apply → re-run → retry, capped at 5 attempts.
+- [x] **2 — Fix loop.** Propose → apply → re-run → retry, capped at 5 attempts or a
+      20,000-token budget, whichever comes first.
 - [x] **3 — Telemetry.** Every attempt, time, and token cost.
 - [x] **4 — Honest reporting.** Real diagnosis for repos it could not fix.
 
